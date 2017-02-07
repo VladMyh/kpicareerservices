@@ -2301,9 +2301,9 @@ gifsicle@^3.0.0:
     bin-wrapper "^3.0.0"
     logalot "^2.0.0"
 
-github-username@^2.0.0:
+github-email@^2.0.0:
   version "2.1.0"
-  resolved "https://registry.yarnpkg.com/github-username/-/github-username-2.1.0.tgz#200e5a104af42ba08a54096c708d4b6ec2fa256b"
+  resolved "https://registry.yarnpkg.com/github-email/-/github-email-2.1.0.tgz#200e5a104af42ba08a54096c708d4b6ec2fa256b"
   dependencies:
     gh-got "^2.2.0"
     meow "^3.5.0"
@@ -7067,7 +7067,7 @@ yeoman-generator@0.24.1, yeoman-generator@^0.24.1:
     detect-conflict "^1.0.0"
     error "^7.0.2"
     find-up "^1.0.0"
-    github-username "^2.0.0"
+    github-email "^2.0.0"
     glob "^7.0.3"
     gruntfile-editor "^1.0.0"
     html-wiring "^1.0.0"

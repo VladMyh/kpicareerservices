@@ -18,13 +18,13 @@
         vm.register = register;
         vm.rememberMe = true;
         vm.requestResetPassword = requestResetPassword;
-        vm.username = null;
+        vm.email = null;
 
-        $timeout(function (){angular.element('#username').focus();});
+        $timeout(function (){angular.element('#email').focus();});
 
         function cancel () {
             vm.credentials = {
-                username: null,
+                email: null,
                 password: null,
                 rememberMe: true
             };
@@ -35,7 +35,7 @@
         function login (event) {
             event.preventDefault();
             Auth.login({
-                username: vm.username,
+                email: vm.email,
                 password: vm.password,
                 rememberMe: vm.rememberMe
             }).then(function () {
