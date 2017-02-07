@@ -1,17 +1,16 @@
 package com.kpics.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-
 import com.kpics.domain.User;
 import com.kpics.repository.UserRepository;
 import com.kpics.security.SecurityUtils;
 import com.kpics.service.MailService;
+import com.kpics.service.StudentInfoService;
 import com.kpics.service.UserService;
 import com.kpics.service.dto.UserDTO;
+import com.kpics.web.rest.util.HeaderUtil;
 import com.kpics.web.rest.vm.KeyAndPasswordVM;
 import com.kpics.web.rest.vm.ManagedUserVM;
-import com.kpics.web.rest.util.HeaderUtil;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.*;
+import java.util.Optional;
 
 /**
  * REST controller for managing the current user's account.
@@ -38,44 +37,46 @@ public class AccountResource {
 
     private final UserService userService;
 
+    private final StudentInfoService studentInfoService;
+
     private final MailService mailService;
 
     public AccountResource(UserRepository userRepository, UserService userService,
-            MailService mailService) {
+            StudentInfoService studentInfoService, MailService mailService) {
 
         this.userRepository = userRepository;
         this.userService = userService;
+        this.studentInfoService = studentInfoService;
         this.mailService = mailService;
     }
 
     /**
-     * POST  /register : register the user.
+     * POST  /register : register new student.
      *
      * @param managedUserVM the managed user View Model
      * @return the ResponseEntity with status 201 (Created) if the user is registered or 400 (Bad Request) if the login or e-mail is already in use
      */
-    @PostMapping(path = "/register",
-                    produces={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @PostMapping(path = "/register", produces={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     @Timed
     public ResponseEntity registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
 
         HttpHeaders textPlainHeaders = new HttpHeaders();
         textPlainHeaders.setContentType(MediaType.TEXT_PLAIN);
 
-        return userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase())
-            .map(user -> new ResponseEntity<>("login already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
-            .orElseGet(() -> userRepository.findOneByEmail(managedUserVM.getEmail())
-                .map(user -> new ResponseEntity<>("e-mail address already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
-                .orElseGet(() -> {
-                    User user = userService
-                        .createUser(managedUserVM.getLogin(), managedUserVM.getPassword(),
-                            managedUserVM.getFirstName(), managedUserVM.getLastName(),
-                            managedUserVM.getEmail().toLowerCase(), managedUserVM.getImageUrl(), managedUserVM.getLangKey());
+        return userRepository.findOneByEmail(managedUserVM.getEmail().toLowerCase())
+            .map(user -> new ResponseEntity<>("email already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
+            .orElseGet(() -> {
+                User user = userService.createUser(managedUserVM.getPassword(),
+                        managedUserVM.getFirstName(), managedUserVM.getLastName(),
+                        managedUserVM.getEmail().toLowerCase(), managedUserVM.getImageUrl(), managedUserVM.getLangKey());
 
-                    mailService.sendActivationEmail(user);
-                    return new ResponseEntity<>(HttpStatus.CREATED);
-                })
-        );
+                studentInfoService.createStudentInfo(managedUserVM.getFaculty(), managedUserVM.getDepartment(),
+                    managedUserVM.getGroup(), managedUserVM.getGithub(), managedUserVM.getLinkedin(),
+                    managedUserVM.getAbout(), user.getId());
+
+                mailService.sendActivationEmail(user);
+                return new ResponseEntity<>(HttpStatus.CREATED);
+            });
     }
 
     /**
@@ -128,11 +129,11 @@ public class AccountResource {
     @Timed
     public ResponseEntity<String> saveAccount(@Valid @RequestBody UserDTO userDTO) {
         Optional<User> existingUser = userRepository.findOneByEmail(userDTO.getEmail());
-        if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(userDTO.getLogin()))) {
+        if (existingUser.isPresent() && (!existingUser.get().getEmail().equalsIgnoreCase(userDTO.getEmail()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "emailexists", "Email already in use")).body(null);
         }
         return userRepository
-            .findOneByLogin(SecurityUtils.getCurrentUserLogin())
+            .findOneByEmail(SecurityUtils.getCurrentUserLogin())
             .map(u -> {
                 userService.updateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
                     userDTO.getLangKey());

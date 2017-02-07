@@ -25,7 +25,7 @@
         function login (credentials) {
 
             var data = {
-                username: credentials.username,
+                email: credentials.email,
                 password: credentials.password,
                 rememberMe: credentials.rememberMe
             };

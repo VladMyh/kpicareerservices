@@ -1,10 +1,9 @@
 package com.kpics.repository;
 
 import com.kpics.domain.User;
-
-import java.time.ZonedDateTime;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +19,4 @@ public interface UserRepository extends MongoRepository<User, String> {
     Optional<User> findOneByResetKey(String resetKey);
 
     Optional<User> findOneByEmail(String email);
-
-    Optional<User> findOneByLogin(String login);
 }

@@ -1,0 +1,26 @@
+{
+    "kpicsApp": {
+        "studentInfo" : {
+            "home": {
+                "title": "Student Infos",
+                "createLabel": "Создать новый Student Info",
+                "createOrEditLabel": "Создать или отредактировать Student Info",
+                "search": "Найти Student Info"
+            },
+            "created": "Новый Student Info создан с идентификатором {{ param }}",
+            "updated": "Student Info обновлен с идентификатором {{ param }}",
+            "deleted": "Student Info удален с идентификатором {{ param }}",
+            "delete": {
+                "question": "Вы уверены что хотите удалить Student Info {{ id }}?"
+            },
+            "detail": {
+                "title": "Student Info"
+            },
+            "faculty": "Faculty",
+            "department": "Department",
+            "group": "Group",
+            "github": "Github",
+            "about": "About"
+        }
+    }
+}

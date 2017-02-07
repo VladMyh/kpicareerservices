@@ -1,0 +1,39 @@
+
+<div>
+    <h2><span data-translate="kpicsApp.studentInfo.detail.title">Student Info</span> {{vm.studentInfo.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="kpicsApp.studentInfo.faculty">Faculty</span></dt>
+        <dd>
+            <span>{{vm.studentInfo.faculty}}</span>
+        </dd>
+        <dt><span data-translate="kpicsApp.studentInfo.department">Department</span></dt>
+        <dd>
+            <span>{{vm.studentInfo.department}}</span>
+        </dd>
+        <dt><span data-translate="kpicsApp.studentInfo.group">Group</span></dt>
+        <dd>
+            <span>{{vm.studentInfo.group}}</span>
+        </dd>
+        <dt><span data-translate="kpicsApp.studentInfo.github">Github</span></dt>
+        <dd>
+            <span>{{vm.studentInfo.github}}</span>
+        </dd>
+        <dt><span data-translate="kpicsApp.studentInfo.about">About</span></dt>
+        <dd>
+            <span>{{vm.studentInfo.about}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="student-info-detail.edit({id:vm.studentInfo.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

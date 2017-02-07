@@ -26,29 +26,27 @@
         <div class="col-md-8 col-md-offset-2">
             <form ng-show="!vm.success" name="form" role="form" novalidate ng-submit="vm.register()" show-validation>
 
+                <!--Name-->
                 <div class="form-group">
-                    <label class="control-label" for="login" data-translate="global.form.username">Username</label>
-                    <input type="text" class="form-control" id="login" name="login" placeholder="{{'global.form.username.placeholder' | translate}}"
-                           ng-model="vm.registerAccount.login" ng-minlength=1 ng-maxlength=50 ng-pattern="/^[_'.@A-Za-z0-9-]*$/" required>
+                    <label class="control-label" for="firstName" data-translate="global.form.name">Name</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="{{'global.form.name.placeholder' | translate}}"
+                           ng-model="vm.registerAccount.firstName" ng-minlength=1 ng-maxlength=50 ng-pattern="/^[_'.@A-Za-z0-9-]*$/" required>
                     <div ng-show="form.login.$dirty && form.login.$invalid">
-                        <p class="help-block"
-                               ng-show="form.login.$error.required" data-translate="register.messages.validate.login.required">
-                            Your email is required.
-                        </p>
-                        <p class="help-block"
-                               ng-show="form.login.$error.minlength" data-translate="register.messages.validate.login.minlength">
-                            Your email is required to be at least 1 character.
-                        </p>
-                        <p class="help-block"
-                               ng-show="form.login.$error.maxlength" data-translate="register.messages.validate.login.maxlength">
-                            Your email cannot be longer than 50 characters.
-                        </p>
-                        <p class="help-block"
-                               ng-show="form.login.$error.pattern" data-translate="register.messages.validate.login.pattern">
-                            Your email can only contain lower-case letters and digits.
-                    </p>
+                        <!--TODO: add invalid messages-->
                     </div>
                 </div>
+
+                <!--Surname-->
+                <div class="form-group">
+                    <label class="control-label" for="lastName" data-translate="global.form.surname">Surname</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="{{'global.form.surname.placeholder' | translate}}"
+                           ng-model="vm.registerAccount.lastName" ng-minlength=1 ng-maxlength=50 ng-pattern="/^[_'.@A-Za-z0-9-]*$/" required>
+                    <div ng-show="form.login.$dirty && form.login.$invalid">
+                        <!--TODO: add invalid messages-->
+                    </div>
+                </div>
+
+                <!--Email-->
                 <div class="form-group">
                     <label class="control-label" for="email" data-translate="global.form.email">E-mail</label>
                     <input type="email" class="form-control" id="email" name="email" placeholder="{{'global.form.email.placeholder' | translate}}"
@@ -72,6 +70,68 @@
                         </p>
                     </div>
                 </div>
+
+                <!--Faculty-->
+                <div class="form-group">
+                    <label class="control-label" for="faculty" data-translate="global.form.faculty">Faculty</label>
+                    <input type="text" class="form-control" id="faculty" name="faculty"
+                           ng-model="vm.registerAccount.faculty" ng-minlength=1 ng-maxlength=100 ng-pattern="/^[_'.@A-Za-z0-9-]*$/" required>
+                    <div ng-show="form.login.$dirty && form.login.$invalid">
+                        <!--TODO: add invalid messages-->
+                    </div>
+                </div>
+
+                <!--Department-->
+                <div class="form-group">
+                    <label class="control-label" for="department" data-translate="global.form.department">Department</label>
+                    <input type="text" class="form-control" id="department" name="department"
+                           ng-model="vm.registerAccount.department" ng-minlength=1 ng-maxlength=100 ng-pattern="/^[_'.@A-Za-z0-9-]*$/" required>
+                    <div ng-show="form.login.$dirty && form.login.$invalid">
+                        <!--TODO: add invalid messages-->
+                    </div>
+                </div>
+
+                <!--Group-->
+                <div class="form-group">
+                    <label class="control-label" for="group" data-translate="global.form.group">Group</label>
+                    <input type="text" class="form-control" id="group" name="group" placeholder="{{'global.form.group.placeholder' | translate}}"
+                           ng-model="vm.registerAccount.group" ng-minlength=1 ng-maxlength=10 ng-pattern="/^[_'.@A-Za-z0-9-]*$/" required>
+                    <div ng-show="form.login.$dirty && form.login.$invalid">
+                        <!--TODO: add invalid messages-->
+                    </div>
+                </div>
+
+                <!--About-->
+                <div class="form-group">
+                    <label class="control-label" for="about" data-translate="global.form.about">About</label>
+                    <textarea class="form-control" id="about" name="about"
+                              ng-model="vm.registerAccount.about" ng-minlength=1 ng-maxlength=200></textarea>
+                    <div ng-show="form.login.$dirty && form.login.$invalid">
+                        <!--TODO: add invalid messages-->
+                    </div>
+                </div>
+
+                <!--Github-->
+                <div class="form-group">
+                    <label class="control-label" for="github" data-translate="global.form.github">Github</label>
+                    <input type="url" class="form-control" id="github" name="github"
+                           ng-model="vm.registerAccount.github" ng-minlength=1  required>
+                    <div ng-show="form.login.$dirty && form.login.$invalid">
+                        <!--TODO: add invalid messages-->
+                    </div>
+                </div>
+
+                <!--Linkedin-->
+                <div class="form-group">
+                    <label class="control-label" for="linkedin" data-translate="global.form.linkedin">LinkedIn</label>
+                    <input type="url" class="form-control" id="linkedin" name="linkedin"
+                           ng-model="vm.registerAccount.linkedin" ng-minlength=1 required>
+                    <div ng-show="form.login.$dirty && form.login.$invalid">
+                        <!--TODO: add invalid messages-->
+                    </div>
+                </div>
+
+                <!--Password-->
                 <div class="form-group">
                     <label class="control-label" for="password" data-translate="global.form.newpassword">New password</label>
                     <input type="password" class="form-control" id="password" name="password" placeholder="{{'global.form.newpassword.placeholder' | translate}}"
@@ -92,6 +152,8 @@
                     </div>
                     <password-strength-bar password-to-check="vm.registerAccount.password"></password-strength-bar>
                 </div>
+
+                <!--Confirm password-->
                 <div class="form-group">
                     <label class="control-label" for="confirmPassword" data-translate="global.form.confirmpassword">New password confirmation</label>
                     <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="{{'global.form.confirmpassword.placeholder' | translate}}"
@@ -114,10 +176,6 @@
 
                 <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary" data-translate="register.form.button">Register</button>
             </form>
-            <p></p>
-            <div class="alert alert-warning" data-translate="global.messages.info.authenticated" translate-compile>
-                If you want to <a class="alert-link" href="" ng-click="vm.login()">sign in</a>, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").
-            </div>
         </div>
     </div>
 </div>

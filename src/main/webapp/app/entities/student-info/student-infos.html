@@ -1,0 +1,68 @@
+<div>
+    <h2 data-translate="kpicsApp.studentInfo.home.title">Student Infos</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="student-info.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="kpicsApp.studentInfo.home.createLabel">
+                        Create new Student Info
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="faculty"><span data-translate="kpicsApp.studentInfo.faculty">Faculty</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="department"><span data-translate="kpicsApp.studentInfo.department">Department</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="group"><span data-translate="kpicsApp.studentInfo.group">Group</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="github"><span data-translate="kpicsApp.studentInfo.github">Github</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="about"><span data-translate="kpicsApp.studentInfo.about">About</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="studentInfo in vm.studentInfos track by studentInfo.id">
+                    <td><a ui-sref="student-info-detail({id:studentInfo.id})">{{studentInfo.id}}</a></td>
+                    <td>{{studentInfo.faculty}}</td>
+                    <td>{{studentInfo.department}}</td>
+                    <td>{{studentInfo.group}}</td>
+                    <td>{{studentInfo.github}}</td>
+                    <td>{{studentInfo.about}}</td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="student-info-detail({id:studentInfo.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="student-info.edit({id:studentInfo.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="student-info.delete({id:studentInfo.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+    </div>
+    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
+</div>

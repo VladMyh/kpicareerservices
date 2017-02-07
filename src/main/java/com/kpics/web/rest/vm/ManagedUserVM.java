@@ -22,13 +22,14 @@ public class ManagedUserVM extends UserDTO {
         // Empty constructor needed for Jackson.
     }
 
-    public ManagedUserVM(String id, String login, String password, String firstName, String lastName,
-                         String email, boolean activated, String imageUrl, String langKey,
-                         String createdBy, ZonedDateTime createdDate, String lastModifiedBy, ZonedDateTime lastModifiedDate,
-                        Set<String> authorities) {
+    public ManagedUserVM(String id, String password, String firstName, String lastName,
+                         String email, String faculty, String depatment, String group, String about, String github,
+                         String linkedin, boolean activated, String imageUrl, String langKey, String createdBy,
+                         ZonedDateTime createdDate, String lastModifiedBy, ZonedDateTime lastModifiedDate,
+                         Set<String> authorities) {
 
-        super(id, login, firstName, lastName, email, activated,  imageUrl, langKey,
-            createdBy, createdDate, lastModifiedBy, lastModifiedDate,  authorities);
+        super(id, firstName, lastName, email, faculty, depatment, group, about, github, linkedin, imageUrl,
+            activated, langKey, createdBy, createdDate, lastModifiedBy, lastModifiedDate, authorities);
 
         this.password = password;
     }
