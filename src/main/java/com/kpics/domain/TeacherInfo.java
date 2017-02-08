@@ -92,6 +92,10 @@ public class TeacherInfo implements Serializable {
         this.userId = userId;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

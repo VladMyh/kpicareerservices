@@ -3,10 +3,13 @@ package com.kpics.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.kpics.domain.TeacherInfo;
 import com.kpics.service.TeacherInfoService;
+import com.kpics.service.UserService;
+import com.kpics.service.dto.UserDTO;
 import com.kpics.web.rest.util.HeaderUtil;
 import com.kpics.web.rest.util.PaginationUtil;
-import io.swagger.annotations.ApiParam;
+import com.kpics.web.rest.vm.TeacherVM;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -21,6 +24,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing TeacherInfo.
@@ -32,11 +36,14 @@ public class TeacherInfoResource {
     private final Logger log = LoggerFactory.getLogger(TeacherInfoResource.class);
 
     private static final String ENTITY_NAME = "teacherInfo";
-        
+
     private final TeacherInfoService teacherInfoService;
 
-    public TeacherInfoResource(TeacherInfoService teacherInfoService) {
+    private final UserService userService;
+
+    public TeacherInfoResource(TeacherInfoService teacherInfoService, UserService userService) {
         this.teacherInfoService = teacherInfoService;
+        this.userService = userService;
     }
 
     /**
@@ -82,7 +89,7 @@ public class TeacherInfoResource {
     }
 
     /**
-     * GET  /teacher-infos : get all the teacherInfos.
+     * GET  /teacher-infos : get all the teachers.
      *
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of teacherInfos in body
@@ -90,12 +97,16 @@ public class TeacherInfoResource {
      */
     @GetMapping("/teacher-infos")
     @Timed
-    public ResponseEntity<List<TeacherInfo>> getAllTeacherInfos(@ApiParam Pageable pageable)
+    public ResponseEntity<List<TeacherVM>> getAllTeacherInfos(@ApiParam Pageable pageable)
         throws URISyntaxException {
-        log.debug("REST request to get a page of TeacherInfos");
+        log.debug("REST request to get a page of Teachers");
         Page<TeacherInfo> page = teacherInfoService.findAll(pageable);
+        List<TeacherVM> result = page.getContent().stream()
+            .map(o -> new TeacherVM(new UserDTO(userService.getUserWithAuthorities(o.getUserId())), o))
+            .collect(Collectors.toList());
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/teacher-infos");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return new ResponseEntity<>(result, headers, HttpStatus.OK);
     }
 
     /**
@@ -106,10 +117,13 @@ public class TeacherInfoResource {
      */
     @GetMapping("/teacher-infos/{id}")
     @Timed
-    public ResponseEntity<TeacherInfo> getTeacherInfo(@PathVariable String id) {
-        log.debug("REST request to get TeacherInfo : {}", id);
+    public ResponseEntity<TeacherVM> getTeacherInfo(@PathVariable String id) {
+        log.debug("REST request to get Teacher : {}", id);
         TeacherInfo teacherInfo = teacherInfoService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(teacherInfo));
+        UserDTO userDTO = new UserDTO(userService.getUserWithAuthorities(teacherInfo.getUserId()));
+        TeacherVM teacherVM = new TeacherVM(userDTO, teacherInfo);
+
+        return ResponseUtil.wrapOrNotFound(Optional.of(teacherVM));
     }
 
     /**

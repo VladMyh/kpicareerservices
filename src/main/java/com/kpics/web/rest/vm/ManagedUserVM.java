@@ -1,10 +1,10 @@
 package com.kpics.web.rest.vm;
 
+import com.kpics.domain.TeacherInfo;
 import com.kpics.service.dto.StudentDTO;
-import com.kpics.service.dto.TeacherDTO;
 import com.kpics.service.dto.UserDTO;
-import javax.validation.constraints.Size;
 
+import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
@@ -22,7 +22,7 @@ public class ManagedUserVM extends UserDTO {
 
     private StudentDTO studentInfo;
 
-    private TeacherDTO teacherInfo;
+    private TeacherInfo teacherInfo;
 
     public ManagedUserVM() {
         // Empty constructor needed for Jackson.
@@ -55,11 +55,11 @@ public class ManagedUserVM extends UserDTO {
         this.studentInfo = studentInfo;
     }
 
-    public TeacherDTO getTeacherInfo() {
+    public TeacherInfo getTeacherInfo() {
         return teacherInfo;
     }
 
-    public void setTeacherInfo(TeacherDTO teacherInfo) {
+    public void setTeacherInfo(TeacherInfo teacherInfo) {
         this.teacherInfo = teacherInfo;
     }
 

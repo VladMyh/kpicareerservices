@@ -15,12 +15,15 @@ public class TeacherDTO {
     @Size(max = 200)
     private String about;
 
+    private String userId;
+
     public TeacherDTO() {}
 
-    public TeacherDTO(String faculty, String department, String about) {
+    public TeacherDTO(String faculty, String department, String about, String userId) {
         this.faculty = faculty;
         this.department = department;
         this.about = about;
+        this.userId = userId;
     }
 
     public String getFaculty() {
@@ -47,12 +50,21 @@ public class TeacherDTO {
         this.about = about;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     @Override
     public String toString() {
         return "TeacherDTO{" +
             "faculty='" + faculty + '\'' +
             ", department='" + department + '\'' +
             ", about='" + about + '\'' +
+            ", userId='" + userId + '\'' +
             '}';
     }
 }
