@@ -41,6 +41,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Size(max = 100)
     private String email;
 
+    private String linkedin;
+
     private boolean activated = false;
 
     @Size(min = 2, max = 5)
@@ -162,6 +164,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.authorities = authorities;
     }
 
+    public String getLinkedin() {
+        return linkedin;
+    }
+
+    public void setLinkedin(String linkedin) {
+        this.linkedin = linkedin;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -175,6 +185,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
         if (!firstName.equals(user.firstName)) return false;
         if (!lastName.equals(user.lastName)) return false;
         if (!email.equals(user.email)) return false;
+        if (!linkedin.equals(user.linkedin)) return false;
         if (!langKey.equals(user.langKey)) return false;
         if (!imageUrl.equals(user.imageUrl)) return false;
         if (!activationKey.equals(user.activationKey)) return false;

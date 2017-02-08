@@ -143,7 +143,7 @@ public class AccountResourceIntTest {
             "password",             // password
             "Joe",                  // firstName
             "Shmoe",                // lastName
-            "joe@example.com",      // e-mail
+            "v",      // e-mail
             null,                   // faculty
             null,                   //department
             null,                   //group
@@ -165,7 +165,7 @@ public class AccountResourceIntTest {
                 .content(TestUtil.convertObjectToJsonBytes(validUser)))
             .andExpect(status().isCreated());
 
-        Optional<User> user = userRepository.findOneByLogin("joe");
+        Optional<User> user = userRepository.findOneByEmail("b");
         assertThat(user.isPresent()).isTrue();
     }
 
@@ -198,7 +198,7 @@ public class AccountResourceIntTest {
                 .content(TestUtil.convertObjectToJsonBytes(invalidUser)))
             .andExpect(status().isBadRequest());
 
-        Optional<User> user = userRepository.findOneByLogin("bob");
+        Optional<User> user = userRepository.findOneByEmail("invalid");
         assertThat(user.isPresent()).isFalse();
     }
 
@@ -231,7 +231,7 @@ public class AccountResourceIntTest {
                 .content(TestUtil.convertObjectToJsonBytes(invalidUser)))
             .andExpect(status().isBadRequest());
 
-        Optional<User> user = userRepository.findOneByLogin("bob");
+        Optional<User> user = userRepository.findOneByEmail("bob@example.com");
         assertThat(user.isPresent()).isFalse();
     }
 
@@ -305,7 +305,7 @@ public class AccountResourceIntTest {
             null,                   // lastModifiedDate
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)));
 
-        // Duplicate e-mail, different login
+        // Duplicate e-mail
         ManagedUserVM duplicatedUser = new ManagedUserVM(validUser.getId(), validUser.getPassword(), validUser.getFirstName(), validUser.getLastName(),
             validUser.getEmail(), null, null, null, null, null, null, true, validUser.getImageUrl(), validUser.getLangKey(), validUser.getCreatedBy(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate(), validUser.getAuthorities());
 
@@ -323,7 +323,7 @@ public class AccountResourceIntTest {
                 .content(TestUtil.convertObjectToJsonBytes(duplicatedUser)))
             .andExpect(status().is4xxClientError());
 
-        Optional<User> userDup = userRepository.findOneByLogin("johnjr");
+        Optional<User> userDup = userRepository.findOneByEmail("john@example.com");
         assertThat(userDup.isPresent()).isFalse();
     }
 
@@ -356,7 +356,7 @@ public class AccountResourceIntTest {
                 .content(TestUtil.convertObjectToJsonBytes(validUser)))
             .andExpect(status().isCreated());
 
-        Optional<User> userDup = userRepository.findOneByLogin("badguy");
+        Optional<User> userDup = userRepository.findOneByEmail("badguy@example.com");
         assertThat(userDup.isPresent()).isTrue();
         assertThat(userDup.get().getAuthorities()).hasSize(1)
             .containsExactly(authorityRepository.findOne(AuthoritiesConstants.USER));

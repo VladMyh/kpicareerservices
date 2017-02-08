@@ -6,6 +6,7 @@ import com.kpics.repository.UserRepository;
 import com.kpics.security.SecurityUtils;
 import com.kpics.service.MailService;
 import com.kpics.service.StudentInfoService;
+import com.kpics.service.TeacherInfoService;
 import com.kpics.service.UserService;
 import com.kpics.service.dto.UserDTO;
 import com.kpics.web.rest.util.HeaderUtil;
@@ -39,14 +40,17 @@ public class AccountResource {
 
     private final StudentInfoService studentInfoService;
 
+    private final TeacherInfoService teacherInfoService;
+
     private final MailService mailService;
 
     public AccountResource(UserRepository userRepository, UserService userService,
-            StudentInfoService studentInfoService, MailService mailService) {
+            StudentInfoService studentInfoService, TeacherInfoService teacherInfoService, MailService mailService) {
 
         this.userRepository = userRepository;
         this.userService = userService;
         this.studentInfoService = studentInfoService;
+        this.teacherInfoService = teacherInfoService;
         this.mailService = mailService;
     }
 
@@ -56,9 +60,9 @@ public class AccountResource {
      * @param managedUserVM the managed user View Model
      * @return the ResponseEntity with status 201 (Created) if the user is registered or 400 (Bad Request) if the login or e-mail is already in use
      */
-    @PostMapping(path = "/register", produces={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @PostMapping(path = "/student/register", produces={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     @Timed
-    public ResponseEntity registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
+    public ResponseEntity registerStudentAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
 
         HttpHeaders textPlainHeaders = new HttpHeaders();
         textPlainHeaders.setContentType(MediaType.TEXT_PLAIN);
@@ -68,11 +72,43 @@ public class AccountResource {
             .orElseGet(() -> {
                 User user = userService.createUser(managedUserVM.getPassword(),
                         managedUserVM.getFirstName(), managedUserVM.getLastName(),
-                        managedUserVM.getEmail().toLowerCase(), managedUserVM.getImageUrl(), managedUserVM.getLangKey());
+                        managedUserVM.getEmail().toLowerCase(), managedUserVM.getImageUrl(),
+                        managedUserVM.getLangKey());
 
-                studentInfoService.createStudentInfo(managedUserVM.getFaculty(), managedUserVM.getDepartment(),
-                    managedUserVM.getGroup(), managedUserVM.getGithub(), managedUserVM.getLinkedin(),
-                    managedUserVM.getAbout(), user.getId());
+                studentInfoService.createStudentInfo(managedUserVM.getStudentInfo().getFaculty(),
+                    managedUserVM.getStudentInfo().getDepartment(), managedUserVM.getStudentInfo().getGroup(),
+                    managedUserVM.getStudentInfo().getGithub(), managedUserVM.getLinkedin(),
+                    managedUserVM.getStudentInfo().getAbout(), user.getId());
+
+                mailService.sendActivationEmail(user);
+                return new ResponseEntity<>(HttpStatus.CREATED);
+            });
+    }
+
+    /**
+     * POST  /register : register new teacher.
+     *
+     * @param managedUserVM the managed user View Model
+     * @return the ResponseEntity with status 201 (Created) if the user is registered or 400 (Bad Request) if the login or e-mail is already in use
+     */
+    @PostMapping(path = "/teacher/register", produces={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @Timed
+    public ResponseEntity registerTeacherAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
+
+        HttpHeaders textPlainHeaders = new HttpHeaders();
+        textPlainHeaders.setContentType(MediaType.TEXT_PLAIN);
+
+        return userRepository.findOneByEmail(managedUserVM.getEmail().toLowerCase())
+            .map(user -> new ResponseEntity<>("email already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
+            .orElseGet(() -> {
+                User user = userService.createUser(managedUserVM.getPassword(),
+                    managedUserVM.getFirstName(), managedUserVM.getLastName(),
+                    managedUserVM.getEmail().toLowerCase(), managedUserVM.getImageUrl(),
+                    managedUserVM.getLangKey());
+
+                teacherInfoService.createTeacherInfo(managedUserVM.getTeacherInfo().getFaculty(),
+                    managedUserVM.getTeacherInfo().getDepartment(), managedUserVM.getTeacherInfo().getAbout(),
+                    user.getId());
 
                 mailService.sendActivationEmail(user);
                 return new ResponseEntity<>(HttpStatus.CREATED);

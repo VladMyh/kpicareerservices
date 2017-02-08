@@ -11,10 +11,6 @@
                 <strong>Registration failed!</strong> Please try again later.
             </div>
 
-            <div class="alert alert-danger" ng-show="vm.errorUserExists" data-translate="register.messages.error.userexists">
-                <strong>Login name already registered!</strong> Please choose another one.
-            </div>
-
             <div class="alert alert-danger" ng-show="vm.errorEmailExists" data-translate="register.messages.error.emailexists">
                 <strong>E-mail is already in use!</strong> Please choose another one.
             </div>
@@ -75,7 +71,7 @@
                 <div class="form-group">
                     <label class="control-label" for="faculty" data-translate="global.form.faculty">Faculty</label>
                     <input type="text" class="form-control" id="faculty" name="faculty"
-                           ng-model="vm.registerAccount.faculty" ng-minlength=1 ng-maxlength=100 ng-pattern="/^[_'.@A-Za-z0-9-]*$/" required>
+                           ng-model="vm.registerAccount.studentInfo.faculty" ng-minlength=1 ng-maxlength=100 ng-pattern="/^[_'.@A-Za-z0-9-]*$/" required>
                     <div ng-show="form.login.$dirty && form.login.$invalid">
                         <!--TODO: add invalid messages-->
                     </div>
@@ -85,7 +81,7 @@
                 <div class="form-group">
                     <label class="control-label" for="department" data-translate="global.form.department">Department</label>
                     <input type="text" class="form-control" id="department" name="department"
-                           ng-model="vm.registerAccount.department" ng-minlength=1 ng-maxlength=100 ng-pattern="/^[_'.@A-Za-z0-9-]*$/" required>
+                           ng-model="vm.registerAccount.studentInfo.department" ng-minlength=1 ng-maxlength=100 ng-pattern="/^[_'.@A-Za-z0-9-]*$/" required>
                     <div ng-show="form.login.$dirty && form.login.$invalid">
                         <!--TODO: add invalid messages-->
                     </div>
@@ -95,7 +91,7 @@
                 <div class="form-group">
                     <label class="control-label" for="group" data-translate="global.form.group">Group</label>
                     <input type="text" class="form-control" id="group" name="group" placeholder="{{'global.form.group.placeholder' | translate}}"
-                           ng-model="vm.registerAccount.group" ng-minlength=1 ng-maxlength=10 ng-pattern="/^[_'.@A-Za-z0-9-]*$/" required>
+                           ng-model="vm.registerAccount.studentInfo.group" ng-minlength=1 ng-maxlength=10 ng-pattern="/^[_'.@A-Za-z0-9-]*$/" required>
                     <div ng-show="form.login.$dirty && form.login.$invalid">
                         <!--TODO: add invalid messages-->
                     </div>
@@ -105,7 +101,7 @@
                 <div class="form-group">
                     <label class="control-label" for="about" data-translate="global.form.about">About</label>
                     <textarea class="form-control" id="about" name="about"
-                              ng-model="vm.registerAccount.about" ng-minlength=1 ng-maxlength=200></textarea>
+                              ng-model="vm.registerAccount.studentInfo.about" ng-minlength=1 ng-maxlength=200></textarea>
                     <div ng-show="form.login.$dirty && form.login.$invalid">
                         <!--TODO: add invalid messages-->
                     </div>
@@ -115,7 +111,7 @@
                 <div class="form-group">
                     <label class="control-label" for="github" data-translate="global.form.github">Github</label>
                     <input type="url" class="form-control" id="github" name="github"
-                           ng-model="vm.registerAccount.github" ng-minlength=1  required>
+                           ng-model="vm.registerAccount.studentInfo.github" ng-minlength=1  required>
                     <div ng-show="form.login.$dirty && form.login.$invalid">
                         <!--TODO: add invalid messages-->
                     </div>

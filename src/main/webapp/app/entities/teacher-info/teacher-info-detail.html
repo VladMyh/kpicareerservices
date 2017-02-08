@@ -1,0 +1,61 @@
+
+<div>
+    <h2><span data-translate="kpicsApp.teacherInfo.detail.title">Teacher</span> {{vm.teacherInfo.firstName}} {{vm.teacherInfo.lastName}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+
+        <!--FirstName-->
+        <dt><span data-translate="global.form.name">Name</span></dt>
+        <dd>
+            <span>{{vm.teacherInfo.firstName}}</span>
+        </dd>
+
+        <!--LastName-->
+        <dt><span data-translate="global.form.surname">Name</span></dt>
+        <dd>
+            <span>{{vm.teacherInfo.lastName}}</span>
+        </dd>
+
+        <!--Email-->
+        <dt><span data-translate="global.form.email">Name</span></dt>
+        <dd>
+            <span>{{vm.teacherInfo.email}}</span>
+        </dd>
+
+        <!--Faculty-->
+        <dt><span data-translate="kpicsApp.teacherInfo.faculty">Faculty</span></dt>
+        <dd>
+            <span>{{vm.teacherInfo.faculty}}</span>
+        </dd>
+
+        <!--Department-->
+        <dt><span data-translate="kpicsApp.teacherInfo.department">Department</span></dt>
+        <dd>
+            <span>{{vm.teacherInfo.department}}</span>
+        </dd>
+
+        <!--Linkedin-->
+        <dt><span data-translate="global.form.linkedin">LinkedIn</span></dt>
+        <dd>
+            <span>{{vm.teacherInfo.department}}</span>
+        </dd>
+
+        <!--About-->
+        <dt><span data-translate="kpicsApp.teacherInfo.about">About</span></dt>
+        <dd>
+            <span>{{vm.teacherInfo.about}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="teacher-info-detail.edit({id:vm.teacherInfo.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

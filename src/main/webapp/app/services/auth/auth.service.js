@@ -12,7 +12,8 @@
             activateAccount: activateAccount,
             authorize: authorize,
             changePassword: changePassword,
-            createAccount: createAccount,
+            createStudentAccount: createStudentAccount,
+            createTeacherAccount: createTeacherAccount,
             getPreviousState: getPreviousState,
             login: login,
             logout: logout,
@@ -87,10 +88,23 @@
             }).$promise;
         }
 
-        function createAccount (account, callback) {
+        function createStudentAccount (account, callback) {
             var cb = callback || angular.noop;
 
-            return Register.save(account,
+            return Register.registerStudent().save(account,
+                function () {
+                    return cb(account);
+                },
+                function (err) {
+                    this.logout();
+                    return cb(err);
+                }.bind(this)).$promise;
+        }
+
+        function createTeacherAccount (account, callback) {
+            var cb = callback || angular.noop;
+
+            return Register.registerTeacher().save(account,
                 function () {
                     return cb(account);
                 },

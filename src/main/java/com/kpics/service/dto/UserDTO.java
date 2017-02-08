@@ -26,20 +26,6 @@ public class UserDTO {
     @Size(max = 100)
     private String email;
 
-    @Size(max = 100)
-    private String faculty;
-
-    @Size(max = 100)
-    private String department;
-
-    @Size(max = 5)
-    private String group;
-
-    @Size(max = 200)
-    private String about;
-
-    private String github;
-
     private String linkedin;
 
     @Size(max = 256)
@@ -66,14 +52,14 @@ public class UserDTO {
 
     public UserDTO(User user) {
         this(user.getId(), user.getFirstName(), user.getLastName(),
-            user.getEmail(), user.getImageUrl(), user.getActivated(), user.getLangKey(),
+            user.getEmail(), user.getLinkedin(), user.getImageUrl(), user.getActivated(), user.getLangKey(),
             user.getCreatedBy(), user.getCreatedDate(), user.getLastModifiedBy(), user.getLastModifiedDate(),
             user.getAuthorities().stream().map(Authority::getName)
                 .collect(Collectors.toSet()));
     }
 
     public UserDTO(String id, String firstName,
-                   String lastName, String email,
+                   String lastName, String email, String linkedin,
                    String imageUrl, boolean activated, String langKey,
                    String createdBy, ZonedDateTime createdDate, String lastModifiedBy,
                    ZonedDateTime lastModifiedDate, Set<String> authorities) {
@@ -81,31 +67,6 @@ public class UserDTO {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.imageUrl = imageUrl;
-        this.activated = activated;
-        this.langKey = langKey;
-        this.createdBy = createdBy;
-        this.createdDate = createdDate;
-        this.lastModifiedBy = lastModifiedBy;
-        this.lastModifiedDate = lastModifiedDate;
-        this.authorities = authorities;
-    }
-
-    public UserDTO(String id, String firstName,
-                   String lastName, String email, String faculty,
-                   String department, String group, String about, String github,
-                   String linkedin, String imageUrl, boolean activated, String langKey,
-                   String createdBy, ZonedDateTime createdDate, String lastModifiedBy,
-                   ZonedDateTime lastModifiedDate, Set<String> authorities) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.faculty = faculty;
-        this.department = department;
-        this.group = group;
-        this.about = about;
-        this.github = github;
         this.linkedin = linkedin;
         this.imageUrl = imageUrl;
         this.activated = activated;
@@ -173,26 +134,6 @@ public class UserDTO {
         return authorities;
     }
 
-    public String getFaculty() {
-        return faculty;
-    }
-
-    public String getDepartment() {
-        return department;
-    }
-
-    public String getGroup() {
-        return group;
-    }
-
-    public String getAbout() {
-        return about;
-    }
-
-    public String getGithub() {
-        return github;
-    }
-
     public String getLinkedin() {
         return linkedin;
     }
@@ -204,11 +145,6 @@ public class UserDTO {
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +
-            ", faculty='" + faculty + '\'' +
-            ", department='" + department + '\'' +
-            ", group='" + group + '\'' +
-            ", about='" + about + '\'' +
-            ", github='" + github + '\'' +
             ", linkedin='" + linkedin + '\'' +
             ", imageUrl='" + imageUrl + '\'' +
             ", activated=" + activated +

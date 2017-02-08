@@ -1,0 +1,24 @@
+{
+    "kpicsApp": {
+        "teacherInfo" : {
+            "home": {
+                "title": "Teachers",
+                "createLabel": "Create a new Teacher",
+                "createOrEditLabel": "Create or edit Teacher",
+                "search": "Search for Teachers"
+            },
+            "created": "A new Teacher is created with identifier {{ param }}",
+            "updated": "A Teacher is updated with identifier {{ param }}",
+            "deleted": "A Teacher is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Teacher {{ id }}?"
+            },
+            "detail": {
+                "title": "Teacher"
+            },
+            "faculty": "Faculty",
+            "department": "Department",
+            "about": "About"
+        }
+    }
+}
