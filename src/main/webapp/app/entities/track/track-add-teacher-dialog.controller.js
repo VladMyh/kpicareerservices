@@ -32,10 +32,7 @@
             function success(data, headers) {
                 vm.teachers = data;
             }
-            function error(error) {
-
-            }
-
+            function error(error) {}
         }
 
         function onSaveSuccess (result) {

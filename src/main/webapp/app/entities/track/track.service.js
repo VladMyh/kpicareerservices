@@ -42,6 +42,11 @@
                     copy.endDate = DateUtils.convertLocalDateToServer(copy.endDate);
                     return angular.toJson(copy);
                 }
+            },
+            'teachers': {
+                method: 'GET',
+                url: 'api/tracks/:id/teachers',
+                isArray: true
             }
         });
     }

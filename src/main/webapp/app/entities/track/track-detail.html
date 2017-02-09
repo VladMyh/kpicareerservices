@@ -33,7 +33,7 @@
         <dt><span>Teachers</span></dt><!--Add localization-->
 
         <div class="row">
-            <div class="col-xs-4 no-padding-left">
+            <div class="col-xs-2 pull-right">
                 <button class="btn btn-primary" ui-sref="track-detail.addTeacher" >
                     <span class="glyphicon glyphicon-plus"></span>
                         Add Teacher
@@ -49,24 +49,18 @@
                 <th jh-sort-by="lname">Surname<span class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="faculty">Faculty<span class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="department">Department<span class="glyphicon glyphicon-sort"></span></th>
-                <th jh-sort-by="group">Group<span class="glyphicon glyphicon-sort"></span></th>
-                <th jh-sort-by="github">Github<span class="glyphicon glyphicon-sort"></span></th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="studentInfo in vm.studentInfos track by studentInfo.id">
-                <td>{{studentInfo.faculty}}</td>
-                <td>{{studentInfo.department}}</td>
-                <td>{{studentInfo.group}}</td>
-                <td>{{studentInfo.github}}</td>
+            <tr ng-repeat="teacherInfo in vm.teachers track by teacherInfo.id">
+                <td>{{teacherInfo.firstName}}</td>
+                <td>{{teacherInfo.lastName}}</td>
+                <td>{{teacherInfo.faculty}}</td>
+                <td>{{teacherInfo.department}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                class="btn btn-danger btn-sm">
-                            <span class="glyphicon glyphicon-remove-circle"></span>
-                            <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
-                        </button>
+                        <!--Add buttons-->
                     </div>
                 </td>
             </tr>

@@ -2,9 +2,13 @@ package com.kpics.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.kpics.domain.Track;
+import com.kpics.service.TeacherInfoService;
 import com.kpics.service.TrackService;
+import com.kpics.service.UserService;
+import com.kpics.service.dto.UserDTO;
 import com.kpics.web.rest.util.HeaderUtil;
 import com.kpics.web.rest.util.PaginationUtil;
+import com.kpics.web.rest.vm.TeacherVM;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -22,6 +26,7 @@ import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing Track.
@@ -36,8 +41,14 @@ public class TrackResource {
 
     private final TrackService trackService;
 
-    public TrackResource(TrackService trackService) {
+    private final TeacherInfoService teacherInfoService;
+
+    private final UserService userService;
+
+    public TrackResource(TrackService trackService, TeacherInfoService teacherInfoService, UserService userService) {
         this.trackService = trackService;
+        this.teacherInfoService = teacherInfoService;
+        this.userService = userService;
     }
 
     /**
@@ -131,16 +142,17 @@ public class TrackResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    @PutMapping("/tracks/{id}/teacher/{teacherId}")
+    @GetMapping("/tracks/{id}/teachers")
     @Timed
-    public ResponseEntity<Void> addTeacherToTrack(@PathVariable String id, @PathVariable String teacherId) {
-        log.debug("Adding teacher id to track", id, teacherId);
-
+    public ResponseEntity<List<TeacherVM>> getTeachers(@PathVariable String id) {
+        log.debug("REST request to get trak's teachers", id);
         Track track = trackService.findOne(id);
-        track.getTeacherIds().add(teacherId);
-        trackService.save(track);
 
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, id)).build();
+        List<TeacherVM> result = track.getTeacherIds().stream()
+            .map(o -> new TeacherVM(new UserDTO(userService.getUserWithAuthorities(o)),
+                               teacherInfoService.findByUserId(o).get()))
+            .collect(Collectors.toList());
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
 }
