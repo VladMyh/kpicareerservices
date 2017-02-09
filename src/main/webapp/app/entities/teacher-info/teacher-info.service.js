@@ -20,7 +20,12 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'find' : {
+                url: 'api/teacher-infos/find/:query',
+                method:'GET',
+                isArray: true
+            }
         });
     }
 })();

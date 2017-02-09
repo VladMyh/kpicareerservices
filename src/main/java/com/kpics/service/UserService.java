@@ -6,9 +6,8 @@ import com.kpics.repository.AuthorityRepository;
 import com.kpics.repository.UserRepository;
 import com.kpics.security.AuthoritiesConstants;
 import com.kpics.security.SecurityUtils;
-import com.kpics.service.util.RandomUtil;
 import com.kpics.service.dto.UserDTO;
-
+import com.kpics.service.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -18,7 +17,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Service class for managing users.
@@ -82,11 +84,15 @@ public class UserService {
     }
 
     public User createUser(String password, String firstName, String lastName, String email,
-        String imageUrl, String langKey) {
+        String imageUrl, String langKey, String role) {
 
         User newUser = new User();
-        Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
+
+        Authority authority = authorityRepository.findOne(role);
         Set<Authority> authorities = new HashSet<>();
+        authorities.add(new Authority(AuthoritiesConstants.USER));
+        authorities.add(authority);
+
         String encryptedPassword = passwordEncoder.encode(password);
         // new user gets initially a generated password
         newUser.setPassword(encryptedPassword);
@@ -99,7 +105,7 @@ public class UserService {
         newUser.setActivated(false);
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
-        authorities.add(authority);
+
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
         log.debug("Created Information for User: {}", newUser);
@@ -204,6 +210,11 @@ public class UserService {
 
     public User getUserWithAuthorities() {
         return userRepository.findOneByEmail(SecurityUtils.getCurrentUserLogin()).orElse(null);
+    }
+
+    public List<User> findByAuthoritiesAndName(Authority authority, String query) {
+        log.debug("Finding user by firstName, lastName and role", query, authority);
+        return userRepository.findByAuthoritiesAndFirstNameOrLastNameLike(authority.getName(), query);
     }
 
 

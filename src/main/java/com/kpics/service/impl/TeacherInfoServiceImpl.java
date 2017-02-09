@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  * Service Implementation for managing TeacherInfo.
  */
@@ -62,5 +64,11 @@ public class TeacherInfoServiceImpl implements TeacherInfoService{
 
         log.debug("Created Information for TeacherInfo: {}", teacherInfo);
         return teacherInfoRepository.save(teacherInfo);
+    }
+
+    @Override
+    public Optional<TeacherInfo> findByUserId(String userId) {
+        log.debug("Finding teacherInfo by id", userId);
+        return teacherInfoRepository.findOneByUserId(userId);
     }
 }

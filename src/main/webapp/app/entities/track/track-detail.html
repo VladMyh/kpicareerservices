@@ -1,0 +1,89 @@
+
+<div>
+    <h2><span data-translate="kpicsApp.track.detail.title">Track</span> {{vm.track.name}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+
+        <dt><span data-translate="kpicsApp.track.name">Name</span></dt>
+        <dd>
+            <span>{{vm.track.name}}</span>
+        </dd>
+
+        <dt><span data-translate="kpicsApp.track.description">Description</span></dt>
+        <dd>
+            <span>{{vm.track.description}}</span>
+        </dd>
+
+        <dt><span data-translate="kpicsApp.track.startDate">Start Date</span></dt>
+        <dd>
+            <span>{{vm.track.startDate | date:'mediumDate'}}</span>
+        </dd>
+
+        <dt><span data-translate="kpicsApp.track.endDate">End Date</span></dt>
+        <dd>
+            <span>{{vm.track.endDate | date:'mediumDate'}}</span>
+        </dd>
+
+        <dt><span data-translate="kpicsApp.track.isActive">Is Active</span></dt>
+        <dd>
+            <span>{{vm.track.isActive}}</span>
+        </dd>
+
+        <dt><span>Teachers</span></dt><!--Add localization-->
+
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="track-detail.addTeacher" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                        Add Teacher
+                </button>
+            </div>
+        </div>
+
+        <table class="jh-table table table-striped">
+            <thead>
+            <tr jh-sort="vm.predicate" ascending="vm.reverse">
+                <!--TODO:add localization-->
+                <th jh-sort-by="fname">Name<span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="lname">Surname<span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="faculty">Faculty<span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="department">Department<span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="group">Group<span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="github">Github<span class="glyphicon glyphicon-sort"></span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="studentInfo in vm.studentInfos track by studentInfo.id">
+                <td>{{studentInfo.faculty}}</td>
+                <td>{{studentInfo.department}}</td>
+                <td>{{studentInfo.group}}</td>
+                <td>{{studentInfo.github}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-remove-circle"></span>
+                            <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="track-detail.edit({id:vm.track.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

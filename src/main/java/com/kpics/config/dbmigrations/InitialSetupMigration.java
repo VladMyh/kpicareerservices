@@ -16,10 +16,16 @@ public class InitialSetupMigration {
 
     private Map<String, String>[] authoritiesUser = new Map[] { new HashMap<>() };
 
+    private Map<String, String>[] authoritiesTeacher = new Map[] { new HashMap<>(), new HashMap<>() };
+
+    private Map<String, String>[] authoritiesStudent = new Map[] { new HashMap<>(), new HashMap<>() };
+
     private Map<String, String>[] authoritiesAdminAndUser = new Map[] { new HashMap<>(), new HashMap<>() };
 
     {
         authoritiesUser[0].put("_id", "ROLE_USER");
+        authoritiesStudent[0].put("_id", "ROLE_STUDENT");
+        authoritiesTeacher[0].put("_id", "ROLE_TEACHER");
         authoritiesAdminAndUser[0].put("_id", "ROLE_USER");
         authoritiesAdminAndUser[1].put("_id", "ROLE_ADMIN");
     }
@@ -95,8 +101,22 @@ public class InitialSetupMigration {
             .add("lang_key", "en")
             .add("created_by", "system")
             .add("created_date", new Date())
-            .add("authorities", authoritiesUser)
+            .add("authorities", authoritiesUser[0])
             .get()
         );
+
+    }
+
+    @ChangeSet(order = "03", author = "initiator", id = "03-updateAuthorities")
+    public void updateAuthorities(DB db) {
+        DBCollection authorityCollection = db.getCollection("jhi_authority");
+        authorityCollection.insert(
+            BasicDBObjectBuilder.start()
+                .add("_id", "ROLE_STUDENT")
+                .get());
+        authorityCollection.insert(
+            BasicDBObjectBuilder.start()
+                .add("_id", "ROLE_TEACHER")
+                .get());
     }
 }

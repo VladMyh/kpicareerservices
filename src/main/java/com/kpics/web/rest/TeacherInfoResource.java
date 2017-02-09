@@ -1,7 +1,10 @@
 package com.kpics.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.kpics.domain.Authority;
 import com.kpics.domain.TeacherInfo;
+import com.kpics.domain.User;
+import com.kpics.security.AuthoritiesConstants;
 import com.kpics.service.TeacherInfoService;
 import com.kpics.service.UserService;
 import com.kpics.service.dto.UserDTO;
@@ -138,6 +141,20 @@ public class TeacherInfoResource {
         log.debug("REST request to delete TeacherInfo : {}", id);
         teacherInfoService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    @GetMapping("/teacher-infos/find/{query}")
+    @Timed
+    public ResponseEntity<List<TeacherVM>> find(@PathVariable String query) {
+        log.debug("REST request to find teachers by name", query);
+
+        List<User> users = userService.findByAuthoritiesAndName(new Authority(AuthoritiesConstants.TEACHER), query);
+
+        List<TeacherVM> result = users.stream()
+            .map(o -> new TeacherVM(new UserDTO(o), teacherInfoService.findByUserId(o.getId()).get()))
+            .collect(Collectors.toList());
+
+        return ResponseEntity.ok(result);
     }
 
 }

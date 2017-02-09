@@ -1,0 +1,26 @@
+{
+    "kpicsApp": {
+        "track" : {
+            "home": {
+                "title": "Tracks",
+                "createLabel": "Создать новый Track",
+                "createOrEditLabel": "Создать или отредактировать Track",
+                "search": "Найти Track"
+            },
+            "created": "Новый Track создан с идентификатором {{ param }}",
+            "updated": "Track обновлен с идентификатором {{ param }}",
+            "deleted": "Track удален с идентификатором {{ param }}",
+            "delete": {
+                "question": "Вы уверены что хотите удалить Track {{ id }}?"
+            },
+            "detail": {
+                "title": "Track"
+            },
+            "name": "Name",
+            "description": "Description",
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "isActive": "Is Active"
+        }
+    }
+}

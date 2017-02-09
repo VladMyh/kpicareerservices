@@ -6,6 +6,7 @@ import com.kpics.domain.TeacherInfo;
 import com.kpics.repository.TeacherInfoRepository;
 import com.kpics.service.TeacherInfoService;
 
+import com.kpics.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,6 +52,9 @@ public class TeacherInfoResourceIntTest {
     private TeacherInfoService teacherInfoService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -63,7 +67,7 @@ public class TeacherInfoResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        TeacherInfoResource teacherInfoResource = new TeacherInfoResource(teacherInfoService);
+        TeacherInfoResource teacherInfoResource = new TeacherInfoResource(teacherInfoService, userService);
         this.restTeacherInfoMockMvc = MockMvcBuilders.standaloneSetup(teacherInfoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();

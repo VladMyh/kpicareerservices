@@ -8,6 +8,7 @@ import com.kpics.repository.UserRepository;
 import com.kpics.security.AuthoritiesConstants;
 import com.kpics.service.MailService;
 import com.kpics.service.StudentInfoService;
+import com.kpics.service.TeacherInfoService;
 import com.kpics.service.UserService;
 import com.kpics.web.rest.vm.ManagedUserVM;
 import org.junit.Before;
@@ -56,6 +57,9 @@ public class AccountResourceIntTest {
     @Autowired
     private StudentInfoService studentInfoService;
 
+    @Autowired
+    private TeacherInfoService teacherInfoService;
+
     @Mock
     private UserService mockUserService;
 
@@ -72,10 +76,10 @@ public class AccountResourceIntTest {
         doNothing().when(mockMailService).sendActivationEmail((User) anyObject());
 
         AccountResource accountResource =
-            new AccountResource(userRepository, userService, studentInfoService, mockMailService);
+            new AccountResource(userRepository, userService, studentInfoService, teacherInfoService, mockMailService);
 
         AccountResource accountUserMockResource =
-            new AccountResource(userRepository, mockUserService, studentInfoService, mockMailService);
+            new AccountResource(userRepository, mockUserService, studentInfoService, teacherInfoService, mockMailService);
 
         this.restMvc = MockMvcBuilders.standaloneSetup(accountResource).build();
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(accountUserMockResource).build();
@@ -143,12 +147,7 @@ public class AccountResourceIntTest {
             "password",             // password
             "Joe",                  // firstName
             "Shmoe",                // lastName
-            "v",      // e-mail
-            null,                   // faculty
-            null,                   //department
-            null,                   //group
-            null,                   //about
-            null,                   //github
+            "v",                    // e-mail
             null,                   //linkedin
             true,                   // activated
             "http://placehold.it/50x50", //imageUrl
@@ -177,11 +176,6 @@ public class AccountResourceIntTest {
             "Bob",                  // firstName
             "Green",                // lastName
             "invalid",              // e-mail <-- invalid
-            null,                   // faculty
-            null,                   //department
-            null,                   //group
-            null,                   //about
-            null,                   //github
             null,                   //linkedin
             true,                   // activated
             "http://placehold.it/50x50", //imageUrl
@@ -210,11 +204,6 @@ public class AccountResourceIntTest {
             "Bob",                   // firstName
             "Green",                 // lastName
             "bob@example.com",       // e-mail
-            null,                   // faculty
-            null,                   //department
-            null,                   //group
-            null,                   //about
-            null,                   //github
             null,                   //linkedin
             true,                    // activated
             "http://placehold.it/50x50", //imageUrl
@@ -244,11 +233,6 @@ public class AccountResourceIntTest {
             "Alice",                // firstName
             "Something",            // lastName
             "alice@example.com",    // e-mail
-            null,                   // faculty
-            null,                   //department
-            null,                   //group
-            null,                   //about
-            null,                   //github
             null,                   //linkedin
             true,                   // activated
             "http://placehold.it/50x50", //imageUrl
@@ -260,8 +244,10 @@ public class AccountResourceIntTest {
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)));
 
         // Duplicate login, different e-mail
-        ManagedUserVM duplicatedUser = new ManagedUserVM(validUser.getId(), validUser.getPassword(), validUser.getFirstName(), validUser.getLastName(),
-            "alicejr@example.com", null, null, null, null, null, null, true, validUser.getImageUrl(), validUser.getLangKey(), validUser.getCreatedBy(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate(), validUser.getAuthorities());
+        ManagedUserVM duplicatedUser = new ManagedUserVM(validUser.getId(), validUser.getPassword(), validUser.getFirstName(),
+            validUser.getLastName(), "alicejr@example.com", null, true, validUser.getImageUrl(), validUser.getLangKey(),
+            validUser.getCreatedBy(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate(),
+            validUser.getAuthorities());
 
         // Good user
         restMvc.perform(
@@ -290,11 +276,6 @@ public class AccountResourceIntTest {
             "John",                 // firstName
             "Doe",                  // lastName
             "john@example.com",     // e-mail
-            null,                   // faculty
-            null,                   //department
-            null,                   //group
-            null,                   //about
-            null,                   //github
             null,                   //linkedin
             true,                   // activated
             "http://placehold.it/50x50", //imageUrl
@@ -306,8 +287,10 @@ public class AccountResourceIntTest {
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)));
 
         // Duplicate e-mail
-        ManagedUserVM duplicatedUser = new ManagedUserVM(validUser.getId(), validUser.getPassword(), validUser.getFirstName(), validUser.getLastName(),
-            validUser.getEmail(), null, null, null, null, null, null, true, validUser.getImageUrl(), validUser.getLangKey(), validUser.getCreatedBy(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate(), validUser.getAuthorities());
+        ManagedUserVM duplicatedUser = new ManagedUserVM(validUser.getId(), validUser.getPassword(), validUser.getFirstName(),
+            validUser.getLastName(), validUser.getEmail(), null, true, validUser.getImageUrl(), validUser.getLangKey(),
+            validUser.getCreatedBy(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate(),
+            validUser.getAuthorities());
 
         // Good user
         restMvc.perform(
@@ -335,11 +318,6 @@ public class AccountResourceIntTest {
             "Bad",                  // firstName
             "Guy",                  // lastName
             "badguy@example.com",   // e-mail
-            null,                   // faculty
-            null,                   //department
-            null,                   //group
-            null,                   //about
-            null,                   //github
             null,                   //linkedin
             true,                   // activated
             "http://placehold.it/50x50", //imageUrl

@@ -3,6 +3,7 @@ package com.kpics.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.kpics.domain.User;
 import com.kpics.repository.UserRepository;
+import com.kpics.security.AuthoritiesConstants;
 import com.kpics.security.SecurityUtils;
 import com.kpics.service.MailService;
 import com.kpics.service.StudentInfoService;
@@ -73,7 +74,7 @@ public class AccountResource {
                 User user = userService.createUser(managedUserVM.getPassword(),
                         managedUserVM.getFirstName(), managedUserVM.getLastName(),
                         managedUserVM.getEmail().toLowerCase(), managedUserVM.getImageUrl(),
-                        managedUserVM.getLangKey());
+                        managedUserVM.getLangKey(), AuthoritiesConstants.STUDENT);
 
                 studentInfoService.createStudentInfo(managedUserVM.getStudentInfo().getFaculty(),
                     managedUserVM.getStudentInfo().getDepartment(), managedUserVM.getStudentInfo().getGroup(),
@@ -104,7 +105,7 @@ public class AccountResource {
                 User user = userService.createUser(managedUserVM.getPassword(),
                     managedUserVM.getFirstName(), managedUserVM.getLastName(),
                     managedUserVM.getEmail().toLowerCase(), managedUserVM.getImageUrl(),
-                    managedUserVM.getLangKey());
+                    managedUserVM.getLangKey(), AuthoritiesConstants.TEACHER);
 
                 teacherInfoService.createTeacherInfo(managedUserVM.getTeacherInfo().getFaculty(),
                     managedUserVM.getTeacherInfo().getDepartment(), managedUserVM.getTeacherInfo().getAbout(),
