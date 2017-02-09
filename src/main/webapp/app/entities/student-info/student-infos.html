@@ -18,23 +18,21 @@
         <table class="jh-table table table-striped">
             <thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="name"><span data-translate="global.form.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="surname"><span data-translate="global.form.surname">Surname</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="faculty"><span data-translate="kpicsApp.studentInfo.faculty">Faculty</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="department"><span data-translate="kpicsApp.studentInfo.department">Department</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="group"><span data-translate="kpicsApp.studentInfo.group">Group</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="github"><span data-translate="kpicsApp.studentInfo.github">Github</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="about"><span data-translate="kpicsApp.studentInfo.about">About</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="studentInfo in vm.studentInfos track by studentInfo.id">
-                    <td><a ui-sref="student-info-detail({id:studentInfo.id})">{{studentInfo.id}}</a></td>
+                    <td>{{studentInfo.firstName}}</td>
+                    <td>{{studentInfo.lastName}}</td>
                     <td>{{studentInfo.faculty}}</td>
                     <td>{{studentInfo.department}}</td>
                     <td>{{studentInfo.group}}</td>
-                    <td>{{studentInfo.github}}</td>
-                    <td>{{studentInfo.about}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"

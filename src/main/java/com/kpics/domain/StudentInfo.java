@@ -117,6 +117,10 @@ public class StudentInfo implements Serializable {
         return this;
     }
 
+    public String getLinkedin() {
+        return linkedin;
+    }
+
     public void setGithub(String github) {
         this.github = github;
     }
@@ -142,6 +146,12 @@ public class StudentInfo implements Serializable {
     public void setUser(String userId) {
         this.userId = userId;
     }
+
+    public String getUserId() {
+        return userId;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {

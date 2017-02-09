@@ -3,10 +3,13 @@ package com.kpics.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.kpics.domain.StudentInfo;
 import com.kpics.service.StudentInfoService;
+import com.kpics.service.UserService;
+import com.kpics.service.dto.UserDTO;
 import com.kpics.web.rest.util.HeaderUtil;
 import com.kpics.web.rest.util.PaginationUtil;
-import io.swagger.annotations.ApiParam;
+import com.kpics.web.rest.vm.StudentVM;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -21,6 +24,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing StudentInfo.
@@ -32,11 +36,14 @@ public class StudentInfoResource {
     private final Logger log = LoggerFactory.getLogger(StudentInfoResource.class);
 
     private static final String ENTITY_NAME = "studentInfo";
-        
+
     private final StudentInfoService studentInfoService;
 
-    public StudentInfoResource(StudentInfoService studentInfoService) {
+    private final UserService userService;
+
+    public StudentInfoResource(StudentInfoService studentInfoService, UserService userService) {
         this.studentInfoService = studentInfoService;
+        this.userService = userService;
     }
 
     /**
@@ -90,12 +97,16 @@ public class StudentInfoResource {
      */
     @GetMapping("/student-infos")
     @Timed
-    public ResponseEntity<List<StudentInfo>> getAllStudentInfos(@ApiParam Pageable pageable)
+    public ResponseEntity<List<StudentVM>> getAllStudentInfos(@ApiParam Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of StudentInfos");
         Page<StudentInfo> page = studentInfoService.findAll(pageable);
+        List<StudentVM> result = page.getContent().stream()
+            .map(o -> new StudentVM(new UserDTO(userService.getUserWithAuthorities(o.getUserId())), o))
+            .collect(Collectors.toList());
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/student-infos");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return new ResponseEntity<>(result, headers, HttpStatus.OK);
     }
 
     /**
@@ -106,10 +117,13 @@ public class StudentInfoResource {
      */
     @GetMapping("/student-infos/{id}")
     @Timed
-    public ResponseEntity<StudentInfo> getStudentInfo(@PathVariable String id) {
+    public ResponseEntity<StudentVM> getStudentInfo(@PathVariable String id) {
         log.debug("REST request to get StudentInfo : {}", id);
         StudentInfo studentInfo = studentInfoService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(studentInfo));
+        UserDTO userDTO = new UserDTO(userService.getUserWithAuthorities(studentInfo.getUserId()));
+        StudentVM studentVM = new StudentVM(userDTO, studentInfo);
+
+        return ResponseUtil.wrapOrNotFound(Optional.of(studentVM));
     }
 
     /**

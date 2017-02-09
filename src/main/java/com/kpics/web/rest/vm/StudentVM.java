@@ -1,9 +1,9 @@
 package com.kpics.web.rest.vm;
 
-import com.kpics.domain.TeacherInfo;
+import com.kpics.domain.StudentInfo;
 import com.kpics.service.dto.UserDTO;
 
-public class TeacherVM {
+public class StudentVM {
     private String id;
 
     private String firstName;
@@ -14,19 +14,23 @@ public class TeacherVM {
 
     private String linkedin;
 
+    private String github;
+
     private boolean activated;
 
     private String faculty;
 
     private String department;
 
+    private String group;
+
     private String about;
 
     private String userId;
 
-    public TeacherVM() {}
+    public StudentVM() {}
 
-    public TeacherVM(String id, String firstName, String lastName, String email,
+    public StudentVM(String id, String firstName, String lastName, String email,
                      String linkedin, boolean activated, String faculty,
                      String department, String about, String userId) {
         this.id = id;
@@ -41,16 +45,18 @@ public class TeacherVM {
         this.userId = userId;
     }
 
-    public TeacherVM(UserDTO userDTO, TeacherInfo teacherInfo) {
-        this.id = teacherInfo.getId();
+    public StudentVM(UserDTO userDTO, StudentInfo studentInfo) {
+        this.id = studentInfo.getId();
         this.firstName = userDTO.getFirstName();
         this.lastName = userDTO.getLastName();
         this.email = userDTO.getEmail();
         this.linkedin = userDTO.getLinkedin();
+        this.github = studentInfo.getGithub();
         this.activated = userDTO.isActivated();
-        this.faculty = teacherInfo.getFaculty();
-        this.department = teacherInfo.getDepartment();
-        this.about = teacherInfo.getAbout();
+        this.faculty = studentInfo.getFaculty();
+        this.department = studentInfo.getDepartment();
+        this.group = studentInfo.getGroup();
+        this.about = studentInfo.getAbout();
         this.userId = userDTO.getId();
     }
 
@@ -134,17 +140,35 @@ public class TeacherVM {
         this.userId = userId;
     }
 
+    public String getGithub() {
+        return github;
+    }
+
+    public void setGithub(String github) {
+        this.github = github;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
     @Override
     public String toString() {
-        return "TeacherVM{" +
+        return "StudentVM{" +
             "id='" + id + '\'' +
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +
             ", linkedin='" + linkedin + '\'' +
+            ", github='" + github + '\'' +
             ", activated=" + activated +
             ", faculty='" + faculty + '\'' +
             ", department='" + department + '\'' +
+            ", group='" + group + '\'' +
             ", about='" + about + '\'' +
             ", userId='" + userId + '\'' +
             '}';
