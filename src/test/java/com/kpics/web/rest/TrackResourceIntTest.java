@@ -4,8 +4,10 @@ import com.kpics.KpicsApp;
 
 import com.kpics.domain.Track;
 import com.kpics.repository.TrackRepository;
+import com.kpics.service.TeacherInfoService;
 import com.kpics.service.TrackService;
 
+import com.kpics.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,6 +61,12 @@ public class TrackResourceIntTest {
     private TrackService trackService;
 
     @Autowired
+    private TeacherInfoService teacherInfoService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -71,7 +79,7 @@ public class TrackResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        TrackResource trackResource = new TrackResource(trackService);
+        TrackResource trackResource = new TrackResource(trackService, teacherInfoService, userService);
         this.restTrackMockMvc = MockMvcBuilders.standaloneSetup(trackResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
