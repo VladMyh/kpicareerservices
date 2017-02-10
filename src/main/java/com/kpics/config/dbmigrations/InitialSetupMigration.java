@@ -24,8 +24,13 @@ public class InitialSetupMigration {
 
     {
         authoritiesUser[0].put("_id", "ROLE_USER");
-        authoritiesStudent[0].put("_id", "ROLE_STUDENT");
-        authoritiesTeacher[0].put("_id", "ROLE_TEACHER");
+
+        authoritiesStudent[0].put("_id", "ROLE_USER");
+        authoritiesStudent[1].put("_id", "ROLE_STUDENT");
+
+        authoritiesTeacher[0].put("_id", "ROLE_USER");
+        authoritiesTeacher[1].put("_id", "ROLE_TEACHER");
+
         authoritiesAdminAndUser[0].put("_id", "ROLE_USER");
         authoritiesAdminAndUser[1].put("_id", "ROLE_ADMIN");
     }
@@ -40,6 +45,14 @@ public class InitialSetupMigration {
         authorityCollection.insert(
             BasicDBObjectBuilder.start()
                 .add("_id", "ROLE_USER")
+                .get());
+        authorityCollection.insert(
+            BasicDBObjectBuilder.start()
+                .add("_id", "ROLE_STUDENT")
+                .get());
+        authorityCollection.insert(
+            BasicDBObjectBuilder.start()
+                .add("_id", "ROLE_TEACHER")
                 .get());
     }
 
@@ -101,22 +114,37 @@ public class InitialSetupMigration {
             .add("lang_key", "en")
             .add("created_by", "system")
             .add("created_date", new Date())
-            .add("authorities", authoritiesUser[0])
+            .add("authorities", authoritiesUser)
+            .get()
+        );
+        usersCollection.insert(BasicDBObjectBuilder.start()
+            .add("_id", "user-4")
+            .add("login", "user")
+            .add("password", "$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K")
+            .add("first_name", "")
+            .add("last_name", "User")
+            .add("email", "teacher@localhost")
+            .add("activated", "true")
+            .add("lang_key", "en")
+            .add("created_by", "system")
+            .add("created_date", new Date())
+            .add("authorities", authoritiesTeacher)
+            .get()
+        );
+        usersCollection.insert(BasicDBObjectBuilder.start()
+            .add("_id", "user-5")
+            .add("login", "user")
+            .add("password", "$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K")
+            .add("first_name", "")
+            .add("last_name", "User")
+            .add("email", "student@localhost")
+            .add("activated", "true")
+            .add("lang_key", "en")
+            .add("created_by", "system")
+            .add("created_date", new Date())
+            .add("authorities", authoritiesStudent)
             .get()
         );
 
-    }
-
-    @ChangeSet(order = "03", author = "initiator", id = "03-updateAuthorities")
-    public void updateAuthorities(DB db) {
-        DBCollection authorityCollection = db.getCollection("jhi_authority");
-        authorityCollection.insert(
-            BasicDBObjectBuilder.start()
-                .add("_id", "ROLE_STUDENT")
-                .get());
-        authorityCollection.insert(
-            BasicDBObjectBuilder.start()
-                .add("_id", "ROLE_TEACHER")
-                .get());
     }
 }
