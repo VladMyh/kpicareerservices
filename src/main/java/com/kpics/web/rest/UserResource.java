@@ -146,17 +146,17 @@ public class UserResource {
     }
 
     /**
-     * GET  /users/:login : get the "login" user.
+     * GET  /users/:email : get the "email" user.
      *
-     * @param login the login of the user to find
-     * @return the ResponseEntity with status 200 (OK) and with body the "login" user, or with status 404 (Not Found)
+     * @param email the email of the user to find
+     * @return the ResponseEntity with status 200 (OK) and with body the "email" user, or with status 404 (Not Found)
      */
-    @GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
+    @GetMapping("/users/{email:" + Constants.LOGIN_REGEX + "}")
     @Timed
-    public ResponseEntity<UserDTO> getUser(@PathVariable String login) {
-        log.debug("REST request to get User : {}", login);
+    public ResponseEntity<UserDTO> getUser(@PathVariable String email) {
+        log.debug("REST request to get User : {}", email);
         return ResponseUtil.wrapOrNotFound(
-            userService.getUserWithAuthoritiesByEmail(login)
+            userService.getUserWithAuthoritiesByEmail(email)
                 .map(UserDTO::new));
     }
 

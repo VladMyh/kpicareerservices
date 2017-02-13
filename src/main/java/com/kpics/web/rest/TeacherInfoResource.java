@@ -123,10 +123,14 @@ public class TeacherInfoResource {
     public ResponseEntity<TeacherVM> getTeacherInfo(@PathVariable String id) {
         log.debug("REST request to get Teacher : {}", id);
         TeacherInfo teacherInfo = teacherInfoService.findOne(id);
-        UserDTO userDTO = new UserDTO(userService.getUserWithAuthorities(teacherInfo.getUserId()));
-        TeacherVM teacherVM = new TeacherVM(userDTO, teacherInfo);
+        TeacherVM teacherVM = null;
 
-        return ResponseUtil.wrapOrNotFound(Optional.of(teacherVM));
+        if(teacherInfo != null) {
+            UserDTO userDTO = new UserDTO(userService.getUserWithAuthorities(teacherInfo.getUserId()));
+            teacherVM = new TeacherVM(userDTO, teacherInfo);
+        }
+
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(teacherVM));
     }
 
     /**

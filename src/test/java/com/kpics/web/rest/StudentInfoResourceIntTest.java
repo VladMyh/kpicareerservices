@@ -125,8 +125,6 @@ public class StudentInfoResourceIntTest {
         return user;
     }
 
-
-
     @Before
     public void initTest() {
         studentInfoRepository.deleteAll();

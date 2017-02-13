@@ -3,7 +3,9 @@ package com.kpics.web.rest;
 import com.kpics.KpicsApp;
 
 import com.kpics.domain.TeacherInfo;
+import com.kpics.domain.User;
 import com.kpics.repository.TeacherInfoRepository;
+import com.kpics.repository.UserRepository;
 import com.kpics.service.TeacherInfoService;
 
 import com.kpics.service.UserService;
@@ -45,8 +47,14 @@ public class TeacherInfoResourceIntTest {
     private static final String DEFAULT_ABOUT = "AAAAAAAAAA";
     private static final String UPDATED_ABOUT = "BBBBBBBBBB";
 
+    private static final String DEFAULT_USERID = "AAAAAAAAAA";
+    private static final String UPDATED_USERID = "BBBBBBBBBB";
+
     @Autowired
     private TeacherInfoRepository teacherInfoRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private TeacherInfoService teacherInfoService;
@@ -64,6 +72,8 @@ public class TeacherInfoResourceIntTest {
 
     private TeacherInfo teacherInfo;
 
+    private User user;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -74,23 +84,41 @@ public class TeacherInfoResourceIntTest {
     }
 
     /**
-     * Create an entity for this test.
+     * Create teacherInfo entity for this test.
      *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static TeacherInfo createEntity() {
+    public static TeacherInfo createTeacherInfoEntity() {
         TeacherInfo teacherInfo = new TeacherInfo()
                 .faculty(DEFAULT_FACULTY)
                 .department(DEFAULT_DEPARTMENT)
-                .about(DEFAULT_ABOUT);
+                .about(DEFAULT_ABOUT)
+                .user(DEFAULT_USERID);
         return teacherInfo;
+    }
+
+    /**
+     * Create user entity for this test.
+     *
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static User createUserEntity() {
+        User user = new User();
+        user.setId(DEFAULT_USERID);
+        user.setEmail("user@localhost");
+        user.setLinkedin("AAAAAAAAAA");
+        user.setPassword("$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC");
+        return user;
     }
 
     @Before
     public void initTest() {
         teacherInfoRepository.deleteAll();
-        teacherInfo = createEntity();
+        userRepository.deleteAll();
+        teacherInfo = createTeacherInfoEntity();
+        user = createUserEntity();
     }
 
     @Test
@@ -111,6 +139,7 @@ public class TeacherInfoResourceIntTest {
         assertThat(testTeacherInfo.getFaculty()).isEqualTo(DEFAULT_FACULTY);
         assertThat(testTeacherInfo.getDepartment()).isEqualTo(DEFAULT_DEPARTMENT);
         assertThat(testTeacherInfo.getAbout()).isEqualTo(DEFAULT_ABOUT);
+        assertThat(testTeacherInfo.getUserId()).isEqualTo(DEFAULT_USERID);
     }
 
     @Test
@@ -170,30 +199,34 @@ public class TeacherInfoResourceIntTest {
     public void getAllTeacherInfos() throws Exception {
         // Initialize the database
         teacherInfoRepository.save(teacherInfo);
+        userRepository.save(user);
 
         // Get all the teacherInfoList
         restTeacherInfoMockMvc.perform(get("/api/teacher-infos?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(teacherInfo.getId())))
-            .andExpect(jsonPath("$.[*].faculty").value(hasItem(DEFAULT_FACULTY.toString())))
-            .andExpect(jsonPath("$.[*].department").value(hasItem(DEFAULT_DEPARTMENT.toString())))
-            .andExpect(jsonPath("$.[*].about").value(hasItem(DEFAULT_ABOUT.toString())));
+            .andExpect(jsonPath("$.[*].faculty").value(hasItem(DEFAULT_FACULTY)))
+            .andExpect(jsonPath("$.[*].department").value(hasItem(DEFAULT_DEPARTMENT)))
+            .andExpect(jsonPath("$.[*].about").value(hasItem(DEFAULT_ABOUT)))
+            .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USERID)));
     }
 
     @Test
     public void getTeacherInfo() throws Exception {
         // Initialize the database
         teacherInfoRepository.save(teacherInfo);
+        userRepository.save(user);
 
         // Get the teacherInfo
         restTeacherInfoMockMvc.perform(get("/api/teacher-infos/{id}", teacherInfo.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(teacherInfo.getId()))
-            .andExpect(jsonPath("$.faculty").value(DEFAULT_FACULTY.toString()))
-            .andExpect(jsonPath("$.department").value(DEFAULT_DEPARTMENT.toString()))
-            .andExpect(jsonPath("$.about").value(DEFAULT_ABOUT.toString()));
+            .andExpect(jsonPath("$.faculty").value(DEFAULT_FACULTY))
+            .andExpect(jsonPath("$.department").value(DEFAULT_DEPARTMENT))
+            .andExpect(jsonPath("$.about").value(DEFAULT_ABOUT))
+            .andExpect(jsonPath("$.userId").value(DEFAULT_USERID));
     }
 
     @Test
@@ -215,7 +248,8 @@ public class TeacherInfoResourceIntTest {
         updatedTeacherInfo
                 .faculty(UPDATED_FACULTY)
                 .department(UPDATED_DEPARTMENT)
-                .about(UPDATED_ABOUT);
+                .about(UPDATED_ABOUT)
+                .user(UPDATED_USERID);
 
         restTeacherInfoMockMvc.perform(put("/api/teacher-infos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -229,6 +263,7 @@ public class TeacherInfoResourceIntTest {
         assertThat(testTeacherInfo.getFaculty()).isEqualTo(UPDATED_FACULTY);
         assertThat(testTeacherInfo.getDepartment()).isEqualTo(UPDATED_DEPARTMENT);
         assertThat(testTeacherInfo.getAbout()).isEqualTo(UPDATED_ABOUT);
+        assertThat(testTeacherInfo.getUserId()).isEqualTo(UPDATED_USERID);
     }
 
     @Test
