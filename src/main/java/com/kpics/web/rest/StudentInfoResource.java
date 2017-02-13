@@ -120,10 +120,14 @@ public class StudentInfoResource {
     public ResponseEntity<StudentVM> getStudentInfo(@PathVariable String id) {
         log.debug("REST request to get StudentInfo : {}", id);
         StudentInfo studentInfo = studentInfoService.findOne(id);
-        UserDTO userDTO = new UserDTO(userService.getUserWithAuthorities(studentInfo.getUserId()));
-        StudentVM studentVM = new StudentVM(userDTO, studentInfo);
+        StudentVM studentVM = null;
 
-        return ResponseUtil.wrapOrNotFound(Optional.of(studentVM));
+        if(studentInfo != null) {
+            UserDTO userDTO = new UserDTO(userService.getUserWithAuthorities(studentInfo.getUserId()));
+            studentVM = new StudentVM(userDTO, studentInfo);
+        }
+
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(studentVM));
     }
 
     /**

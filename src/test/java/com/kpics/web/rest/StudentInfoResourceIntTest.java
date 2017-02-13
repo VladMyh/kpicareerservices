@@ -3,7 +3,9 @@ package com.kpics.web.rest;
 import com.kpics.KpicsApp;
 
 import com.kpics.domain.StudentInfo;
+import com.kpics.domain.User;
 import com.kpics.repository.StudentInfoRepository;
+import com.kpics.repository.UserRepository;
 import com.kpics.service.StudentInfoService;
 
 import com.kpics.service.UserService;
@@ -48,11 +50,20 @@ public class StudentInfoResourceIntTest {
     private static final String DEFAULT_GITHUB = "AAAAAAAAAA";
     private static final String UPDATED_GITHUB = "BBBBBBBBBB";
 
+    private static final String DEFAULT_LINKEDIN = "AAAAAAAAAA";
+    private static final String UPDATED_LINKEDIN = "BBBBBBBBBB";
+
     private static final String DEFAULT_ABOUT = "AAAAAAAAAA";
     private static final String UPDATED_ABOUT = "BBBBBBBBBB";
 
+    private static final String DEFAULT_USERID = "AAAAAAAAAA";
+    private static final String UPDATED_USERID = "BBBBBBBBBB";
+
     @Autowired
     private StudentInfoRepository studentInfoRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private StudentInfoService studentInfoService;
@@ -70,6 +81,8 @@ public class StudentInfoResourceIntTest {
 
     private StudentInfo studentInfo;
 
+    private User user;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -80,25 +93,46 @@ public class StudentInfoResourceIntTest {
     }
 
     /**
-     * Create an entity for this test.
+     * Create studentInfo entity for this test.
      *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static StudentInfo createEntity() {
+    public static StudentInfo createStudentInfoEntity() {
         StudentInfo studentInfo = new StudentInfo()
                 .faculty(DEFAULT_FACULTY)
                 .department(DEFAULT_DEPARTMENT)
                 .group(DEFAULT_GROUP)
                 .github(DEFAULT_GITHUB)
-                .about(DEFAULT_ABOUT);
+                .linkedin(DEFAULT_LINKEDIN)
+                .about(DEFAULT_ABOUT)
+                .user(DEFAULT_USERID);
         return studentInfo;
     }
+
+    /**
+     * Create user entity for this test.
+     *
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static User createUserEntity() {
+        User user = new User();
+        user.setId(DEFAULT_USERID);
+        user.setEmail("user@localhost");
+        user.setLinkedin(DEFAULT_LINKEDIN);
+        user.setPassword("$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC");
+        return user;
+    }
+
+
 
     @Before
     public void initTest() {
         studentInfoRepository.deleteAll();
-        studentInfo = createEntity();
+        userRepository.deleteAll();
+        studentInfo = createStudentInfoEntity();
+        user = createUserEntity();
     }
 
     @Test
@@ -120,7 +154,9 @@ public class StudentInfoResourceIntTest {
         assertThat(testStudentInfo.getDepartment()).isEqualTo(DEFAULT_DEPARTMENT);
         assertThat(testStudentInfo.getGroup()).isEqualTo(DEFAULT_GROUP);
         assertThat(testStudentInfo.getGithub()).isEqualTo(DEFAULT_GITHUB);
+        assertThat(testStudentInfo.getLinkedin()).isEqualTo(DEFAULT_LINKEDIN);
         assertThat(testStudentInfo.getAbout()).isEqualTo(DEFAULT_ABOUT);
+        assertThat(testStudentInfo.getUserId()).isEqualTo(DEFAULT_USERID);
     }
 
     @Test
@@ -214,34 +250,40 @@ public class StudentInfoResourceIntTest {
     public void getAllStudentInfos() throws Exception {
         // Initialize the database
         studentInfoRepository.save(studentInfo);
+        userRepository.save(user);
 
         // Get all the studentInfoList
         restStudentInfoMockMvc.perform(get("/api/student-infos?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(studentInfo.getId())))
-            .andExpect(jsonPath("$.[*].faculty").value(hasItem(DEFAULT_FACULTY.toString())))
-            .andExpect(jsonPath("$.[*].department").value(hasItem(DEFAULT_DEPARTMENT.toString())))
-            .andExpect(jsonPath("$.[*].group").value(hasItem(DEFAULT_GROUP.toString())))
-            .andExpect(jsonPath("$.[*].github").value(hasItem(DEFAULT_GITHUB.toString())))
-            .andExpect(jsonPath("$.[*].about").value(hasItem(DEFAULT_ABOUT.toString())));
+            .andExpect(jsonPath("$.[*].faculty").value(hasItem(DEFAULT_FACULTY)))
+            .andExpect(jsonPath("$.[*].department").value(hasItem(DEFAULT_DEPARTMENT)))
+            .andExpect(jsonPath("$.[*].group").value(hasItem(DEFAULT_GROUP)))
+            .andExpect(jsonPath("$.[*].github").value(hasItem(DEFAULT_GITHUB)))
+            .andExpect(jsonPath("$.[*].linkedin").value(hasItem(DEFAULT_LINKEDIN)))
+            .andExpect(jsonPath("$.[*].about").value(hasItem(DEFAULT_ABOUT)))
+            .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USERID)));
     }
 
     @Test
     public void getStudentInfo() throws Exception {
         // Initialize the database
         studentInfoRepository.save(studentInfo);
+        userRepository.save(user);
 
         // Get the studentInfo
         restStudentInfoMockMvc.perform(get("/api/student-infos/{id}", studentInfo.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(studentInfo.getId()))
-            .andExpect(jsonPath("$.faculty").value(DEFAULT_FACULTY.toString()))
-            .andExpect(jsonPath("$.department").value(DEFAULT_DEPARTMENT.toString()))
-            .andExpect(jsonPath("$.group").value(DEFAULT_GROUP.toString()))
-            .andExpect(jsonPath("$.github").value(DEFAULT_GITHUB.toString()))
-            .andExpect(jsonPath("$.about").value(DEFAULT_ABOUT.toString()));
+            .andExpect(jsonPath("$.faculty").value(DEFAULT_FACULTY))
+            .andExpect(jsonPath("$.department").value(DEFAULT_DEPARTMENT))
+            .andExpect(jsonPath("$.group").value(DEFAULT_GROUP))
+            .andExpect(jsonPath("$.github").value(DEFAULT_GITHUB))
+            .andExpect(jsonPath("$.linkedin").value(DEFAULT_LINKEDIN))
+            .andExpect(jsonPath("$.about").value(DEFAULT_ABOUT))
+            .andExpect(jsonPath("$.userId").value(DEFAULT_USERID));
     }
 
     @Test
@@ -265,7 +307,9 @@ public class StudentInfoResourceIntTest {
                 .department(UPDATED_DEPARTMENT)
                 .group(UPDATED_GROUP)
                 .github(UPDATED_GITHUB)
-                .about(UPDATED_ABOUT);
+                .linkedin(UPDATED_LINKEDIN)
+                .about(UPDATED_ABOUT)
+                .user(UPDATED_USERID);
 
         restStudentInfoMockMvc.perform(put("/api/student-infos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -280,7 +324,9 @@ public class StudentInfoResourceIntTest {
         assertThat(testStudentInfo.getDepartment()).isEqualTo(UPDATED_DEPARTMENT);
         assertThat(testStudentInfo.getGroup()).isEqualTo(UPDATED_GROUP);
         assertThat(testStudentInfo.getGithub()).isEqualTo(UPDATED_GITHUB);
+        assertThat(testStudentInfo.getLinkedin()).isEqualTo(UPDATED_LINKEDIN);
         assertThat(testStudentInfo.getAbout()).isEqualTo(UPDATED_ABOUT);
+        assertThat(testStudentInfo.getUserId()).isEqualTo(UPDATED_USERID);
     }
 
     @Test
@@ -315,10 +361,5 @@ public class StudentInfoResourceIntTest {
         // Validate the database is empty
         List<StudentInfo> studentInfoList = studentInfoRepository.findAll();
         assertThat(studentInfoList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(StudentInfo.class);
     }
 }

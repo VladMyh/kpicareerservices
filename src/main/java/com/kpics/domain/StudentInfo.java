@@ -44,7 +44,6 @@ public class StudentInfo implements Serializable {
     @Field("linkedin")
     private String linkedin;
 
-
     @Size(max = 200)
     @Field("about")
     private String about;
@@ -151,8 +150,6 @@ public class StudentInfo implements Serializable {
         return userId;
     }
 
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -160,14 +157,14 @@ public class StudentInfo implements Serializable {
 
         StudentInfo that = (StudentInfo) o;
 
-        if (!id.equals(that.id)) return false;
-        if (!faculty.equals(that.faculty)) return false;
-        if (!department.equals(that.department)) return false;
-        if (!group.equals(that.group)) return false;
-        if (!github.equals(that.github)) return false;
-        if (!linkedin.equals(that.linkedin)) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (faculty != null ? !faculty.equals(that.faculty) : that.faculty != null) return false;
+        if (department != null ? !department.equals(that.department) : that.department != null) return false;
+        if (group != null ? !group.equals(that.group) : that.group != null) return false;
+        if (github != null ? !github.equals(that.github) : that.github != null) return false;
+        if (linkedin != null ? !linkedin.equals(that.linkedin) : that.linkedin != null) return false;
         if (about != null ? !about.equals(that.about) : that.about != null) return false;
-        return userId.equals(that.userId);
+        return userId != null ? userId.equals(that.userId) : that.userId == null;
     }
 
     @Override
