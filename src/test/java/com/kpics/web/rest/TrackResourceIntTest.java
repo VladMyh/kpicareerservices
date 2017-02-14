@@ -95,8 +95,6 @@ public class TrackResourceIntTest {
         Track track = new Track()
                 .name(DEFAULT_NAME)
                 .description(DEFAULT_DESCRIPTION)
-                .startDate(DEFAULT_START_DATE)
-                .endDate(DEFAULT_END_DATE)
                 .isActive(DEFAULT_IS_ACTIVE);
         return track;
     }
@@ -124,8 +122,6 @@ public class TrackResourceIntTest {
         Track testTrack = trackList.get(trackList.size() - 1);
         assertThat(testTrack.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testTrack.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-        assertThat(testTrack.getStartDate()).isEqualTo(DEFAULT_START_DATE);
-        assertThat(testTrack.getEndDate()).isEqualTo(DEFAULT_END_DATE);
         assertThat(testTrack.isActive()).isEqualTo(DEFAULT_IS_ACTIVE);
     }
 
@@ -183,40 +179,6 @@ public class TrackResourceIntTest {
     }
 
     @Test
-    public void checkStartDateIsRequired() throws Exception {
-        int databaseSizeBeforeTest = trackRepository.findAll().size();
-        // set the field null
-        track.setStartDate(null);
-
-        // Create the Track, which fails.
-
-        restTrackMockMvc.perform(post("/api/tracks")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(track)))
-            .andExpect(status().isBadRequest());
-
-        List<Track> trackList = trackRepository.findAll();
-        assertThat(trackList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    public void checkEndDateIsRequired() throws Exception {
-        int databaseSizeBeforeTest = trackRepository.findAll().size();
-        // set the field null
-        track.setEndDate(null);
-
-        // Create the Track, which fails.
-
-        restTrackMockMvc.perform(post("/api/tracks")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(track)))
-            .andExpect(status().isBadRequest());
-
-        List<Track> trackList = trackRepository.findAll();
-        assertThat(trackList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
     public void checkIsActiveIsRequired() throws Exception {
         int databaseSizeBeforeTest = trackRepository.findAll().size();
         // set the field null
@@ -243,11 +205,9 @@ public class TrackResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(track.getId())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
-            .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
-            .andExpect(jsonPath("$.[*].isActive").value(hasItem(DEFAULT_IS_ACTIVE.booleanValue())));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].isActive").value(hasItem(DEFAULT_IS_ACTIVE)));
     }
 
     @Test
@@ -260,11 +220,9 @@ public class TrackResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(track.getId()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
-            .andExpect(jsonPath("$.startDate").value(DEFAULT_START_DATE.toString()))
-            .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()))
-            .andExpect(jsonPath("$.isActive").value(DEFAULT_IS_ACTIVE.booleanValue()));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
+            .andExpect(jsonPath("$.isActive").value(DEFAULT_IS_ACTIVE));
     }
 
     @Test
@@ -286,8 +244,6 @@ public class TrackResourceIntTest {
         updatedTrack
                 .name(UPDATED_NAME)
                 .description(UPDATED_DESCRIPTION)
-                .startDate(UPDATED_START_DATE)
-                .endDate(UPDATED_END_DATE)
                 .isActive(UPDATED_IS_ACTIVE);
 
         restTrackMockMvc.perform(put("/api/tracks")
@@ -301,8 +257,6 @@ public class TrackResourceIntTest {
         Track testTrack = trackList.get(trackList.size() - 1);
         assertThat(testTrack.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testTrack.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testTrack.getStartDate()).isEqualTo(UPDATED_START_DATE);
-        assertThat(testTrack.getEndDate()).isEqualTo(UPDATED_END_DATE);
         assertThat(testTrack.isActive()).isEqualTo(UPDATED_IS_ACTIVE);
     }
 
