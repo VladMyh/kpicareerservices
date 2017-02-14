@@ -4,7 +4,7 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myTrackLabel" data-translate="kpicsApp.track.home.createOrEditLabel">Create or edit a Track</h4>
+        <h4 class="modal-title" id="myTrackLabel">Create Track</h4><!--TODO: add locale-->
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
@@ -18,7 +18,7 @@
 
         <!--Name-->
         <div class="form-group">
-            <label class="control-label" data-translate="kpicsApp.track.name" for="field_name">Name</label>
+            <label class="control-label" for="field_name">Name</label>
             <input type="text" class="form-control" name="name" id="field_name"
                     ng-model="vm.track.name"
                     required/>
@@ -32,7 +32,7 @@
 
         <!--Description-->
         <div class="form-group">
-            <label class="control-label" data-translate="kpicsApp.track.description" for="field_description">Description</label>
+            <label class="control-label" for="field_description">Description</label>
             <textarea class="form-control" name="description" id="field_description"
                     ng-model="vm.track.description"></textarea>
             <div ng-show="editForm.description.$invalid">
@@ -45,7 +45,7 @@
 
         <!--IsActive-->
         <div class="form-group">
-            <label class="control-label" data-translate="kpicsApp.track.isActive" for="field_isActive">Is Active</label>
+            <label class="control-label" for="field_isActive">Is Active</label>
             <input type="checkbox" class="form-control" name="isActive" id="field_isActive"
                     ng-model="vm.track.isActive" ng-checked="vm.track.isActive===true"/>
             <div ng-show="editForm.isActive.$invalid">

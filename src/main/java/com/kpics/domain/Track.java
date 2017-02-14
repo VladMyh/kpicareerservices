@@ -6,7 +6,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
@@ -29,14 +28,6 @@ public class Track implements Serializable {
     @NotNull
     @Field("description")
     private String description;
-
-    @NotNull
-    @Field("start_date")
-    private LocalDate startDate;
-
-    @NotNull
-    @Field("end_date")
-    private LocalDate endDate;
 
     @NotNull
     @Field("is_active")
@@ -82,32 +73,6 @@ public class Track implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public Track startDate(LocalDate startDate) {
-        this.startDate = startDate;
-        return this;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public Track endDate(LocalDate endDate) {
-        this.endDate = endDate;
-        return this;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
     }
 
     public Boolean isActive() {
@@ -159,8 +124,6 @@ public class Track implements Serializable {
         if (id != null ? !id.equals(track.id) : track.id != null) return false;
         if (name != null ? !name.equals(track.name) : track.name != null) return false;
         if (description != null ? !description.equals(track.description) : track.description != null) return false;
-        if (startDate != null ? !startDate.equals(track.startDate) : track.startDate != null) return false;
-        if (endDate != null ? !endDate.equals(track.endDate) : track.endDate != null) return false;
         if (isActive != null ? !isActive.equals(track.isActive) : track.isActive != null) return false;
         if (teacherIds != null ? !teacherIds.equals(track.teacherIds) : track.teacherIds != null) return false;
         return studentIds != null ? studentIds.equals(track.studentIds) : track.studentIds == null;
@@ -177,8 +140,6 @@ public class Track implements Serializable {
             "id='" + id + '\'' +
             ", name='" + name + '\'' +
             ", description='" + description + '\'' +
-            ", startDate=" + startDate +
-            ", endDate=" + endDate +
             ", isActive=" + isActive +
             ", teacherIds=" + teacherIds +
             ", studentIds=" + studentIds +

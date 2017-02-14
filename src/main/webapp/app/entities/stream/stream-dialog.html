@@ -8,11 +8,15 @@
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
+
+        <!--Id-->
         <div class="form-group" ng-show="vm.stream.id">
             <label for="id" data-translate="global.field.id">ID</label>
             <input type="text" class="form-control" id="id" name="id"
                     ng-model="vm.stream.id" readonly />
         </div>
+
+        <!--Name-->
         <div class="form-group">
             <label class="control-label" data-translate="kpicsApp.stream.name" for="field_name">Name</label>
             <input type="text" class="form-control" name="name" id="field_name"
@@ -25,6 +29,8 @@
                 </p>
             </div>
         </div>
+
+        <!--Start date-->
         <div class="form-group">
             <label class="control-label" data-translate="kpicsApp.stream.startDate" for="field_startDate">Start Date</label>
                 <div class="input-group">
@@ -41,6 +47,8 @@
                 </p>
             </div>
         </div>
+
+        <!--End date-->
         <div class="form-group">
             <label class="control-label" data-translate="kpicsApp.stream.endDate" for="field_endDate">End Date</label>
                 <div class="input-group">
@@ -56,6 +64,13 @@
                     This field is required.
                 </p>
             </div>
+        </div>
+
+        <!--Description-->
+        <div class="form-group">
+            <label class="control-label" data-translate="kpicsApp.stream.description" for="field_description">Description</label>
+            <textarea class="form-control" name="description" id="field_description"
+                      ng-model="vm.stream.description"></textarea>
         </div>
 
     </div>

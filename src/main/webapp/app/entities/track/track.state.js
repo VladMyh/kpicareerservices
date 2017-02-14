@@ -91,7 +91,7 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/track/track-dialog.html',
+                    templateUrl: 'app/entities/track/stream-detail-newtrack.html',
                     controller: 'TrackDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -141,7 +141,7 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/track/track-dialog.html',
+                    templateUrl: 'app/entities/track/stream-detail-newtrack.html',
                     controller: 'TrackDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -151,8 +151,6 @@
                             return {
                                 name: null,
                                 description: null,
-                                startDate: null,
-                                endDate: null,
                                 isActive: false,
                                 id: null,
                                 teacherIds: [],
@@ -175,7 +173,7 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/track/track-dialog.html',
+                    templateUrl: 'app/entities/track/stream-detail-newtrack.html',
                     controller: 'TrackDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',

@@ -4,9 +4,9 @@
         .module('kpicsApp')
         .factory('Track', Track);
 
-    Track.$inject = ['$resource', 'DateUtils'];
+    Track.$inject = ['$resource'];
 
-    function Track ($resource, DateUtils) {
+    function Track ($resource) {
         var resourceUrl =  'api/tracks/:id';
 
         return $resource(resourceUrl, {}, {
@@ -16,8 +16,6 @@
                 transformResponse: function (data) {
                     if (data) {
                         data = angular.fromJson(data);
-                        data.startDate = DateUtils.convertLocalDateFromServer(data.startDate);
-                        data.endDate = DateUtils.convertLocalDateFromServer(data.endDate);
                     }
                     return data;
                 }
@@ -26,11 +24,6 @@
                 method: 'PUT',
                 transformRequest: function (data) {
                     var copy = angular.copy(data);
-                    if(copy.isActive === null) {
-
-                    }
-                    copy.startDate = DateUtils.convertLocalDateToServer(copy.startDate);
-                    copy.endDate = DateUtils.convertLocalDateToServer(copy.endDate);
                     return angular.toJson(copy);
                 }
             },
@@ -38,8 +31,6 @@
                 method: 'POST',
                 transformRequest: function (data) {
                     var copy = angular.copy(data);
-                    copy.startDate = DateUtils.convertLocalDateToServer(copy.startDate);
-                    copy.endDate = DateUtils.convertLocalDateToServer(copy.endDate);
                     return angular.toJson(copy);
                 }
             },

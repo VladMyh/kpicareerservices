@@ -39,6 +39,10 @@
                     copy.endDate = DateUtils.convertLocalDateToServer(copy.endDate);
                     return angular.toJson(copy);
                 }
+            },
+            'addTrack': {
+                method: 'PUT',
+                url: 'api/streams/:id/tracks'
             }
         });
     }
