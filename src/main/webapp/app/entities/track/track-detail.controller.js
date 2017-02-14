@@ -13,11 +13,9 @@
         vm.track = entity;
         vm.previousState = previousState.name;
 
-        init();
-
-        function init() {
-            Track.teachers(vm.track, onSuccess, onError);
-        }
+        angular.element(document).ready(function () {
+            Track.teachers(vm.track).then(onSuccess);
+        });
 
         function onSuccess(data, headers) {
             vm.teachers = data;

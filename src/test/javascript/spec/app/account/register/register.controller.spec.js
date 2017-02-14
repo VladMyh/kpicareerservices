@@ -15,14 +15,14 @@ describe('Controller Tests', function() {
             $q = $injector.get('$q');
             $scope = $injector.get('$rootScope').$new();
             MockTimeout = jasmine.createSpy('MockTimeout');
-            MockAuth = jasmine.createSpyObj('MockAuth', ['createAccount']);
+            MockAuth = jasmine.createSpyObj('MockAuth', ['createStudentAccount']);
             MockTranslate = jasmine.createSpyObj('MockTranslate', ['use']);
 
             var locals = {
                 'Auth': MockAuth,
                 '$translate': MockTranslate,
                 '$timeout': MockTimeout,
-                '$scope': $scope,
+                '$scope': $scope
             };
             createController = function() {
                 $injector.get('$controller')('RegisterController as vm', locals);
@@ -43,15 +43,16 @@ describe('Controller Tests', function() {
         it('should update success to OK after creating an account', function() {
             // given
             MockTranslate.use.and.returnValue('ru');
-            MockAuth.createAccount.and.returnValue($q.resolve());
+            MockAuth.createStudentAccount.and.returnValue($q.resolve());
             createController();
             $scope.vm.registerAccount.password = $scope.vm.confirmPassword = 'password';
             // when
             $scope.$apply($scope.vm.register); // $q promises require an $apply
             // then
-            expect(MockAuth.createAccount).toHaveBeenCalledWith({
+            expect(MockAuth.createStudentAccount).toHaveBeenCalledWith({
                 password: 'password',
-                langKey: 'ru'
+                langKey: 'ru',
+                studentInfo: {}
             });
             expect($scope.vm.success).toEqual('OK');
             expect($scope.vm.registerAccount.langKey).toEqual('ru');
@@ -61,25 +62,9 @@ describe('Controller Tests', function() {
             expect($scope.vm.error).toBeNull();
         });
 
-        it('should notify of user existence upon 400/login already in use', function() {
-            // given
-            MockAuth.createAccount.and.returnValue($q.reject({
-                status: 400,
-                data: 'login already in use'
-            }));
-            createController();
-            $scope.vm.registerAccount.password = $scope.vm.confirmPassword = 'password';
-            // when
-            $scope.$apply($scope.vm.register); // $q promises require an $apply
-            // then
-            expect($scope.vm.errorUserExists).toEqual('ERROR');
-            expect($scope.vm.errorEmailExists).toBeNull();
-            expect($scope.vm.error).toBeNull();
-        });
-
         it('should notify of email existence upon 400/e-mail address already in use', function() {
             // given
-            MockAuth.createAccount.and.returnValue($q.reject({
+            MockAuth.createStudentAccount.and.returnValue($q.reject({
                 status: 400,
                 data: 'e-mail address already in use'
             }));
@@ -95,7 +80,7 @@ describe('Controller Tests', function() {
 
         it('should notify of generic error', function() {
             // given
-            MockAuth.createAccount.and.returnValue($q.reject({
+            MockAuth.createStudentAccount.and.returnValue($q.reject({
                 status: 503
             }));
             createController();
