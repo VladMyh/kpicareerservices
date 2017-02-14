@@ -63,15 +63,19 @@ public class TrackResource {
     public ResponseEntity<Track> createTrack(@Valid @RequestBody Track track) throws URISyntaxException {
         log.debug("REST request to save Track : {}", track);
         if (track.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new track cannot be created already have an ID")).body(null);
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new track cannot be created already have an ID"))
+                .body(null);
         }
         if(trackService.findByName(track.getName()).isPresent()) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "nameexists", "A new track cannot be created, name already used")).body(null);
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "nameexists", "A new track cannot be created, name already used"))
+                .body(null);
         }
         track = track.teacherIds(new HashSet<>()).studentIds(new HashSet<>());
         Track result = trackService.save(track);
         return ResponseEntity.created(new URI("/api/tracks/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId()))
             .body(result);
     }
 
@@ -93,7 +97,7 @@ public class TrackResource {
         }
         Track result = trackService.save(track);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, track.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, track.getId()))
             .body(result);
     }
 
@@ -139,7 +143,7 @@ public class TrackResource {
     public ResponseEntity<Void> deleteTrack(@PathVariable String id) {
         log.debug("REST request to delete Track : {}", id);
         trackService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id)).build();
     }
 
     @GetMapping("/tracks/{id}/teachers")

@@ -151,7 +151,7 @@ public class UserResource {
      * @param email the email of the user to find
      * @return the ResponseEntity with status 200 (OK) and with body the "email" user, or with status 404 (Not Found)
      */
-    @GetMapping("/users/{email:" + Constants.LOGIN_REGEX + "}")
+    @GetMapping("/users/{email:.*}")
     @Timed
     public ResponseEntity<UserDTO> getUser(@PathVariable String email) {
         log.debug("REST request to get User : {}", email);

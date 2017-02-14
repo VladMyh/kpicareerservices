@@ -38,11 +38,8 @@ public class StreamResource {
 
     private final StreamService streamService;
 
-    private final TrackService trackService;
-
-    public StreamResource(StreamService streamService, TrackService trackService) {
+    public StreamResource(StreamService streamService) {
         this.streamService = streamService;
-        this.trackService = trackService;
     }
 
     /**

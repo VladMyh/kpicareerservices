@@ -43,19 +43,6 @@
             </div>
         </div>
 
-        <!--IsActive-->
-        <div class="form-group">
-            <label class="control-label" for="field_isActive">Is Active</label>
-            <input type="checkbox" class="form-control" name="isActive" id="field_isActive"
-                    ng-model="vm.track.isActive" ng-checked="vm.track.isActive===true"/>
-            <div ng-show="editForm.isActive.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.isActive.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-            </div>
-        </div>
-
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">

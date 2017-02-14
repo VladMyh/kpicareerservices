@@ -2,6 +2,7 @@ package com.kpics.web.rest;
 
 import com.kpics.KpicsApp;
 import com.kpics.domain.Authority;
+import com.kpics.domain.StudentInfo;
 import com.kpics.domain.User;
 import com.kpics.repository.AuthorityRepository;
 import com.kpics.repository.UserRepository;
@@ -70,6 +71,8 @@ public class AccountResourceIntTest {
 
     private MockMvc restMvc;
 
+    private StudentInfo studentInfo;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -83,6 +86,20 @@ public class AccountResourceIntTest {
 
         this.restMvc = MockMvcBuilders.standaloneSetup(accountResource).build();
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(accountUserMockResource).build();
+
+        studentInfo = setupStudentInfo();
+    }
+
+    public StudentInfo setupStudentInfo(){
+        StudentInfo studentInfo = new StudentInfo();
+        studentInfo.faculty("faculty")
+            .department("dep")
+            .group("group")
+            .linkedin("link")
+            .github("link")
+            .about("about");
+
+        return studentInfo;
     }
 
     @Test
@@ -147,8 +164,8 @@ public class AccountResourceIntTest {
             "password",             // password
             "Joe",                  // firstName
             "Shmoe",                // lastName
-            "v",                    // e-mail
-            null,                   //linkedin
+            "bob@example.com",      // e-mail
+            "link",                 //linkedin
             true,                   // activated
             "http://placehold.it/50x50", //imageUrl
             "ru",                   // langKey
@@ -158,13 +175,15 @@ public class AccountResourceIntTest {
             null,                   // lastModifiedDate
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)));
 
+        validUser.setStudentInfo(studentInfo);
+
         restMvc.perform(
-            post("/api/register")
+            post("/api/student/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(validUser)))
             .andExpect(status().isCreated());
 
-        Optional<User> user = userRepository.findOneByEmail("b");
+        Optional<User> user = userRepository.findOneByEmail("bob@example.com");
         assertThat(user.isPresent()).isTrue();
     }
 
@@ -187,7 +206,7 @@ public class AccountResourceIntTest {
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)));
 
         restUserMockMvc.perform(
-            post("/api/register")
+            post("/api/student/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(invalidUser)))
             .andExpect(status().isBadRequest());
@@ -215,56 +234,13 @@ public class AccountResourceIntTest {
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)));
 
         restUserMockMvc.perform(
-            post("/api/register")
+            post("/api/student/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(invalidUser)))
             .andExpect(status().isBadRequest());
 
         Optional<User> user = userRepository.findOneByEmail("bob@example.com");
         assertThat(user.isPresent()).isFalse();
-    }
-
-    @Test
-    public void testRegisterDuplicateLogin() throws Exception {
-        // Good
-        ManagedUserVM validUser = new ManagedUserVM(
-            null,                   // id
-            "password",             // password
-            "Alice",                // firstName
-            "Something",            // lastName
-            "alice@example.com",    // e-mail
-            null,                   //linkedin
-            true,                   // activated
-            "http://placehold.it/50x50", //imageUrl
-            "ru",                   // langKey
-            null,                   // createdBy
-            null,                   // createdDate
-            null,                   // lastModifiedBy
-            null,                   // lastModifiedDate
-            new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)));
-
-        // Duplicate login, different e-mail
-        ManagedUserVM duplicatedUser = new ManagedUserVM(validUser.getId(), validUser.getPassword(), validUser.getFirstName(),
-            validUser.getLastName(), "alicejr@example.com", null, true, validUser.getImageUrl(), validUser.getLangKey(),
-            validUser.getCreatedBy(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate(),
-            validUser.getAuthorities());
-
-        // Good user
-        restMvc.perform(
-            post("/api/register")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(validUser)))
-            .andExpect(status().isCreated());
-
-        // Duplicate login
-        restMvc.perform(
-            post("/api/register")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(duplicatedUser)))
-            .andExpect(status().is4xxClientError());
-
-        Optional<User> userDup = userRepository.findOneByEmail("alicejr@example.com");
-        assertThat(userDup.isPresent()).isFalse();
     }
 
     @Test
@@ -276,7 +252,7 @@ public class AccountResourceIntTest {
             "John",                 // firstName
             "Doe",                  // lastName
             "john@example.com",     // e-mail
-            null,                   //linkedin
+            "link",                   //linkedin
             true,                   // activated
             "http://placehold.it/50x50", //imageUrl
             "ru",                   // langKey
@@ -286,28 +262,32 @@ public class AccountResourceIntTest {
             null,                   // lastModifiedDate
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)));
 
+        validUser.setStudentInfo(studentInfo);
+
         // Duplicate e-mail
         ManagedUserVM duplicatedUser = new ManagedUserVM(validUser.getId(), validUser.getPassword(), validUser.getFirstName(),
             validUser.getLastName(), validUser.getEmail(), null, true, validUser.getImageUrl(), validUser.getLangKey(),
             validUser.getCreatedBy(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate(),
             validUser.getAuthorities());
 
+        duplicatedUser.setStudentInfo(studentInfo);
+
         // Good user
         restMvc.perform(
-            post("/api/register")
+            post("/api/student/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(validUser)))
             .andExpect(status().isCreated());
 
         // Duplicate e-mail
         restMvc.perform(
-            post("/api/register")
+            post("/api/student/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(duplicatedUser)))
             .andExpect(status().is4xxClientError());
 
         Optional<User> userDup = userRepository.findOneByEmail("john@example.com");
-        assertThat(userDup.isPresent()).isFalse();
+        assertThat(userDup.isPresent()).isTrue();
     }
 
     @Test
@@ -318,7 +298,7 @@ public class AccountResourceIntTest {
             "Bad",                  // firstName
             "Guy",                  // lastName
             "badguy@example.com",   // e-mail
-            null,                   //linkedin
+            "link",                   //linkedin
             true,                   // activated
             "http://placehold.it/50x50", //imageUrl
             "ru",                   // langKey
@@ -328,15 +308,18 @@ public class AccountResourceIntTest {
             null,                   // lastModifiedDate
             new HashSet<>(Arrays.asList(AuthoritiesConstants.ADMIN)));
 
+        validUser.setStudentInfo(studentInfo);
+
         restMvc.perform(
-            post("/api/register")
+            post("/api/student/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(validUser)))
             .andExpect(status().isCreated());
 
         Optional<User> userDup = userRepository.findOneByEmail("badguy@example.com");
         assertThat(userDup.isPresent()).isTrue();
-        assertThat(userDup.get().getAuthorities()).hasSize(1)
-            .containsExactly(authorityRepository.findOne(AuthoritiesConstants.USER));
+        assertThat(userDup.get().getAuthorities()).hasSize(2)
+            .containsExactly(authorityRepository.findOne(AuthoritiesConstants.STUDENT),
+                authorityRepository.findOne(AuthoritiesConstants.USER));
     }
 }

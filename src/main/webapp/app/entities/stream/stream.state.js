@@ -206,7 +206,6 @@
                             return {
                                 name: null,
                                 description: null,
-                                isActive: false,
                                 id: null,
                                 teacherIds: [],
                                 studentIds: []

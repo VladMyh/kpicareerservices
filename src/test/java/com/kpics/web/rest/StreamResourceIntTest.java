@@ -279,9 +279,4 @@ public class StreamResourceIntTest {
         List<Stream> streamList = streamRepository.findAll();
         assertThat(streamList).hasSize(databaseSizeBeforeDelete - 1);
     }
-
-    @Test
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Stream.class);
-    }
 }

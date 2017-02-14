@@ -21,8 +21,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,15 +42,6 @@ public class TrackResourceIntTest {
 
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
-
-    private static final LocalDate DEFAULT_START_DATE = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_START_DATE = LocalDate.now(ZoneId.systemDefault());
-
-    private static final LocalDate DEFAULT_END_DATE = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_END_DATE = LocalDate.now(ZoneId.systemDefault());
-
-    private static final Boolean DEFAULT_IS_ACTIVE = false;
-    private static final Boolean UPDATED_IS_ACTIVE = true;
 
     @Autowired
     private TrackRepository trackRepository;
@@ -94,8 +83,7 @@ public class TrackResourceIntTest {
     public static Track createEntity() {
         Track track = new Track()
                 .name(DEFAULT_NAME)
-                .description(DEFAULT_DESCRIPTION)
-                .isActive(DEFAULT_IS_ACTIVE);
+                .description(DEFAULT_DESCRIPTION);
         return track;
     }
 
@@ -122,7 +110,6 @@ public class TrackResourceIntTest {
         Track testTrack = trackList.get(trackList.size() - 1);
         assertThat(testTrack.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testTrack.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-        assertThat(testTrack.isActive()).isEqualTo(DEFAULT_IS_ACTIVE);
     }
 
     @Test
@@ -162,40 +149,6 @@ public class TrackResourceIntTest {
     }
 
     @Test
-    public void checkDescriptionIsRequired() throws Exception {
-        int databaseSizeBeforeTest = trackRepository.findAll().size();
-        // set the field null
-        track.setDescription(null);
-
-        // Create the Track, which fails.
-
-        restTrackMockMvc.perform(post("/api/tracks")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(track)))
-            .andExpect(status().isBadRequest());
-
-        List<Track> trackList = trackRepository.findAll();
-        assertThat(trackList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    public void checkIsActiveIsRequired() throws Exception {
-        int databaseSizeBeforeTest = trackRepository.findAll().size();
-        // set the field null
-        track.setIsActive(null);
-
-        // Create the Track, which fails.
-
-        restTrackMockMvc.perform(post("/api/tracks")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(track)))
-            .andExpect(status().isBadRequest());
-
-        List<Track> trackList = trackRepository.findAll();
-        assertThat(trackList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
     public void getAllTracks() throws Exception {
         // Initialize the database
         trackRepository.save(track);
@@ -206,8 +159,7 @@ public class TrackResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(track.getId())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].isActive").value(hasItem(DEFAULT_IS_ACTIVE)));
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
     }
 
     @Test
@@ -221,8 +173,7 @@ public class TrackResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(track.getId()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
-            .andExpect(jsonPath("$.isActive").value(DEFAULT_IS_ACTIVE));
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION));
     }
 
     @Test
@@ -243,8 +194,7 @@ public class TrackResourceIntTest {
         Track updatedTrack = trackRepository.findOne(track.getId());
         updatedTrack
                 .name(UPDATED_NAME)
-                .description(UPDATED_DESCRIPTION)
-                .isActive(UPDATED_IS_ACTIVE);
+                .description(UPDATED_DESCRIPTION);
 
         restTrackMockMvc.perform(put("/api/tracks")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -257,7 +207,6 @@ public class TrackResourceIntTest {
         Track testTrack = trackList.get(trackList.size() - 1);
         assertThat(testTrack.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testTrack.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testTrack.isActive()).isEqualTo(UPDATED_IS_ACTIVE);
     }
 
     @Test
@@ -292,10 +241,5 @@ public class TrackResourceIntTest {
         // Validate the database is empty
         List<Track> trackList = trackRepository.findAll();
         assertThat(trackList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Track.class);
     }
 }
