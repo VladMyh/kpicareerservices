@@ -10,6 +10,7 @@
                 "studentInfo": "Student",
                 "teacherInfo": "Teacher",
                 "track": "Track",
+                "stream": "Stream",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
