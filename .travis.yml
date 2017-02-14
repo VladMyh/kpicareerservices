@@ -22,6 +22,7 @@ before_install:
   - node -v
   - npm -v
   - bower -v
+  - bower install
   - gulp -v
   - java -version
 install: npm install
