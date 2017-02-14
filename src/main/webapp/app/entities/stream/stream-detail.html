@@ -36,7 +36,7 @@
                 </div>
             </div>
 
-            <table class="jh-table table table-striped">
+            <table class="jh-table table">
                 <thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse">
                     <!--TODO:add localization-->
@@ -45,7 +45,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="trackInfo in vm.stream.tracks track by track.id">
+                <tr ng-repeat="trackInfo in vm.stream.tracks track by trackInfo.id">
                     <td>{{trackInfo.name}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
@@ -65,7 +65,6 @@
                 </tr>
                 </tbody>
             </table>
-            </div>
 
         </dd>
     </dl>

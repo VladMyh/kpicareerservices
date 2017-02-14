@@ -9,6 +9,7 @@ import com.kpics.web.rest.util.HeaderUtil;
 import com.kpics.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -155,6 +156,7 @@ public class StreamResource {
         Stream stream = streamService.findOne(id);
 
         if(stream != null) {
+            track.setId(ObjectId.get().toString());
             stream.getTracks().add(track);
             streamService.save(stream);
 

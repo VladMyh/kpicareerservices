@@ -26,6 +26,7 @@
         function save () {
             vm.isSaving = true;
             Stream.addTrack({id: vm.stream.id}, track);
+            $uibModalInstance.close(true);
         }
 
         function onSaveSuccess (result) {
