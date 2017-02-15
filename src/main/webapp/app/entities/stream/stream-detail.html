@@ -24,27 +24,30 @@
             <span>{{vm.stream.description}}</span>
         </dd>
 
-        <dt></dt>
-        <dd>
-
             <div class="row">
-                <div class="col-xs-2 pull-right">
-                    <button class="btn btn-primary" ui-sref="stream-detail.newTrack({id:vm.stream.id})" >
-                        <span class="glyphicon glyphicon-plus"></span>
-                        Add Track<!--TODO: add locale-->
-                    </button>
-                </div>
 
-            <div class="col-md-10" style="" contenteditable="false">
+
+            <div class="col-md-12" style="" contenteditable="false">
                 <div class="panel panel-default target">
-                    <div class="panel-heading" contenteditable="false">Tracks</div>
+                    <div class="panel-heading" contenteditable="false">
+                        Tracks
+
+                        <div class="col-xs-2 pull-right">
+                            <button class="btn btn-primary btn-xs" ui-sref="stream-detail.newTrack({id:vm.stream.id})" >
+                                <span class="glyphicon glyphicon-plus"></span>
+                                Add Track<!--TODO: add locale-->
+                            </button>
+                        </div>
+
+
+                    </div>
+
+                    <div class="panel-body" ng-show="!vm.stream.tracks.length">
+                        <p>No tracks</p>
+                    </div>
+
                     <div class="panel-body">
                         <div class="row"ng-repeat="trackInfo in vm.stream.tracks track by trackInfo.id">
-
-                            <div ng-show="!vm.stream.tracks.length">
-                                <p>No tracks</p>
-                            </div>
-
                             <div class="col-md-12">
                                 <div class="thumbnail">
                                     <div class="caption">
@@ -53,6 +56,14 @@
 
                                         <h4>Teachers:</h4>
 
+                                        <div class="pull-right">
+                                            <button class="btn btn-success btn-sm" ui-sref="stream-detail.addTeacher({trackId:trackInfo.id})">
+                                                <span class="glyphicon glyphicon-plus"></span>
+                                                Add Teacher<!--TODO: add locale-->
+                                            </button>
+                                        </div>
+
+                                        <!--Teachers-->
                                         <table class="jh-table table">
                                             <thead>
                                             <tr jh-sort="vm.predicate" ascending="vm.reverse">
@@ -69,13 +80,7 @@
                                                 <td>{{teacher.faculty}}</td>
                                                 <td>{{teacher.department}}</td>
                                                 <td class="text-right">
-                                                    <div class="btn-group flex-btn-group-container">
-                                                        <button type="submit"
-                                                                class="btn btn-primary btn-sm">
-                                                            <span class="glyphicon glyphicon-pencil"></span>
-                                                            <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
-                                                        </button>
-                                                    </div>
+                                                    <!--Add button-->
                                                 </td>
                                             </tr>
                                             <tr ng-show="!trackInfo.teachers.length">
@@ -83,25 +88,60 @@
                                                     <p>No teachers</p>
                                                 </td>
                                             </tr>
-
-                                            <div class="col-xs-2 pull-right">
-                                                <button class="btn btn-success" ui-sref="stream-detail.addTeacher({trackId:trackInfo.id})">
-                                                    <span class="glyphicon glyphicon-plus"></span>
-                                                    Add Teacher<!--TODO: add locale-->
-                                                </button>
-                                            </div>
                                             </tbody>
                                         </table>
 
+                                        <!--Subjects-->
+                                        <div class="row">
+                                            <div class="col-md-12" style="" contenteditable="false">
+                                                <div class="panel panel-default target">
+                                                    <div class="panel-heading" contenteditable="false">
+                                                        Subjects
 
+                                                        <div class="col-xs-2 pull-right">
+                                                            <button class="btn btn-success btn-xs" ng-show="trackInfo.teachers.length"
+                                                                    ui-sref="stream-detail.addSubject({trackId:trackInfo.id})">
+                                                                <span class="glyphicon glyphicon-plus"></span>
+                                                                Add Subject<!--TODO: add locale-->
+                                                            </button>
+                                                            <button class="btn btn-success btn-xs" disabled="disabled" ng-show="!trackInfo.teachers.length">
+                                                                <span class="glyphicon glyphicon-plus"></span>
+                                                                Add Subject<!--TODO: add locale-->
+                                                            </button>
+                                                        </div>
+                                                    </div>
 
-                                        <div class="btn-group flex-btn-group-container">
-                                            <button type="submit"
-                                                    class="btn btn-primary btn-sm">
-                                                <span class="glyphicon glyphicon-pencil"></span>
-                                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
-                                            </button>
+                                                    <div class="panel-body" ng-show="!trackInfo.subjects.length">
+                                                        <p>No subjects</p>
+                                                    </div>
+
+                                                    <div class="panel-body">
+                                                        <div class="row" ng-repeat="subject in trackInfo.subjects track by subject.id">
+                                                            <div class="col-md-12">
+                                                                <div class="thumbnail">
+                                                                    <div class="caption">
+                                                                        <h3>{{subject.name}}</h3>
+                                                                        <hr/>
+
+                                                                        <div class="btn-group flex-btn-group-container">
+                                                                            <button type="submit"
+                                                                                    class="btn btn-primary btn-sm">
+                                                                                <span class="glyphicon glyphicon-pencil"></span>
+                                                                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
                                         </div>
+
+                                        <!--Add edit button-->
                                     </div>
                                 </div>
                             </div>
@@ -113,7 +153,13 @@
             </div>
             </div>
 
+        <dt></dt>
+        <dd>
+
+
+
         </dd>
+
     </dl>
 
     <button type="submit"

@@ -51,6 +51,10 @@
             'addTeacherToTrack': {
                 method: 'PUT',
                 url: 'api/streams/:id/tracks/:trackId/addTeacher'
+            },
+            'addSubjectToTrack': {
+                method: 'PUT',
+                url: 'api/streams/:id/tracks/:trackId/addSubject'
             }
         });
     }

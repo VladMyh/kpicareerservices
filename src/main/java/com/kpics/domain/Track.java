@@ -33,13 +33,18 @@ public class Track implements Serializable {
     @Field("teacher_ids")
     private Set<String> teacherIds = new HashSet<>();
 
+    @NotNull
+    @Field("subjects")
+    private Set<Subject> subjects = new HashSet<>();
+
     public Track() {}
 
-    public Track(String id, String name, String description, Set<String> teacherIds) {
+    public Track(String id, String name, String description, Set<String> teacherIds, Set<Subject> subjects) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.teacherIds = teacherIds;
+        this.subjects = subjects;
     }
 
     public String getId() {
@@ -89,6 +94,19 @@ public class Track implements Serializable {
         return teacherIds;
     }
 
+    public Set<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(Set<Subject> subjects) {
+        this.subjects = subjects;
+    }
+
+    public Track subjects(Set<Subject> subjects) {
+        this.subjects = subjects;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -99,7 +117,8 @@ public class Track implements Serializable {
         if (id != null ? !id.equals(track.id) : track.id != null) return false;
         if (name != null ? !name.equals(track.name) : track.name != null) return false;
         if (description != null ? !description.equals(track.description) : track.description != null) return false;
-        return teacherIds != null ? teacherIds.equals(track.teacherIds) : track.teacherIds == null;
+        if (teacherIds != null ? !teacherIds.equals(track.teacherIds) : track.teacherIds != null) return false;
+        return subjects != null ? subjects.equals(track.subjects) : track.subjects == null;
     }
 
     @Override
@@ -114,6 +133,7 @@ public class Track implements Serializable {
             ", name='" + name + '\'' +
             ", description='" + description + '\'' +
             ", teacherIds=" + teacherIds +
+            ", subjects=" + subjects +
             '}';
     }
 }

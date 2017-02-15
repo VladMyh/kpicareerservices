@@ -12,10 +12,10 @@
         <!--Query-->
         <div class="form-group">
             <label class="control-label" for="field_name">Search</label>
-            <input ng-model="vm.query" type="text" class="form-control" name="name" id="field_name" required/>
+            <input ng-model="vm.query" type="text" class="form-control" name="name" id="field_name" minlength="3" required/>
         </div>
 
-        <table class="jh-table table table-striped">
+        <table class="jh-table table">
             <thead>
             <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                 <th jh-sort-by="name"><span data-translate="global.form.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -47,6 +47,11 @@
                             <span class="hidden-sm-down">Added</span>
                         </button>
                     </div>
+                </td>
+            </tr>
+            <tr ng-show="!vm.teachers.length">
+                <td>
+                    <p>Type tour search query, and click search</p>
                 </td>
             </tr>
             </tbody>

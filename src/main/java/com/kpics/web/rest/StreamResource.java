@@ -2,6 +2,7 @@ package com.kpics.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.kpics.domain.Stream;
+import com.kpics.domain.Subject;
 import com.kpics.domain.Track;
 import com.kpics.service.StreamService;
 import com.kpics.service.TeacherInfoService;
@@ -111,7 +112,8 @@ public class StreamResource {
                                 t.getDescription(),
                                 t.getTeachers().stream()
                                                .map(TeacherVM::getId)
-                                               .collect(Collectors.toSet())))
+                                               .collect(Collectors.toSet()),
+                                t.getSubjects()))
             .collect(Collectors.toSet()));
 
         stream.setTracks(tracks);
@@ -143,7 +145,7 @@ public class StreamResource {
                 .map(t -> new TrackVM(t.getId(), t.getName(), t.getDescription(), t.getTeacherIds()
                     .stream()
                     .map(id -> new TeacherVM(new UserDTO(userService.getUserWithAuthorities(id)), teacherInfoService.findByUserId(id).get()))
-                    .collect(Collectors.toSet())))
+                    .collect(Collectors.toSet()), t.getSubjects()))
                 .collect(Collectors.toSet())))
             .collect(Collectors.toList());
 
@@ -176,7 +178,7 @@ public class StreamResource {
                 .map(t -> new TrackVM(t.getId(), t.getName(), t.getDescription(), t.getTeacherIds()
                     .stream()
                     .map(i -> new TeacherVM(new UserDTO(userService.getUserWithAuthorities(i)), teacherInfoService.findByUserId(i).get()))
-                    .collect(Collectors.toSet())))
+                    .collect(Collectors.toSet()), t.getSubjects()))
                 .collect(Collectors.toSet()));
         }
 
@@ -292,7 +294,7 @@ public class StreamResource {
     public ResponseEntity<Stream> addTeacher(@PathVariable String streamId,
                                               @PathVariable String trackId,
                                               @RequestBody String teacherId) throws URISyntaxException {
-        log.debug("REST request to update Track: {}", streamId, trackId, teacherId);
+        log.debug("REST request to add teacher to the Track: {}", streamId, trackId, teacherId);
         Stream stream = streamService.findOne(streamId);
 
         if(stream != null) {
@@ -300,6 +302,45 @@ public class StreamResource {
             for(Track t : tracks) {
                 if(t.getId().equals(trackId)) {
                     t.getTeacherIds().add(teacherId);
+                }
+            }
+
+            streamService.save(stream);
+
+            return ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, stream.getId()))
+                .body(stream);
+        }
+
+        return ResponseEntity.badRequest()
+            .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "iddoesntexist", "Stream with giver id doesn't exists"))
+            .body(null);
+    }
+
+    /**
+     * PUT  /streams : Update track, add subject to track.
+     *
+     * @param streamId   the id of the stream
+     * @param trackId    the id of the track
+     * @param subject    subject entity.
+     * @return           the ResponseEntity with status 200 (OK) and with body the updated stream,
+     * or with status 400 (Bad Request) if the stream is not valid,
+     * or with status 500 (Internal Server Error) if the stream couldnt be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping("/streams/{streamId}/tracks/{trackId}/addSubject")
+    @Timed
+    public ResponseEntity<Stream> addSubject(@PathVariable String streamId,
+                                             @PathVariable String trackId,
+                                             @RequestBody Subject subject) throws URISyntaxException {
+        log.debug("REST request to add subject to the Track: {}", streamId, trackId, subject);
+        Stream stream = streamService.findOne(streamId);
+
+        if(stream != null) {
+            HashSet<Track> tracks = (HashSet<Track>) stream.getTracks();
+            for(Track t : tracks) {
+                if(t.getId().equals(trackId)) {
+                    t.getSubjects().add(subject);
                 }
             }
 
