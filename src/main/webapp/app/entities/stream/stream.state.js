@@ -53,7 +53,7 @@
         })
         .state('stream-detail', {
             parent: 'stream',
-            url: '/stream/{id}',
+            url: '/{id}',
             data: {
                 authorities: ['ROLE_USER'],
                 pageTitle: 'kpicsApp.stream.detail.title'
@@ -207,8 +207,7 @@
                                 name: null,
                                 description: null,
                                 id: null,
-                                teacherIds: [],
-                                studentIds: []
+                                teachers: []
                             };
                         },
                         entity: ['Stream', function(Stream) {
@@ -220,6 +219,34 @@
                 }, function() {
                     $state.go('stream-detail');
                 });
+                }]
+            })
+            .state('stream-detail.addTeacher', {
+                parent: 'stream-detail',
+                url: '/track/{trackId}/addTeacher',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/stream/stream-track-add-teacher-dialog.html',
+                        controller: 'TrackAddTeacherDialogController',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'lg',
+                        resolve: {
+                            stream: ['Stream', function(Stream) {
+                                return Stream.get({id : $stateParams.id}).$promise;
+                            }],
+                            track: ['Stream', function(Stream) {
+                                return Stream.getTrack({id: $stateParams.id, trackId: $stateParams.trackId}).$promise;
+                            }]
+                        }
+                    }).result.then(function() {
+                        $state.go('stream-detail', null, { reload: 'stream-detail' });
+                    }, function() {
+                        $state.go('stream-detail');
+                    });
                 }]
             });
     }

@@ -6,6 +6,8 @@ import com.kpics.domain.Stream;
 import com.kpics.repository.StreamRepository;
 import com.kpics.service.StreamService;
 
+import com.kpics.service.TeacherInfoService;
+import com.kpics.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,6 +55,12 @@ public class StreamResourceIntTest {
     private StreamService streamService;
 
     @Autowired
+    private TeacherInfoService teacherInfoService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -65,7 +73,7 @@ public class StreamResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        StreamResource streamResource = new StreamResource(streamService);
+        StreamResource streamResource = new StreamResource(streamService, teacherInfoService, userService);
         this.restStreamMockMvc = MockMvcBuilders.standaloneSetup(streamResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();

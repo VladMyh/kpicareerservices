@@ -4,7 +4,7 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="vm.clear()">&times;</button><!--Add localization-->
-        <h4 class="modal-title" id="myTrackLabel">Add Teacher</h4>
+        <h4 class="modal-title" id="myTrackLabel">Add Teacher to track {{vm.track.name}}</h4>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
@@ -35,14 +35,14 @@
                 <td>{{teacherInfo.department}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
-                        <button type="submit" ng-show="vm.track.teacherIds.indexOf(teacherInfo.userId) == -1"
+                        <button type="submit" ng-show="vm.track.teachers.indexOf(teacherInfo.userId) == -1"
                                 ng-click="vm.addTeacher(teacherInfo.userId)"
                                 class="btn btn-success btn-sm">
                             <span class="glyphicon glyphicon-plus"></span>
                             <span class="hidden-sm-down">Add</span>
                         </button>
-                        <button ng-show="vm.track.teacherIds.indexOf(teacherInfo.userId) != -1"
-                            type="submit" class="btn btn-success btn-sm" disabled="disabled">
+                        <button ng-show="vm.track.teachers.indexOf(teacherInfo.userId) != -1"
+                                type="submit" class="btn btn-success btn-sm" disabled="disabled">
                             <span class="glyphicon glyphicon-ok"></span>
                             <span class="hidden-sm-down">Added</span>
                         </button>

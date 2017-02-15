@@ -30,16 +30,17 @@ public class Track implements Serializable {
     private String description;
 
     @NotNull
-    @Field("is_active")
-    private Boolean active = false;
-
-    @NotNull
     @Field("teacher_ids")
     private Set<String> teacherIds = new HashSet<>();
 
-    @NotNull
-    @Field("student_ids")
-    private Set<String> studentIds = new HashSet<>();
+    public Track() {}
+
+    public Track(String id, String name, String description, Set<String> teacherIds) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.teacherIds = teacherIds;
+    }
 
     public String getId() {
         return id;
@@ -88,19 +89,6 @@ public class Track implements Serializable {
         return teacherIds;
     }
 
-    public Track studentIds(Set<String> studentIds) {
-        this.studentIds = studentIds;
-        return this;
-    }
-
-    public void setStudentIds(Set<String> studentIds) {
-        this.studentIds = studentIds;
-    }
-
-    public Set<String> getStudentIds() {
-        return studentIds;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -111,9 +99,7 @@ public class Track implements Serializable {
         if (id != null ? !id.equals(track.id) : track.id != null) return false;
         if (name != null ? !name.equals(track.name) : track.name != null) return false;
         if (description != null ? !description.equals(track.description) : track.description != null) return false;
-        if (active != null ? !active.equals(track.active) : track.active != null) return false;
-        if (teacherIds != null ? !teacherIds.equals(track.teacherIds) : track.teacherIds != null) return false;
-        return studentIds != null ? studentIds.equals(track.studentIds) : track.studentIds == null;
+        return teacherIds != null ? teacherIds.equals(track.teacherIds) : track.teacherIds == null;
     }
 
     @Override
@@ -127,9 +113,7 @@ public class Track implements Serializable {
             "id='" + id + '\'' +
             ", name='" + name + '\'' +
             ", description='" + description + '\'' +
-            ", getActive=" + active +
             ", teacherIds=" + teacherIds +
-            ", studentIds=" + studentIds +
             '}';
     }
 }

@@ -24,53 +24,100 @@
             <span>{{vm.stream.description}}</span>
         </dd>
 
-        <dt><span>Tracks</span></dt><!--TODO: add locale-->
+        <dt></dt>
         <dd>
 
             <div class="row">
                 <div class="col-xs-2 pull-right">
                     <button class="btn btn-primary" ui-sref="stream-detail.newTrack({id:vm.stream.id})" >
                         <span class="glyphicon glyphicon-plus"></span>
-                        Add Track
+                        Add Track<!--TODO: add locale-->
                     </button>
                 </div>
-            </div>
 
-            <table class="jh-table table">
-                <thead>
-                <tr jh-sort="vm.predicate" ascending="vm.reverse">
-                    <!--TODO:add localization-->
-                    <th jh-sort-by="fname">Name<span class="glyphicon glyphicon-sort"></span></th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="trackInfo in vm.stream.tracks track by trackInfo.id">
-                    <td>{{trackInfo.name}}</td>
-                    <td class="text-right">
-                        <div class="btn-group flex-btn-group-container">
-                            <button type="submit"
-                                    ui-sref=""
-                                    class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
-                            </button>
+            <div class="col-md-10" style="" contenteditable="false">
+                <div class="panel panel-default target">
+                    <div class="panel-heading" contenteditable="false">Tracks</div>
+                    <div class="panel-body">
+                        <div class="row"ng-repeat="trackInfo in vm.stream.tracks track by trackInfo.id">
+
+                            <div ng-show="!vm.stream.tracks.length">
+                                <p>No tracks</p>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="thumbnail">
+                                    <div class="caption">
+                                        <h3>{{trackInfo.name}}</h3>
+                                        <hr/>
+
+                                        <h4>Teachers:</h4>
+
+                                        <table class="jh-table table">
+                                            <thead>
+                                            <tr jh-sort="vm.predicate" ascending="vm.reverse">
+                                                <!--TODO:add localization-->
+                                                <th jh-sort-by="fname">Name<span class="glyphicon glyphicon-sort"></span></th>
+                                                <th jh-sort-by="fname">Faculty<span class="glyphicon glyphicon-sort"></span></th>
+                                                <th jh-sort-by="fname">Department<span class="glyphicon glyphicon-sort"></span></th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="teacher in trackInfo.teachers track by teacher.id">
+                                                <td>{{teacher.firstName}} {{teacher.lastName}}</td>
+                                                <td>{{teacher.faculty}}</td>
+                                                <td>{{teacher.department}}</td>
+                                                <td class="text-right">
+                                                    <div class="btn-group flex-btn-group-container">
+                                                        <button type="submit"
+                                                                class="btn btn-primary btn-sm">
+                                                            <span class="glyphicon glyphicon-pencil"></span>
+                                                            <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr ng-show="!trackInfo.teachers.length">
+                                                <td>
+                                                    <p>No teachers</p>
+                                                </td>
+                                            </tr>
+
+                                            <div class="col-xs-2 pull-right">
+                                                <button class="btn btn-success" ui-sref="stream-detail.addTeacher({trackId:trackInfo.id})">
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                    Add Teacher<!--TODO: add locale-->
+                                                </button>
+                                            </div>
+                                            </tbody>
+                                        </table>
+
+
+
+                                        <div class="btn-group flex-btn-group-container">
+                                            <button type="submit"
+                                                    class="btn btn-primary btn-sm">
+                                                <span class="glyphicon glyphicon-pencil"></span>
+                                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </td>
-                </tr>
-                <tr ng-show="!vm.stream.tracks.length">
-                    <td>
-                        <p>No tracks</p>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+
+                    </div>
+
+                </div>
+            </div>
+            </div>
 
         </dd>
     </dl>
 
     <button type="submit"
-            ui-sref="{{ vm.previousState }}"
+            ui-sref="stream"
             class="btn btn-info">
         <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
     </button>

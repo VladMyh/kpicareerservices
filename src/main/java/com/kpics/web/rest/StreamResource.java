@@ -4,9 +4,14 @@ import com.codahale.metrics.annotation.Timed;
 import com.kpics.domain.Stream;
 import com.kpics.domain.Track;
 import com.kpics.service.StreamService;
-import com.kpics.service.TrackService;
+import com.kpics.service.TeacherInfoService;
+import com.kpics.service.UserService;
+import com.kpics.service.dto.UserDTO;
 import com.kpics.web.rest.util.HeaderUtil;
 import com.kpics.web.rest.util.PaginationUtil;
+import com.kpics.web.rest.vm.StreamVM;
+import com.kpics.web.rest.vm.TeacherVM;
+import com.kpics.web.rest.vm.TrackVM;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
 import org.bson.types.ObjectId;
@@ -22,8 +27,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing Stream.
@@ -38,34 +45,46 @@ public class StreamResource {
 
     private final StreamService streamService;
 
-    public StreamResource(StreamService streamService) {
+    private final TeacherInfoService teacherInfoService;
+
+    private final UserService userService;
+
+    public StreamResource(StreamService streamService, TeacherInfoService teacherInfoService, UserService userService) {
         this.streamService = streamService;
+        this.teacherInfoService = teacherInfoService;
+        this.userService = userService;
     }
 
     /**
      * POST  /streams : Create a new stream.
      *
-     * @param stream the stream to create
+     * @param streamVM the stream to create
      * @return the ResponseEntity with status 201 (Created) and with body the new stream, or with status 400 (Bad Request) if the stream has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/streams")
     @Timed
-    public ResponseEntity<Stream> createStream(@Valid @RequestBody Stream stream) throws URISyntaxException {
-        log.debug("REST request to save Stream : {}", stream);
-        if (stream.getId() != null) {
+    public ResponseEntity<Stream> createStream(@Valid @RequestBody StreamVM streamVM) throws URISyntaxException {
+        log.debug("REST request to save Stream : {}", streamVM);
+        if (streamVM.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new stream cannot already have an ID")).body(null);
         }
-        Stream result = streamService.save(stream);
-        return ResponseEntity.created(new URI("/api/streams/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId()))
-            .body(result);
+
+        Stream stream = new Stream().name(streamVM.getName())
+                                    .startDate(streamVM.getStartDate())
+                                    .endDate(streamVM.getEndDate())
+                                    .description(streamVM.getDescription());
+
+        stream = streamService.save(stream);
+        return ResponseEntity.created(new URI("/api/streams/" + stream.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, stream.getId()))
+            .body(stream);
     }
 
     /**
      * PUT  /streams : Updates an existing stream.
      *
-     * @param stream the stream to update
+     * @param streamVM the stream to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated stream,
      * or with status 400 (Bad Request) if the stream is not valid,
      * or with status 500 (Internal Server Error) if the stream couldnt be updated
@@ -73,15 +92,34 @@ public class StreamResource {
      */
     @PutMapping("/streams")
     @Timed
-    public ResponseEntity<Stream> updateStream(@Valid @RequestBody Stream stream) throws URISyntaxException {
-        log.debug("REST request to update Stream : {}", stream);
-        if (stream.getId() == null) {
-            return createStream(stream);
+    public ResponseEntity<Stream> updateStream(@Valid @RequestBody StreamVM streamVM) throws URISyntaxException {
+        log.debug("REST request to update Stream : {}", streamVM);
+        if (streamVM.getId() == null) {
+            return createStream(streamVM);
         }
-        Stream result = streamService.save(stream);
+
+        Stream stream = new Stream().name(streamVM.getName())
+                                    .startDate(streamVM.getStartDate())
+                                    .endDate(streamVM.getEndDate())
+                                    .description(streamVM.getDescription())
+                                    .id(streamVM.getId());
+
+        HashSet<Track> tracks = new HashSet<>(streamVM.getTracks()
+            .stream()
+            .map(t -> new Track(t.getId(),
+                                t.getName(),
+                                t.getDescription(),
+                                t.getTeachers().stream()
+                                               .map(TeacherVM::getId)
+                                               .collect(Collectors.toSet())))
+            .collect(Collectors.toSet()));
+
+        stream.setTracks(tracks);
+
+        stream = streamService.save(stream);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, stream.getId()))
-            .body(result);
+            .body(stream);
     }
 
     /**
@@ -93,12 +131,24 @@ public class StreamResource {
      */
     @GetMapping("/streams")
     @Timed
-    public ResponseEntity<List<Stream>> getAllStreams(@ApiParam Pageable pageable)
+    public ResponseEntity<List<StreamVM>> getAllStreams(@ApiParam Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Streams");
         Page<Stream> page = streamService.findAll(pageable);
+
+        List<StreamVM> result = page.getContent()
+            .stream()
+            .map(l -> new StreamVM(l.getId(), l.getName(), l.getStartDate(), l.getEndDate(), l.getDescription(), l.getTracks()
+                .stream()
+                .map(t -> new TrackVM(t.getId(), t.getName(), t.getDescription(), t.getTeacherIds()
+                    .stream()
+                    .map(id -> new TeacherVM(new UserDTO(userService.getUserWithAuthorities(id)), teacherInfoService.findByUserId(id).get()))
+                    .collect(Collectors.toSet())))
+                .collect(Collectors.toSet())))
+            .collect(Collectors.toList());
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/streams");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return new ResponseEntity<>(result, headers, HttpStatus.OK);
     }
 
     /**
@@ -109,10 +159,28 @@ public class StreamResource {
      */
     @GetMapping("/streams/{id}")
     @Timed
-    public ResponseEntity<Stream> getStream(@PathVariable String id) {
+    public ResponseEntity<StreamVM> getStream(@PathVariable String id) {
         log.debug("REST request to get Stream : {}", id);
         Stream stream = streamService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(stream));
+        StreamVM result = null;
+
+        if(stream != null) {
+            result = new StreamVM();
+            result.setId(stream.getId());
+            result.setName(stream.getName());
+            result.setDescription(stream.getDescription());
+            result.setStartDate(stream.getStartDate());
+            result.setEndDate(stream.getEndDate());
+            result.setTracks(stream.getTracks()
+                .stream()
+                .map(t -> new TrackVM(t.getId(), t.getName(), t.getDescription(), t.getTeacherIds()
+                    .stream()
+                    .map(i -> new TeacherVM(new UserDTO(userService.getUserWithAuthorities(i)), teacherInfoService.findByUserId(i).get()))
+                    .collect(Collectors.toSet())))
+                .collect(Collectors.toSet()));
+        }
+
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
     }
 
     /**
@@ -132,9 +200,9 @@ public class StreamResource {
     }
 
     /**
-     * PUT  /streams : Updates an existing stream.
+     * PUT  /streams : Add track to existing stream.
      *
-     * @param track the track to add to the stream
+     * @param trackVM the track to add to the stream
      * @return the ResponseEntity with status 200 (OK) and with body the updated stream,
      * or with status 400 (Bad Request) if the stream is not valid,
      * or with status 500 (Internal Server Error) if the stream couldnt be updated
@@ -142,9 +210,9 @@ public class StreamResource {
      */
     @PutMapping("/streams/{id}/tracks")
     @Timed
-    public ResponseEntity<Stream> addTrackToStream(@PathVariable String id, @Valid @RequestBody Track track) throws URISyntaxException {
-        log.debug("REST request to add Track to Stream : {}", id, track);
-        if (track.getId() != null) {
+    public ResponseEntity<Stream> addTrackToStream(@PathVariable String id, @Valid @RequestBody TrackVM trackVM) throws URISyntaxException {
+        log.debug("REST request to add Track to Stream : {}", id, trackVM);
+        if (trackVM.getId() != null) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new track cannot be created already have an ID"))
                 .body(null);
@@ -153,8 +221,88 @@ public class StreamResource {
         Stream stream = streamService.findOne(id);
 
         if(stream != null) {
-            track.setId(ObjectId.get().toString());
+            trackVM.setId(ObjectId.get().toString());
+
+            Track track = new Track();
+            track.setId(trackVM.getId());
+            track.setName(trackVM.getName());
+            track.setDescription(trackVM.getDescription());
+
             stream.getTracks().add(track);
+            streamService.save(stream);
+
+            return ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, stream.getId()))
+                .body(stream);
+        }
+
+        return ResponseEntity.badRequest()
+            .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "iddoesntexist", "Stream with giver id doesn't exists"))
+            .body(null);
+    }
+
+    /**
+     * GET  /streams/:id : get the track of the stream.
+     *
+     * @param streamId the id of the stream
+     * @param trackId  the id of the track to retrieve
+     * @return         the ResponseEntity with status 200 (OK) and with body the stream, or with status 404 (Not Found)
+     */
+    @GetMapping("/streams/{streamId}/tracks/{trackId}")
+    @Timed
+    public ResponseEntity<TrackVM> getTrack(@PathVariable String streamId, @PathVariable String trackId) {
+        log.debug("REST request to get track from stream : {}", streamId, trackId);
+        Stream stream = streamService.findOne(streamId);
+        TrackVM result = null;
+
+        if(stream != null) {
+            Optional<Track> track = stream.getTracks()
+                .stream()
+                .filter(t -> t.getId().equals(trackId))
+                .findFirst();
+
+            if(track.isPresent()) {
+                result = new TrackVM();
+                result.setId(track.get().getId());
+                result.setName(track.get().getName());
+                result.setDescription(track.get().getDescription());
+                result.setTeachers(track.get().getTeacherIds()
+                    .stream()
+                    .map(id -> new TeacherVM(new UserDTO(userService.getUserWithAuthorities(id)), teacherInfoService.findByUserId(id).get()))
+                    .collect(Collectors.toSet()));
+            }
+        }
+
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
+    }
+
+    /**
+     * PUT  /streams : Update track, add teacher to track.
+     *
+     * @param streamId   the id of the stream
+     * @param trackId    the id of the track
+     * @param teacherId    track entity.
+     * @return           the ResponseEntity with status 200 (OK) and with body the updated stream,
+     * or with status 400 (Bad Request) if the stream is not valid,
+     * or with status 500 (Internal Server Error) if the stream couldnt be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping("/streams/{streamId}/tracks/{trackId}/addTeacher")
+    @Timed
+    public ResponseEntity<Stream> addTeacher(@PathVariable String streamId,
+                                              @PathVariable String trackId,
+                                              @RequestBody String teacherId) throws URISyntaxException {
+        log.debug("REST request to update Track: {}", streamId, trackId, teacherId);
+        Stream stream = streamService.findOne(streamId);
+
+        if(stream != null) {
+            HashSet<Track> tracks = (HashSet<Track>) stream.getTracks();
+            for(Track t : tracks) {
+                if(t.getId().equals(trackId)) {
+                    t.getTeacherIds().add(teacherId);
+                }
+            }
+
             streamService.save(stream);
 
             return ResponseEntity.ok()

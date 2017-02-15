@@ -94,7 +94,7 @@ module.exports = function (config) {
         // - Safari (only Mac)
         // - PhantomJS
         // - IE (only Windows)
-        browsers: ['PhantomJS'],
+        browsers: ['Firefox'],
 
         // Continuous Integration mode
         // if true, it capture browsers, run tests and exit
@@ -103,6 +103,6 @@ module.exports = function (config) {
         // to avoid DISCONNECTED messages when connecting to slow virtual machines
         browserDisconnectTimeout: 10000, // default 2000
         browserDisconnectTolerance: 1, // default 0
-        browserNoActivityTimeout: 60000
+        browserNoActivityTimeout: 100000
     });
 };

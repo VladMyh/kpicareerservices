@@ -45,6 +45,11 @@ public class Stream implements Serializable {
         return id;
     }
 
+    public Stream id(String id) {
+        this.id = id;
+        return this;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -104,6 +109,10 @@ public class Stream implements Serializable {
     public Stream tracks(Set<Track> tracks) {
         this.tracks = tracks;
         return this;
+    }
+
+    public void setTracks(Set<Track> tracks) {
+        this.tracks = tracks;
     }
 
     @Override

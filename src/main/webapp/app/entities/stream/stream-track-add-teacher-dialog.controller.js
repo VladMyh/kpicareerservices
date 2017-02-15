@@ -5,13 +5,14 @@
         .module('kpicsApp')
         .controller('TrackAddTeacherDialogController', TrackAddTeacherDialogController);
 
-    TrackAddTeacherDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity',
-        'Track', 'TeacherInfo'];
+    TrackAddTeacherDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'stream', 'track',
+        'Stream', 'TeacherInfo'];
 
-    function TrackAddTeacherDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Track, TeacherInfo) {
+    function TrackAddTeacherDialogController ($timeout, $scope, $stateParams, $uibModalInstance, stream, track, Stream, TeacherInfo) {
         var vm = this;
 
-        vm.track = entity;
+        vm.stream = stream;
+        vm.track = track;
         vm.clear = clear;
         vm.search = search;
         vm.addTeacher = addTeacher;
@@ -44,14 +45,8 @@
         function onSaveError () {}
 
         function addTeacher(teacherId) {
-            if(vm.track.teacherIds.indexOf(teacherId) == -1) {
-                vm.track.teacherIds.push(teacherId);
-
-                if(vm.track.isActive == null) {
-                    vm.track.isActive = false;
-                }
-
-                Track.update(vm.track,
+            if(vm.track.teachers.indexOf(teacherId) == -1) {
+                Stream.addTeacherToTrack({id: vm.stream.id, trackId: vm.track.id}, teacherId,
                     function () {
                         $uibModalInstance.close(true);
                     });
