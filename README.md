@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/VladMyh/kpicareerservices.svg?branch=master)](https://travis-ci.org/VladMyh/kpicareerservices)
+
 # KPI Career Servises
 
 ## Development
