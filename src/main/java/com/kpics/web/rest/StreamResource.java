@@ -337,6 +337,8 @@ public class StreamResource {
         Stream stream = streamService.findOne(streamId);
 
         if(stream != null) {
+            subject.setId(ObjectId.get().toString());
+
             HashSet<Track> tracks = (HashSet<Track>) stream.getTracks();
             for(Track t : tracks) {
                 if(t.getId().equals(trackId)) {

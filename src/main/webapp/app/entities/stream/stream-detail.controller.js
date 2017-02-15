@@ -12,6 +12,15 @@
 
         vm.stream = entity;
         vm.previousState = previousState.name;
+        vm.getTeacher = getTeacher;
+
+        function getTeacher(arr, id) {
+            return arr.find(function (t) {
+                if(t.userId === id) {
+                    return t;
+                }
+            })
+        }
 
         var unsubscribe = $rootScope.$on('kpicsApp:streamUpdate', function(event, result) {
             vm.stream = result;

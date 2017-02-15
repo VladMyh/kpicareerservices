@@ -1,5 +1,6 @@
 package com.kpics.web.rest.vm;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -8,10 +9,13 @@ public class StreamVM {
 
     private String id;
 
+    @NotNull
     private String name;
 
+    @NotNull
     private LocalDate startDate;
 
+    @NotNull
     private LocalDate endDate;
 
     private String description;
