@@ -16,6 +16,10 @@ cache:
 env:
   - NODE_VERSION=6.9.1
 before_install:
+#Browser setup
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+#
   - nvm install $NODE_VERSION
   - npm install -g npm
   - npm install -g bower gulp-cli
