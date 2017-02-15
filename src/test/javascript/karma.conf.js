@@ -98,7 +98,7 @@ module.exports = function (config) {
 
         // Continuous Integration mode
         // if true, it capture browsers, run tests and exit
-        singleRun: false,
+        singleRun: true,
 
         // to avoid DISCONNECTED messages when connecting to slow virtual machines
         browserDisconnectTimeout: 10000, // default 2000
