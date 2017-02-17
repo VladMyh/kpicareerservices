@@ -5,7 +5,6 @@ import com.kpics.domain.Stream;
 import com.kpics.domain.Subject;
 import com.kpics.domain.Track;
 import com.kpics.service.StreamService;
-import com.kpics.service.TeacherInfoService;
 import com.kpics.service.UserService;
 import com.kpics.service.dto.UserDTO;
 import com.kpics.web.rest.util.HeaderUtil;

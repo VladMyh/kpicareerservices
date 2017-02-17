@@ -8,8 +8,6 @@ import com.kpics.repository.AuthorityRepository;
 import com.kpics.repository.UserRepository;
 import com.kpics.security.AuthoritiesConstants;
 import com.kpics.service.MailService;
-import com.kpics.service.StudentInfoService;
-import com.kpics.service.TeacherInfoService;
 import com.kpics.service.UserService;
 import com.kpics.web.rest.vm.ManagedUserVM;
 import org.junit.Before;

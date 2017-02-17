@@ -6,7 +6,6 @@ import com.kpics.domain.Stream;
 import com.kpics.repository.StreamRepository;
 import com.kpics.service.StreamService;
 
-import com.kpics.service.TeacherInfoService;
 import com.kpics.service.UserService;
 import org.junit.Before;
 import org.junit.Test;

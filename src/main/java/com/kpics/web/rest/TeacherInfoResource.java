@@ -5,7 +5,6 @@ import com.kpics.domain.Authority;
 import com.kpics.domain.TeacherInfo;
 import com.kpics.domain.User;
 import com.kpics.security.AuthoritiesConstants;
-import com.kpics.service.TeacherInfoService;
 import com.kpics.service.UserService;
 import com.kpics.service.dto.UserDTO;
 import com.kpics.web.rest.util.HeaderUtil;

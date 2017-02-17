@@ -4,9 +4,7 @@ import com.kpics.KpicsApp;
 
 import com.kpics.domain.TeacherInfo;
 import com.kpics.domain.User;
-import com.kpics.repository.TeacherInfoRepository;
 import com.kpics.repository.UserRepository;
-import com.kpics.service.TeacherInfoService;
 
 import com.kpics.service.UserService;
 import org.junit.Before;

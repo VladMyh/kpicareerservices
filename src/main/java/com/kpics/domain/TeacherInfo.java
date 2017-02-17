@@ -12,7 +12,6 @@ import java.util.Objects;
  * A TeacherInfo.
  */
 
-@Document(collection = "teacher_info")
 public class TeacherInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -32,9 +31,6 @@ public class TeacherInfo implements Serializable {
 
     @Field("about")
     private String about;
-
-    @Field("user")
-    private String userId;
 
     public String getId() {
         return id;
@@ -81,19 +77,6 @@ public class TeacherInfo implements Serializable {
 
     public void setAbout(String about) {
         this.about = about;
-    }
-
-    public TeacherInfo user(String user){
-        this.userId = user;
-        return this;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getUserId() {
-        return userId;
     }
 
     @Override

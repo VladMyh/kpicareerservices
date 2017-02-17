@@ -65,6 +65,12 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Field("reset_date")
     private ZonedDateTime resetDate = null;
 
+    @Field("student_info")
+    private StudentInfo studentInfo;
+
+    @Field("teacher_info")
+    private TeacherInfo teacherInfo;
+
     @JsonIgnore
     private Set<Authority> authorities = new HashSet<>();
 
@@ -172,6 +178,22 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.linkedin = linkedin;
     }
 
+    public StudentInfo getStudentInfo() {
+        return studentInfo;
+    }
+
+    public void setStudentInfo(StudentInfo studentInfo) {
+        this.studentInfo = studentInfo;
+    }
+
+    public TeacherInfo getTeacherInfo() {
+        return teacherInfo;
+    }
+
+    public void setTeacherInfo(TeacherInfo teacherInfo) {
+        this.teacherInfo = teacherInfo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -180,21 +202,23 @@ public class User extends AbstractAuditingEntity implements Serializable {
         User user = (User) o;
 
         if (activated != user.activated) return false;
-        if (!id.equals(user.id)) return false;
-        if (!password.equals(user.password)) return false;
-        if (!firstName.equals(user.firstName)) return false;
-        if (!lastName.equals(user.lastName)) return false;
-        if (!email.equals(user.email)) return false;
-        if (!linkedin.equals(user.linkedin)) return false;
-        if (!langKey.equals(user.langKey)) return false;
-        if (!imageUrl.equals(user.imageUrl)) return false;
-        if (!activationKey.equals(user.activationKey)) return false;
-        if (!resetKey.equals(user.resetKey)) return false;
-        if (!resetDate.equals(user.resetDate)) return false;
-        return authorities.equals(user.authorities);
+        if (id != null ? !id.equals(user.id) : user.id != null) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (linkedin != null ? !linkedin.equals(user.linkedin) : user.linkedin != null) return false;
+        if (langKey != null ? !langKey.equals(user.langKey) : user.langKey != null) return false;
+        if (imageUrl != null ? !imageUrl.equals(user.imageUrl) : user.imageUrl != null) return false;
+        if (activationKey != null ? !activationKey.equals(user.activationKey) : user.activationKey != null)
+            return false;
+        if (resetKey != null ? !resetKey.equals(user.resetKey) : user.resetKey != null) return false;
+        if (resetDate != null ? !resetDate.equals(user.resetDate) : user.resetDate != null) return false;
+        if (studentInfo != null ? !studentInfo.equals(user.studentInfo) : user.studentInfo != null) return false;
+        if (teacherInfo != null ? !teacherInfo.equals(user.teacherInfo) : user.teacherInfo != null) return false;
+        return authorities != null ? authorities.equals(user.authorities) : user.authorities == null;
     }
 
-    @Override
     public int hashCode() {
         return email.hashCode();
     }

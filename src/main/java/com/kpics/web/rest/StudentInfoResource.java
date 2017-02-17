@@ -2,7 +2,6 @@ package com.kpics.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.kpics.domain.StudentInfo;
-import com.kpics.service.StudentInfoService;
 import com.kpics.service.UserService;
 import com.kpics.service.dto.UserDTO;
 import com.kpics.web.rest.util.HeaderUtil;

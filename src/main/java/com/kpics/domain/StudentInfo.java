@@ -13,7 +13,6 @@ import java.util.Objects;
  * A StudentInfo.
  */
 
-@Document(collection = "student_info")
 public class StudentInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,9 +46,6 @@ public class StudentInfo implements Serializable {
     @Size(max = 200)
     @Field("about")
     private String about;
-
-    @Field("user")
-    private String userId;
 
     public String getId() {
         return id;
@@ -137,19 +133,6 @@ public class StudentInfo implements Serializable {
         this.about = about;
     }
 
-    public StudentInfo user(String userId) {
-        this.userId = userId;
-        return this;
-    }
-
-    public void setUser(String userId) {
-        this.userId = userId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -163,8 +146,7 @@ public class StudentInfo implements Serializable {
         if (group != null ? !group.equals(that.group) : that.group != null) return false;
         if (github != null ? !github.equals(that.github) : that.github != null) return false;
         if (linkedin != null ? !linkedin.equals(that.linkedin) : that.linkedin != null) return false;
-        if (about != null ? !about.equals(that.about) : that.about != null) return false;
-        return userId != null ? userId.equals(that.userId) : that.userId == null;
+        return about != null ? about.equals(that.about) : that.about == null;
     }
 
     @Override
@@ -182,7 +164,6 @@ public class StudentInfo implements Serializable {
             ", github='" + github + '\'' +
             ", linkedin='" + linkedin + '\'' +
             ", about='" + about + '\'' +
-            ", userId='" + userId + '\'' +
             '}';
     }
 }
