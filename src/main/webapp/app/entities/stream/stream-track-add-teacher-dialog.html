@@ -35,13 +35,13 @@
                 <td>{{teacherInfo.department}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
-                        <button type="submit" ng-show="vm.track.teachers.indexOf(teacherInfo.userId) == -1"
-                                ng-click="vm.addTeacher(teacherInfo.userId)"
+                        <button type="submit" ng-show="vm.track.teachers.indexOf(teacherInfo.id) == -1"
+                                ng-click="vm.addTeacher(teacherInfo.id)"
                                 class="btn btn-success btn-sm">
                             <span class="glyphicon glyphicon-plus"></span>
                             <span class="hidden-sm-down">Add</span>
                         </button>
-                        <button ng-show="vm.track.teachers.indexOf(teacherInfo.userId) != -1"
+                        <button ng-show="vm.track.teachers.indexOf(teacherInfo.id) != -1"
                                 type="submit" class="btn btn-success btn-sm" disabled="disabled">
                             <span class="glyphicon glyphicon-ok"></span>
                             <span class="hidden-sm-down">Added</span>
@@ -51,7 +51,7 @@
             </tr>
             <tr ng-show="!vm.teachers.length">
                 <td>
-                    <p>Type tour search query, and click search</p>
+                    <p>Type your search query, and click search</p>
                 </td>
             </tr>
             </tbody>

@@ -1,6 +1,8 @@
 package com.kpics.repository;
 
 import com.kpics.domain.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
@@ -20,6 +22,14 @@ public interface UserRepository extends MongoRepository<User, String> {
     Optional<User> findOneByResetKey(String resetKey);
 
     Optional<User> findOneByEmail(String email);
+
+    Page<User> findByStudentInfoNotNull(Pageable pageable);
+
+    Page<User> findByTeacherInfoNotNull(Pageable pageable);
+
+    User findOneByIdAndStudentInfoNotNull(String id);
+
+    User findOneByIdAndTeacherInfoNotNull(String id);
 
     @Query("{$and: [{'authorities': {'_id': ?0}}, " +
         "{$or : [{'first_name': {'$regex': ?1, '$options' : 'i'}}, {'last_name': {'$regex': ?1, '$options' : 'i'}}]}]}")

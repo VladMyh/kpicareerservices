@@ -58,13 +58,7 @@ public class StudentInfoResourceIntTest {
     private static final String UPDATED_USERID = "BBBBBBBBBB";
 
     @Autowired
-    private StudentInfoRepository studentInfoRepository;
-
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private StudentInfoService studentInfoService;
 
     @Autowired
     private UserService userService;
@@ -84,7 +78,7 @@ public class StudentInfoResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        StudentInfoResource studentInfoResource = new StudentInfoResource(studentInfoService, userService);
+        StudentInfoResource studentInfoResource = new StudentInfoResource(userService);
         this.restStudentInfoMockMvc = MockMvcBuilders.standaloneSetup(studentInfoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -102,7 +96,6 @@ public class StudentInfoResourceIntTest {
                 .department(DEFAULT_DEPARTMENT)
                 .group(DEFAULT_GROUP)
                 .github(DEFAULT_GITHUB)
-                .linkedin(DEFAULT_LINKEDIN)
                 .about(DEFAULT_ABOUT)
                 .user(DEFAULT_USERID);
         return studentInfo;
@@ -125,7 +118,6 @@ public class StudentInfoResourceIntTest {
 
     @Before
     public void initTest() {
-        studentInfoRepository.deleteAll();
         userRepository.deleteAll();
         studentInfo = createStudentInfoEntity();
         user = createUserEntity();
@@ -133,7 +125,7 @@ public class StudentInfoResourceIntTest {
 
     @Test
     public void createStudentInfo() throws Exception {
-        int databaseSizeBeforeCreate = studentInfoRepository.findAll().size();
+        int databaseSizeBeforeCreate = userRepository.findAll().size();
 
         // Create the StudentInfo
 

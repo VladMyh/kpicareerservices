@@ -49,13 +49,7 @@ public class TeacherInfoResourceIntTest {
     private static final String UPDATED_USERID = "BBBBBBBBBB";
 
     @Autowired
-    private TeacherInfoRepository teacherInfoRepository;
-
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private TeacherInfoService teacherInfoService;
 
     @Autowired
     private UserService userService;
@@ -75,7 +69,7 @@ public class TeacherInfoResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        TeacherInfoResource teacherInfoResource = new TeacherInfoResource(teacherInfoService, userService);
+        TeacherInfoResource teacherInfoResource = new TeacherInfoResource(userService);
         this.restTeacherInfoMockMvc = MockMvcBuilders.standaloneSetup(teacherInfoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -91,8 +85,7 @@ public class TeacherInfoResourceIntTest {
         TeacherInfo teacherInfo = new TeacherInfo()
                 .faculty(DEFAULT_FACULTY)
                 .department(DEFAULT_DEPARTMENT)
-                .about(DEFAULT_ABOUT)
-                .user(DEFAULT_USERID);
+                .about(DEFAULT_ABOUT);
         return teacherInfo;
     }
 
@@ -113,7 +106,6 @@ public class TeacherInfoResourceIntTest {
 
     @Before
     public void initTest() {
-        teacherInfoRepository.deleteAll();
         userRepository.deleteAll();
         teacherInfo = createTeacherInfoEntity();
         user = createUserEntity();

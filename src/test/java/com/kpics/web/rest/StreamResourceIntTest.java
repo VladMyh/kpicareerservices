@@ -54,9 +54,6 @@ public class StreamResourceIntTest {
     private StreamService streamService;
 
     @Autowired
-    private TeacherInfoService teacherInfoService;
-
-    @Autowired
     private UserService userService;
 
     @Autowired
@@ -72,7 +69,7 @@ public class StreamResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        StreamResource streamResource = new StreamResource(streamService, teacherInfoService, userService);
+        StreamResource streamResource = new StreamResource(streamService, userService);
         this.restStreamMockMvc = MockMvcBuilders.standaloneSetup(streamResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();

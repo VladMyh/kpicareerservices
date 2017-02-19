@@ -1,13 +1,10 @@
 package com.kpics.domain;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A StudentInfo.
@@ -16,9 +13,6 @@ import java.util.Objects;
 public class StudentInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    private String id;
 
     @NotNull
     @Size(max = 100)
@@ -39,20 +33,18 @@ public class StudentInfo implements Serializable {
     @Field("github")
     private String github;
 
-    @NotNull
-    @Field("linkedin")
-    private String linkedin;
-
     @Size(max = 200)
     @Field("about")
     private String about;
 
-    public String getId() {
-        return id;
-    }
+    public StudentInfo() {}
 
-    public void setId(String id) {
-        this.id = id;
+    public StudentInfo(String faculty, String department, String group, String github, String about) {
+        this.faculty = faculty;
+        this.department = department;
+        this.group = group;
+        this.github = github;
+        this.about = about;
     }
 
     public String getFaculty() {
@@ -103,19 +95,6 @@ public class StudentInfo implements Serializable {
         return this;
     }
 
-    public void setLinkedin(String linkedin) {
-        this.linkedin = linkedin;
-    }
-
-    public StudentInfo linkedin(String linkedin) {
-        this.linkedin = linkedin;
-        return this;
-    }
-
-    public String getLinkedin() {
-        return linkedin;
-    }
-
     public void setGithub(String github) {
         this.github = github;
     }
@@ -140,29 +119,30 @@ public class StudentInfo implements Serializable {
 
         StudentInfo that = (StudentInfo) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (faculty != null ? !faculty.equals(that.faculty) : that.faculty != null) return false;
         if (department != null ? !department.equals(that.department) : that.department != null) return false;
         if (group != null ? !group.equals(that.group) : that.group != null) return false;
         if (github != null ? !github.equals(that.github) : that.github != null) return false;
-        if (linkedin != null ? !linkedin.equals(that.linkedin) : that.linkedin != null) return false;
         return about != null ? about.equals(that.about) : that.about == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        int result = faculty != null ? faculty.hashCode() : 0;
+        result = 31 * result + (department != null ? department.hashCode() : 0);
+        result = 31 * result + (group != null ? group.hashCode() : 0);
+        result = 31 * result + (github != null ? github.hashCode() : 0);
+        result = 31 * result + (about != null ? about.hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
         return "StudentInfo{" +
-            "id='" + id + '\'' +
-            ", faculty='" + faculty + '\'' +
+            "faculty='" + faculty + '\'' +
             ", department='" + department + '\'' +
             ", group='" + group + '\'' +
             ", github='" + github + '\'' +
-            ", linkedin='" + linkedin + '\'' +
             ", about='" + about + '\'' +
             '}';
     }

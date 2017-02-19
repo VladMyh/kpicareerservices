@@ -45,13 +45,10 @@ public class StreamResource {
 
     private final StreamService streamService;
 
-    private final TeacherInfoService teacherInfoService;
-
     private final UserService userService;
 
-    public StreamResource(StreamService streamService, TeacherInfoService teacherInfoService, UserService userService) {
+    public StreamResource(StreamService streamService, UserService userService) {
         this.streamService = streamService;
-        this.teacherInfoService = teacherInfoService;
         this.userService = userService;
     }
 
@@ -143,7 +140,7 @@ public class StreamResource {
                 .stream()
                 .map(t -> new TrackVM(t.getId(), t.getName(), t.getDescription(), t.getTeacherIds()
                     .stream()
-                    .map(id -> new TeacherVM(new UserDTO(userService.getUserWithAuthorities(id)), teacherInfoService.findByUserId(id).get()))
+                    .map(id -> new TeacherVM(new UserDTO(userService.getUserWithAuthorities(id))))
                     .collect(Collectors.toSet()), t.getSubjects()))
                 .collect(Collectors.toSet())))
             .collect(Collectors.toList());
@@ -176,7 +173,7 @@ public class StreamResource {
                 .stream()
                 .map(t -> new TrackVM(t.getId(), t.getName(), t.getDescription(), t.getTeacherIds()
                     .stream()
-                    .map(i -> new TeacherVM(new UserDTO(userService.getUserWithAuthorities(i)), teacherInfoService.findByUserId(i).get()))
+                    .map(i -> new TeacherVM(new UserDTO(userService.getUserWithAuthorities(i))))
                     .collect(Collectors.toSet()), t.getSubjects()))
                 .collect(Collectors.toSet()));
         }
@@ -269,7 +266,7 @@ public class StreamResource {
                 result.setDescription(track.get().getDescription());
                 result.setTeachers(track.get().getTeacherIds()
                     .stream()
-                    .map(id -> new TeacherVM(new UserDTO(userService.getUserWithAuthorities(id)), teacherInfoService.findByUserId(id).get()))
+                    .map(id -> new TeacherVM(new UserDTO(userService.getUserWithAuthorities(id))))
                     .collect(Collectors.toSet()));
             }
         }

@@ -39,39 +39,16 @@ public class TeacherInfoResource {
 
     private static final String ENTITY_NAME = "teacherInfo";
 
-    private final TeacherInfoService teacherInfoService;
-
     private final UserService userService;
 
-    public TeacherInfoResource(TeacherInfoService teacherInfoService, UserService userService) {
-        this.teacherInfoService = teacherInfoService;
+    public TeacherInfoResource(UserService userService) {
         this.userService = userService;
     }
 
     /**
-     * POST  /teacher-infos : Create a new teacherInfo.
+     * PUT  /teacher-infos : Updates an existing teacher.
      *
-     * @param teacherInfo the teacherInfo to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new teacherInfo, or with status 400 (Bad Request) if the teacherInfo has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PostMapping("/teacher-infos")
-    @Timed
-    public ResponseEntity<TeacherInfo> createTeacherInfo(@Valid @RequestBody TeacherInfo teacherInfo) throws URISyntaxException {
-        log.debug("REST request to save TeacherInfo : {}", teacherInfo);
-        if (teacherInfo.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new teacherInfo cannot already have an ID")).body(null);
-        }
-        TeacherInfo result = teacherInfoService.save(teacherInfo);
-        return ResponseEntity.created(new URI("/api/teacher-infos/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
-    }
-
-    /**
-     * PUT  /teacher-infos : Updates an existing teacherInfo.
-     *
-     * @param teacherInfo the teacherInfo to update
+     * @param teacher the teacherVM to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated teacherInfo,
      * or with status 400 (Bad Request) if the teacherInfo is not valid,
      * or with status 500 (Internal Server Error) if the teacherInfo couldnt be updated
@@ -79,15 +56,26 @@ public class TeacherInfoResource {
      */
     @PutMapping("/teacher-infos")
     @Timed
-    public ResponseEntity<TeacherInfo> updateTeacherInfo(@Valid @RequestBody TeacherInfo teacherInfo) throws URISyntaxException {
-        log.debug("REST request to update TeacherInfo : {}", teacherInfo);
-        if (teacherInfo.getId() == null) {
-            return createTeacherInfo(teacherInfo);
+    public ResponseEntity<UserDTO> updateTeacher(@Valid @RequestBody TeacherVM teacher) throws URISyntaxException {
+        log.debug("REST request to update teacher : {}", teacher);
+
+        Optional<UserDTO> userDTO = userService.getTeacherById(teacher.getId());
+
+        if(userDTO.isPresent()) {
+            TeacherInfo teacherInfo = new TeacherInfo(teacher.getFaculty(), teacher.getDepartment(), teacher.getAbout());
+
+            UserDTO updated = new UserDTO(teacher.getId(), teacher.getFirstName(), teacher.getLastName(),
+                teacher.getEmail(), teacher.getLinkedin(), userDTO.get().getImageUrl(), userDTO.get().isActivated(),
+                userDTO.get().getLangKey(), userDTO.get().getCreatedBy(), userDTO.get().getCreatedDate(),
+                userDTO.get().getLastModifiedBy(), userDTO.get().getLastModifiedDate(), userDTO.get().getAuthorities(),
+                null, teacherInfo);
+
+            userService.updateUser(updated);
         }
-        TeacherInfo result = teacherInfoService.save(teacherInfo);
+
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, teacherInfo.getId().toString()))
-            .body(result);
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, userDTO.get().getId()))
+            .body(userDTO.get());
     }
 
     /**
@@ -99,12 +87,12 @@ public class TeacherInfoResource {
      */
     @GetMapping("/teacher-infos")
     @Timed
-    public ResponseEntity<List<TeacherVM>> getAllTeacherInfos(@ApiParam Pageable pageable)
+    public ResponseEntity<List<TeacherVM>> getAllTeachers(@ApiParam Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Teachers");
-        Page<TeacherInfo> page = teacherInfoService.findAll(pageable);
+        Page<UserDTO> page = userService.getAllTeachers(pageable);
         List<TeacherVM> result = page.getContent().stream()
-            .map(o -> new TeacherVM(new UserDTO(userService.getUserWithAuthorities(o.getUserId())), o))
+            .map(TeacherVM::new)
             .collect(Collectors.toList());
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/teacher-infos");
@@ -112,38 +100,38 @@ public class TeacherInfoResource {
     }
 
     /**
-     * GET  /teacher-infos/:id : get the "id" teacherInfo.
+     * GET  /teacher-infos/:id : get the teacher by "id".
      *
-     * @param id the id of the teacherInfo to retrieve
+     * @param id the id of the teacher to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the teacherInfo, or with status 404 (Not Found)
      */
     @GetMapping("/teacher-infos/{id}")
     @Timed
-    public ResponseEntity<TeacherVM> getTeacherInfo(@PathVariable String id) {
+    public ResponseEntity<TeacherVM> getTeacher(@PathVariable String id) {
         log.debug("REST request to get Teacher : {}", id);
-        TeacherInfo teacherInfo = teacherInfoService.findOne(id);
+        Optional<UserDTO> teacher = userService.getTeacherById(id);
         TeacherVM teacherVM = null;
 
-        if(teacherInfo != null) {
-            UserDTO userDTO = new UserDTO(userService.getUserWithAuthorities(teacherInfo.getUserId()));
-            teacherVM = new TeacherVM(userDTO, teacherInfo);
+        if(teacher.isPresent()) {
+            teacherVM = new TeacherVM(teacher.get());
         }
 
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(teacherVM));
     }
 
     /**
-     * DELETE  /teacher-infos/:id : delete the "id" teacherInfo.
+     * DELETE  /teacher-infos/:id : delete the teacher "id".
      *
      * @param id the id of the teacherInfo to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/teacher-infos/{id}")
     @Timed
-    public ResponseEntity<Void> deleteTeacherInfo(@PathVariable String id) {
+    public ResponseEntity<Void> deleteTeacher(@PathVariable String id) {
         log.debug("REST request to delete TeacherInfo : {}", id);
-        teacherInfoService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        Optional<UserDTO> userDTO = userService.getStudentById(id);
+        userDTO.ifPresent(s -> userService.deleteUser(s.getEmail()));
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id)).build();
     }
 
     @GetMapping("/teacher-infos/find/{query}")
@@ -154,7 +142,7 @@ public class TeacherInfoResource {
         List<User> users = userService.findByAuthoritiesAndName(new Authority(AuthoritiesConstants.TEACHER), query);
 
         List<TeacherVM> result = users.stream()
-            .map(o -> new TeacherVM(new UserDTO(o), teacherInfoService.findByUserId(o.getId()).get()))
+            .map(o -> new TeacherVM(new UserDTO(o)))
             .collect(Collectors.toList());
 
         return ResponseEntity.ok(result);

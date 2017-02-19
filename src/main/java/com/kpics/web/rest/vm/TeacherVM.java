@@ -22,13 +22,11 @@ public class TeacherVM {
 
     private String about;
 
-    private String userId;
-
     public TeacherVM() {}
 
     public TeacherVM(String id, String firstName, String lastName, String email,
                      String linkedin, boolean activated, String faculty,
-                     String department, String about, String userId) {
+                     String department, String about) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -38,20 +36,18 @@ public class TeacherVM {
         this.faculty = faculty;
         this.department = department;
         this.about = about;
-        this.userId = userId;
     }
 
-    public TeacherVM(UserDTO userDTO, TeacherInfo teacherInfo) {
-        this.id = teacherInfo.getId();
+    public TeacherVM(UserDTO userDTO) {
+        this.id = userDTO.getId();
         this.firstName = userDTO.getFirstName();
         this.lastName = userDTO.getLastName();
         this.email = userDTO.getEmail();
         this.linkedin = userDTO.getLinkedin();
         this.activated = userDTO.isActivated();
-        this.faculty = teacherInfo.getFaculty();
-        this.department = teacherInfo.getDepartment();
-        this.about = teacherInfo.getAbout();
-        this.userId = userDTO.getId();
+        this.faculty = userDTO.getTeacherInfo().getFaculty();
+        this.department = userDTO.getTeacherInfo().getDepartment();
+        this.about = userDTO.getTeacherInfo().getAbout();
     }
 
     public String getId() {
@@ -126,14 +122,6 @@ public class TeacherVM {
         this.about = about;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     @Override
     public String toString() {
         return "TeacherVM{" +
@@ -146,7 +134,6 @@ public class TeacherVM {
             ", faculty='" + faculty + '\'' +
             ", department='" + department + '\'' +
             ", about='" + about + '\'' +
-            ", userId='" + userId + '\'' +
             '}';
     }
 }

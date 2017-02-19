@@ -117,34 +117,6 @@ public class InitialSetupMigration {
             .add("authorities", authoritiesUser)
             .get()
         );
-        usersCollection.insert(BasicDBObjectBuilder.start()
-            .add("_id", "user-4")
-            .add("login", "user")
-            .add("password", "$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K")
-            .add("first_name", "")
-            .add("last_name", "User")
-            .add("email", "teacher@localhost")
-            .add("activated", "true")
-            .add("lang_key", "en")
-            .add("created_by", "system")
-            .add("created_date", new Date())
-            .add("authorities", authoritiesTeacher)
-            .get()
-        );
-        usersCollection.insert(BasicDBObjectBuilder.start()
-            .add("_id", "user-5")
-            .add("login", "user")
-            .add("password", "$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K")
-            .add("first_name", "")
-            .add("last_name", "User")
-            .add("email", "student@localhost")
-            .add("activated", "true")
-            .add("lang_key", "en")
-            .add("created_by", "system")
-            .add("created_date", new Date())
-            .add("authorities", authoritiesStudent)
-            .get()
-        );
 
     }
 }

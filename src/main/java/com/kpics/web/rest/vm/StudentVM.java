@@ -26,13 +26,11 @@ public class StudentVM {
 
     private String about;
 
-    private String userId;
-
     public StudentVM() {}
 
     public StudentVM(String id, String firstName, String lastName, String email,
                      String linkedin, boolean activated, String faculty,
-                     String department, String about, String userId) {
+                     String department, String about) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -42,22 +40,19 @@ public class StudentVM {
         this.faculty = faculty;
         this.department = department;
         this.about = about;
-        this.userId = userId;
     }
 
-    public StudentVM(UserDTO userDTO, StudentInfo studentInfo) {
-        this.id = studentInfo.getId();
+    public StudentVM(UserDTO userDTO) {
         this.firstName = userDTO.getFirstName();
         this.lastName = userDTO.getLastName();
         this.email = userDTO.getEmail();
         this.linkedin = userDTO.getLinkedin();
-        this.github = studentInfo.getGithub();
+        this.github = userDTO.getStudentInfo().getGithub();
         this.activated = userDTO.isActivated();
-        this.faculty = studentInfo.getFaculty();
-        this.department = studentInfo.getDepartment();
-        this.group = studentInfo.getGroup();
-        this.about = studentInfo.getAbout();
-        this.userId = userDTO.getId();
+        this.faculty = userDTO.getStudentInfo().getFaculty();
+        this.department = userDTO.getStudentInfo().getDepartment();
+        this.group = userDTO.getStudentInfo().getGroup();
+        this.about = userDTO.getStudentInfo().getAbout();
     }
 
     public String getId() {
@@ -132,14 +127,6 @@ public class StudentVM {
         this.about = about;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public String getGithub() {
         return github;
     }
@@ -170,7 +157,6 @@ public class StudentVM {
             ", department='" + department + '\'' +
             ", group='" + group + '\'' +
             ", about='" + about + '\'' +
-            ", userId='" + userId + '\'' +
             '}';
     }
 }
