@@ -20,10 +20,6 @@ public class ManagedUserVM extends UserDTO {
     @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
     private String password;
 
-    private StudentInfo studentInfo;
-
-    private TeacherInfo teacherInfo;
-
     public ManagedUserVM() {
         // Empty constructor needed for Jackson.
     }
@@ -31,10 +27,12 @@ public class ManagedUserVM extends UserDTO {
     public ManagedUserVM(String id, String password, String firstName, String lastName,
                          String email, String linkedin, boolean activated, String imageUrl,
                          String langKey, String createdBy, ZonedDateTime createdDate,
-                         String lastModifiedBy, ZonedDateTime lastModifiedDate, Set<String> authorities) {
+                         String lastModifiedBy, ZonedDateTime lastModifiedDate, Set<String> authorities,
+                         StudentInfo studentInfo, TeacherInfo teacherInfo) {
 
         super(id, firstName, lastName, email, linkedin, imageUrl, activated, langKey,
-              createdBy, createdDate, lastModifiedBy, lastModifiedDate, authorities);
+              createdBy, createdDate, lastModifiedBy, lastModifiedDate, authorities,
+              studentInfo, teacherInfo);
 
         this.password = password;
     }
@@ -45,22 +43,6 @@ public class ManagedUserVM extends UserDTO {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public StudentInfo getStudentInfo() {
-        return studentInfo;
-    }
-
-    public void setStudentInfo(StudentInfo studentInfo) {
-        this.studentInfo = studentInfo;
-    }
-
-    public TeacherInfo getTeacherInfo() {
-        return teacherInfo;
-    }
-
-    public void setTeacherInfo(TeacherInfo teacherInfo) {
-        this.teacherInfo = teacherInfo;
     }
 
     @Override

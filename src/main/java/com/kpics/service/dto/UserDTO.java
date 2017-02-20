@@ -1,6 +1,8 @@
 package com.kpics.service.dto;
 
 import com.kpics.domain.Authority;
+import com.kpics.domain.StudentInfo;
+import com.kpics.domain.TeacherInfo;
 import com.kpics.domain.User;
 import org.hibernate.validator.constraints.Email;
 
@@ -46,6 +48,10 @@ public class UserDTO {
 
     private Set<String> authorities;
 
+    private StudentInfo studentInfo;
+
+    private TeacherInfo teacherInfo;
+
     public UserDTO() {
         // Empty constructor needed for MapStruct.
     }
@@ -55,14 +61,15 @@ public class UserDTO {
             user.getEmail(), user.getLinkedin(), user.getImageUrl(), user.getActivated(), user.getLangKey(),
             user.getCreatedBy(), user.getCreatedDate(), user.getLastModifiedBy(), user.getLastModifiedDate(),
             user.getAuthorities().stream().map(Authority::getName)
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toSet()), user.getStudentInfo(), user.getTeacherInfo());
     }
 
     public UserDTO(String id, String firstName,
                    String lastName, String email, String linkedin,
                    String imageUrl, boolean activated, String langKey,
                    String createdBy, ZonedDateTime createdDate, String lastModifiedBy,
-                   ZonedDateTime lastModifiedDate, Set<String> authorities) {
+                   ZonedDateTime lastModifiedDate, Set<String> authorities,
+                   StudentInfo studentInfo, TeacherInfo teacherInfo) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -76,6 +83,8 @@ public class UserDTO {
         this.lastModifiedBy = lastModifiedBy;
         this.lastModifiedDate = lastModifiedDate;
         this.authorities = authorities;
+        this.studentInfo = studentInfo;
+        this.teacherInfo = teacherInfo;
     }
 
     public String getId() {
@@ -138,8 +147,17 @@ public class UserDTO {
         return linkedin;
     }
 
+    public StudentInfo getStudentInfo() {
+        return studentInfo;
+    }
+
+    public TeacherInfo getTeacherInfo() {
+        return teacherInfo;
+    }
+
     @Override
-    public String toString() {
+    public String
+    toString() {
         return "UserDTO{" +
             "id='" + id + '\'' +
             ", firstName='" + firstName + '\'' +
@@ -154,6 +172,8 @@ public class UserDTO {
             ", lastModifiedBy='" + lastModifiedBy + '\'' +
             ", lastModifiedDate=" + lastModifiedDate +
             ", authorities=" + authorities +
+            ", studentInfo=" + studentInfo +
+            ", teacherInfo=" + teacherInfo +
             '}';
     }
 }

@@ -8,8 +8,6 @@ import com.kpics.repository.AuthorityRepository;
 import com.kpics.repository.UserRepository;
 import com.kpics.security.AuthoritiesConstants;
 import com.kpics.service.MailService;
-import com.kpics.service.StudentInfoService;
-import com.kpics.service.TeacherInfoService;
 import com.kpics.service.UserService;
 import com.kpics.web.rest.vm.ManagedUserVM;
 import org.junit.Before;
@@ -55,12 +53,6 @@ public class AccountResourceIntTest {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private StudentInfoService studentInfoService;
-
-    @Autowired
-    private TeacherInfoService teacherInfoService;
-
     @Mock
     private UserService mockUserService;
 
@@ -79,10 +71,10 @@ public class AccountResourceIntTest {
         doNothing().when(mockMailService).sendActivationEmail((User) anyObject());
 
         AccountResource accountResource =
-            new AccountResource(userRepository, userService, studentInfoService, teacherInfoService, mockMailService);
+            new AccountResource(userRepository, userService, mockMailService);
 
         AccountResource accountUserMockResource =
-            new AccountResource(userRepository, mockUserService, studentInfoService, teacherInfoService, mockMailService);
+            new AccountResource(userRepository, mockUserService, mockMailService);
 
         this.restMvc = MockMvcBuilders.standaloneSetup(accountResource).build();
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(accountUserMockResource).build();
@@ -95,7 +87,6 @@ public class AccountResourceIntTest {
         studentInfo.faculty("faculty")
             .department("dep")
             .group("group")
-            .linkedin("link")
             .github("link")
             .about("about");
 
@@ -173,9 +164,9 @@ public class AccountResourceIntTest {
             null,                   // createdDate
             null,                   // lastModifiedBy
             null,                   // lastModifiedDate
-            new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)));
-
-        validUser.setStudentInfo(studentInfo);
+            new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
+            studentInfo,
+            null);
 
         restMvc.perform(
             post("/api/student/register")
@@ -203,7 +194,9 @@ public class AccountResourceIntTest {
             null,                   // createdDate
             null,                   // lastModifiedBy
             null,                   // lastModifiedDate
-            new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)));
+            new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
+            null,
+            null);
 
         restUserMockMvc.perform(
             post("/api/student/register")
@@ -231,7 +224,9 @@ public class AccountResourceIntTest {
             null,                   // createdDate
             null,                   // lastModifiedBy
             null,                   // lastModifiedDate
-            new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)));
+            new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
+            null,
+            null);
 
         restUserMockMvc.perform(
             post("/api/student/register")
@@ -260,17 +255,15 @@ public class AccountResourceIntTest {
             null,                   // createdDate
             null,                   // lastModifiedBy
             null,                   // lastModifiedDate
-            new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)));
-
-        validUser.setStudentInfo(studentInfo);
+            new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
+            studentInfo,
+            null);
 
         // Duplicate e-mail
         ManagedUserVM duplicatedUser = new ManagedUserVM(validUser.getId(), validUser.getPassword(), validUser.getFirstName(),
             validUser.getLastName(), validUser.getEmail(), null, true, validUser.getImageUrl(), validUser.getLangKey(),
             validUser.getCreatedBy(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate(),
-            validUser.getAuthorities());
-
-        duplicatedUser.setStudentInfo(studentInfo);
+            validUser.getAuthorities(), studentInfo, null);
 
         // Good user
         restMvc.perform(
@@ -306,9 +299,9 @@ public class AccountResourceIntTest {
             null,                   // createdDate
             null,                   // lastModifiedBy
             null,                   // lastModifiedDate
-            new HashSet<>(Arrays.asList(AuthoritiesConstants.ADMIN)));
-
-        validUser.setStudentInfo(studentInfo);
+            new HashSet<>(Arrays.asList(AuthoritiesConstants.ADMIN)),
+            studentInfo,
+            null);
 
         restMvc.perform(
             post("/api/student/register")

@@ -1,13 +1,13 @@
 package com.kpics.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.kpics.domain.StudentInfo;
+import com.kpics.domain.TeacherInfo;
 import com.kpics.domain.User;
 import com.kpics.repository.UserRepository;
 import com.kpics.security.AuthoritiesConstants;
 import com.kpics.security.SecurityUtils;
 import com.kpics.service.MailService;
-import com.kpics.service.StudentInfoService;
-import com.kpics.service.TeacherInfoService;
 import com.kpics.service.UserService;
 import com.kpics.service.dto.UserDTO;
 import com.kpics.web.rest.util.HeaderUtil;
@@ -39,19 +39,12 @@ public class AccountResource {
 
     private final UserService userService;
 
-    private final StudentInfoService studentInfoService;
-
-    private final TeacherInfoService teacherInfoService;
-
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService,
-            StudentInfoService studentInfoService, TeacherInfoService teacherInfoService, MailService mailService) {
+    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
 
         this.userRepository = userRepository;
         this.userService = userService;
-        this.studentInfoService = studentInfoService;
-        this.teacherInfoService = teacherInfoService;
         this.mailService = mailService;
     }
 
@@ -71,15 +64,14 @@ public class AccountResource {
         return userRepository.findOneByEmail(managedUserVM.getEmail().toLowerCase())
             .map(user -> new ResponseEntity<>("email already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
             .orElseGet(() -> {
+                StudentInfo studentInfo = new StudentInfo(managedUserVM.getStudentInfo().getFaculty(),
+                    managedUserVM.getStudentInfo().getDepartment(), managedUserVM.getStudentInfo().getGroup(),
+                    managedUserVM.getStudentInfo().getGithub(), managedUserVM.getStudentInfo().getAbout());
+
                 User user = userService.createUser(managedUserVM.getPassword(),
                         managedUserVM.getFirstName(), managedUserVM.getLastName(),
                         managedUserVM.getEmail().toLowerCase(), managedUserVM.getImageUrl(),
-                        managedUserVM.getLangKey(), AuthoritiesConstants.STUDENT);
-
-                studentInfoService.createStudentInfo(managedUserVM.getStudentInfo().getFaculty(),
-                    managedUserVM.getStudentInfo().getDepartment(), managedUserVM.getStudentInfo().getGroup(),
-                    managedUserVM.getStudentInfo().getGithub(), managedUserVM.getLinkedin(),
-                    managedUserVM.getStudentInfo().getAbout(), user.getId());
+                        managedUserVM.getLangKey(), AuthoritiesConstants.STUDENT, studentInfo, null);
 
                 mailService.sendActivationEmail(user);
                 return new ResponseEntity<>(HttpStatus.CREATED);
@@ -102,14 +94,13 @@ public class AccountResource {
         return userRepository.findOneByEmail(managedUserVM.getEmail().toLowerCase())
             .map(user -> new ResponseEntity<>("email already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
             .orElseGet(() -> {
+                TeacherInfo teacherInfo = new TeacherInfo(managedUserVM.getTeacherInfo().getFaculty(),
+                    managedUserVM.getTeacherInfo().getDepartment(), managedUserVM.getTeacherInfo().getAbout());
+
                 User user = userService.createUser(managedUserVM.getPassword(),
                     managedUserVM.getFirstName(), managedUserVM.getLastName(),
                     managedUserVM.getEmail().toLowerCase(), managedUserVM.getImageUrl(),
-                    managedUserVM.getLangKey(), AuthoritiesConstants.TEACHER);
-
-                teacherInfoService.createTeacherInfo(managedUserVM.getTeacherInfo().getFaculty(),
-                    managedUserVM.getTeacherInfo().getDepartment(), managedUserVM.getTeacherInfo().getAbout(),
-                    user.getId());
+                    managedUserVM.getLangKey(), AuthoritiesConstants.TEACHER, null, teacherInfo);
 
                 mailService.sendActivationEmail(user);
                 return new ResponseEntity<>(HttpStatus.CREATED);

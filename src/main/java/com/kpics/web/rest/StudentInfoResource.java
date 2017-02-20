@@ -1,8 +1,6 @@
 package com.kpics.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.kpics.domain.StudentInfo;
-import com.kpics.service.StudentInfoService;
 import com.kpics.service.UserService;
 import com.kpics.service.dto.UserDTO;
 import com.kpics.web.rest.util.HeaderUtil;
@@ -20,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
@@ -37,39 +34,16 @@ public class StudentInfoResource {
 
     private static final String ENTITY_NAME = "studentInfo";
 
-    private final StudentInfoService studentInfoService;
-
     private final UserService userService;
 
-    public StudentInfoResource(StudentInfoService studentInfoService, UserService userService) {
-        this.studentInfoService = studentInfoService;
+    public StudentInfoResource(UserService userService) {
         this.userService = userService;
-    }
-
-    /**
-     * POST  /student-infos : Create a new studentInfo.
-     *
-     * @param studentInfo the studentInfo to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new studentInfo, or with status 400 (Bad Request) if the studentInfo has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PostMapping("/student-infos")
-    @Timed
-    public ResponseEntity<StudentInfo> createStudentInfo(@Valid @RequestBody StudentInfo studentInfo) throws URISyntaxException {
-        log.debug("REST request to save StudentInfo : {}", studentInfo);
-        if (studentInfo.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new studentInfo cannot already have an ID")).body(null);
-        }
-        StudentInfo result = studentInfoService.save(studentInfo);
-        return ResponseEntity.created(new URI("/api/student-infos/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
     }
 
     /**
      * PUT  /student-infos : Updates an existing studentInfo.
      *
-     * @param studentInfo the studentInfo to update
+     * @param userDTO the studentInfo to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated studentInfo,
      * or with status 400 (Bad Request) if the studentInfo is not valid,
      * or with status 500 (Internal Server Error) if the studentInfo couldnt be updated
@@ -77,19 +51,19 @@ public class StudentInfoResource {
      */
     @PutMapping("/student-infos")
     @Timed
-    public ResponseEntity<StudentInfo> updateStudentInfo(@Valid @RequestBody StudentInfo studentInfo) throws URISyntaxException {
-        log.debug("REST request to update StudentInfo : {}", studentInfo);
-        if (studentInfo.getId() == null) {
-            return createStudentInfo(studentInfo);
-        }
-        StudentInfo result = studentInfoService.save(studentInfo);
+    public ResponseEntity<UserDTO> updateStudent(@Valid @RequestBody UserDTO userDTO) throws URISyntaxException {
+        log.debug("REST request to update Student : {}", userDTO);
+
+        Optional<UserDTO> result = userService.getStudentById(userDTO.getId());
+        result.ifPresent(u -> userService.updateUser(userDTO));
+
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, studentInfo.getId().toString()))
-            .body(result);
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, result.orElse(null).getId()))
+            .body(result.get());
     }
 
     /**
-     * GET  /student-infos : get all the studentInfos.
+     * GET  /student-infos : get all the students.
      *
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of studentInfos in body
@@ -97,12 +71,12 @@ public class StudentInfoResource {
      */
     @GetMapping("/student-infos")
     @Timed
-    public ResponseEntity<List<StudentVM>> getAllStudentInfos(@ApiParam Pageable pageable)
+    public ResponseEntity<List<StudentVM>> getAllStudent(@ApiParam Pageable pageable)
         throws URISyntaxException {
-        log.debug("REST request to get a page of StudentInfos");
-        Page<StudentInfo> page = studentInfoService.findAll(pageable);
+        log.debug("REST request to get a page of Students");
+        Page<UserDTO> page = userService.getAllStudents(pageable);
         List<StudentVM> result = page.getContent().stream()
-            .map(o -> new StudentVM(new UserDTO(userService.getUserWithAuthorities(o.getUserId())), o))
+            .map(StudentVM::new)
             .collect(Collectors.toList());
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/student-infos");
@@ -110,21 +84,20 @@ public class StudentInfoResource {
     }
 
     /**
-     * GET  /student-infos/:id : get the "id" studentInfo.
+     * GET  /student-infos/:id : get the student by "id".
      *
-     * @param id the id of the studentInfo to retrieve
+     * @param id the id of the student to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the studentInfo, or with status 404 (Not Found)
      */
     @GetMapping("/student-infos/{id}")
     @Timed
-    public ResponseEntity<StudentVM> getStudentInfo(@PathVariable String id) {
-        log.debug("REST request to get StudentInfo : {}", id);
-        StudentInfo studentInfo = studentInfoService.findOne(id);
+    public ResponseEntity<StudentVM> getStudent(@PathVariable String id) {
+        log.debug("REST request to get Student by id : {}", id);
+        Optional<UserDTO> userDTO = userService.getStudentById(id);
         StudentVM studentVM = null;
 
-        if(studentInfo != null) {
-            UserDTO userDTO = new UserDTO(userService.getUserWithAuthorities(studentInfo.getUserId()));
-            studentVM = new StudentVM(userDTO, studentInfo);
+        if(userDTO.isPresent()) {
+            studentVM = new StudentVM(userDTO.get());
         }
 
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(studentVM));
@@ -140,8 +113,9 @@ public class StudentInfoResource {
     @Timed
     public ResponseEntity<Void> deleteStudentInfo(@PathVariable String id) {
         log.debug("REST request to delete StudentInfo : {}", id);
-        studentInfoService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        Optional<UserDTO> userDTO = userService.getStudentById(id);
+        userDTO.ifPresent(u -> userService.deleteUser(u.getEmail()));
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id)).build();
     }
 
 }

@@ -1,6 +1,8 @@
 package com.kpics.service;
 
 import com.kpics.domain.Authority;
+import com.kpics.domain.StudentInfo;
+import com.kpics.domain.TeacherInfo;
 import com.kpics.domain.User;
 import com.kpics.repository.AuthorityRepository;
 import com.kpics.repository.UserRepository;
@@ -84,7 +86,8 @@ public class UserService {
     }
 
     public User createUser(String password, String firstName, String lastName, String email,
-        String imageUrl, String langKey, String role) {
+                           String imageUrl, String langKey, String role, StudentInfo studentInfo,
+                           TeacherInfo teacherInfo) {
 
         User newUser = new User();
 
@@ -101,6 +104,8 @@ public class UserService {
         newUser.setEmail(email);
         newUser.setImageUrl(imageUrl);
         newUser.setLangKey(langKey);
+        newUser.setStudentInfo(studentInfo);
+        newUser.setTeacherInfo(teacherInfo);
         // new user is not active
         newUser.setActivated(false);
         // new user gets registration key
@@ -172,6 +177,8 @@ public class UserService {
                 userDTO.getAuthorities().stream()
                     .map(authorityRepository::findOne)
                     .forEach(managedAuthorities::add);
+                user.setStudentInfo(userDTO.getStudentInfo());
+                user.setTeacherInfo(userDTO.getTeacherInfo());
                 userRepository.save(user);
                 log.debug("Changed Information for User: {}", user);
                 return user;
@@ -198,6 +205,24 @@ public class UserService {
 
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
         return userRepository.findAll(pageable).map(UserDTO::new);
+    }
+
+    public Page<UserDTO> getAllStudents(Pageable pageable) {
+        return userRepository.findByStudentInfoNotNull(pageable).map(UserDTO::new);
+    }
+
+    public Page<UserDTO> getAllTeachers(Pageable pageable) {
+        return userRepository.findByTeacherInfoNotNull(pageable).map(UserDTO::new);
+    }
+
+    public Optional<UserDTO> getStudentById(String id) {
+        User user = userRepository.findOneByIdAndStudentInfoNotNull(id);
+        return Optional.ofNullable(user == null ? null : new UserDTO(user));
+    }
+
+    public Optional<UserDTO> getTeacherById(String id) {
+        User user = userRepository.findOneByIdAndTeacherInfoNotNull(id);
+        return Optional.ofNullable(user == null ? null : new UserDTO(user));
     }
 
     public Optional<User> getUserWithAuthoritiesByEmail(String email) {

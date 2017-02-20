@@ -1,24 +1,18 @@
 package com.kpics.domain;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A TeacherInfo.
  */
 
-@Document(collection = "teacher_info")
 public class TeacherInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    private String id;
 
     @NotNull
     @Size(max = 100)
@@ -33,15 +27,12 @@ public class TeacherInfo implements Serializable {
     @Field("about")
     private String about;
 
-    @Field("user")
-    private String userId;
+    public TeacherInfo() {}
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public TeacherInfo(String faculty, String department, String about) {
+        this.faculty = faculty;
+        this.department = department;
+        this.about = about;
     }
 
     public String getFaculty() {
@@ -83,44 +74,30 @@ public class TeacherInfo implements Serializable {
         this.about = about;
     }
 
-    public TeacherInfo user(String user){
-        this.userId = user;
-        return this;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        TeacherInfo teacherInfo = (TeacherInfo) o;
-        if (teacherInfo.id == null || id == null) {
-            return false;
-        }
-        return Objects.equals(id, teacherInfo.id);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TeacherInfo that = (TeacherInfo) o;
+
+        if (faculty != null ? !faculty.equals(that.faculty) : that.faculty != null) return false;
+        if (department != null ? !department.equals(that.department) : that.department != null) return false;
+        return about != null ? about.equals(that.about) : that.about == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        int result = faculty != null ? faculty.hashCode() : 0;
+        result = 31 * result + (department != null ? department.hashCode() : 0);
+        result = 31 * result + (about != null ? about.hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
         return "TeacherInfo{" +
-            "id=" + id +
-            ", faculty='" + faculty + "'" +
+            "faculty='" + faculty + "'" +
             ", department='" + department + "'" +
             ", about='" + about + "'" +
             '}';

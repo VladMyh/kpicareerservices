@@ -27,7 +27,7 @@
         <div class="form-group">
             <label class="control-label" for="field_teacher">Teacher</label>
             <select class="form-control" name="teacher" id="field_teacher" ng-model="vm.subject.teacherId" required>
-                <option ng-repeat="teacher in vm.track.teachers" value="{{teacher.userId}}">
+                <option ng-repeat="teacher in vm.track.teachers" value="{{teacher.id}}">
                     {{teacher.firstName}} {{teacher.lastName}}
                 </option>
             </select>

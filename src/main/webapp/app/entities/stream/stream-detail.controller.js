@@ -16,7 +16,7 @@
 
         function getTeacher(arr, id) {
             return arr.find(function (t) {
-                if(t.userId === id) {
+                if(t.id === id) {
                     return t;
                 }
             })
