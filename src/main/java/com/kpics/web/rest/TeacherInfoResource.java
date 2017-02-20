@@ -48,7 +48,7 @@ public class TeacherInfoResource {
     /**
      * PUT  /teacher-infos : Updates an existing teacher.
      *
-     * @param teacher the teacherVM to update
+     * @param userDTO the userDTO to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated teacherInfo,
      * or with status 400 (Bad Request) if the teacherInfo is not valid,
      * or with status 500 (Internal Server Error) if the teacherInfo couldnt be updated
@@ -56,26 +56,15 @@ public class TeacherInfoResource {
      */
     @PutMapping("/teacher-infos")
     @Timed
-    public ResponseEntity<UserDTO> updateTeacher(@Valid @RequestBody TeacherVM teacher) throws URISyntaxException {
-        log.debug("REST request to update teacher : {}", teacher);
+    public ResponseEntity<UserDTO> updateTeacher(@Valid @RequestBody UserDTO userDTO) throws URISyntaxException {
+        log.debug("REST request to update teacher : {}", userDTO);
 
-        Optional<UserDTO> userDTO = userService.getTeacherById(teacher.getId());
-
-        if(userDTO.isPresent()) {
-            TeacherInfo teacherInfo = new TeacherInfo(teacher.getFaculty(), teacher.getDepartment(), teacher.getAbout());
-
-            UserDTO updated = new UserDTO(teacher.getId(), teacher.getFirstName(), teacher.getLastName(),
-                teacher.getEmail(), teacher.getLinkedin(), userDTO.get().getImageUrl(), userDTO.get().isActivated(),
-                userDTO.get().getLangKey(), userDTO.get().getCreatedBy(), userDTO.get().getCreatedDate(),
-                userDTO.get().getLastModifiedBy(), userDTO.get().getLastModifiedDate(), userDTO.get().getAuthorities(),
-                null, teacherInfo);
-
-            userService.updateUser(updated);
-        }
+        Optional<UserDTO> result = userService.getTeacherById(userDTO.getId());
+        result.ifPresent(u -> userService.updateUser(userDTO));
 
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, userDTO.get().getId()))
-            .body(userDTO.get());
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, result.orElse(null).getId()))
+            .body(result.get());
     }
 
     /**
@@ -129,7 +118,7 @@ public class TeacherInfoResource {
     @Timed
     public ResponseEntity<Void> deleteTeacher(@PathVariable String id) {
         log.debug("REST request to delete TeacherInfo : {}", id);
-        Optional<UserDTO> userDTO = userService.getStudentById(id);
+        Optional<UserDTO> userDTO = userService.getTeacherById(id);
         userDTO.ifPresent(s -> userService.deleteUser(s.getEmail()));
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id)).build();
     }

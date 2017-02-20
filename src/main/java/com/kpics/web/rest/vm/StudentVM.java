@@ -43,6 +43,7 @@ public class StudentVM {
     }
 
     public StudentVM(UserDTO userDTO) {
+        this.id = userDTO.getId();
         this.firstName = userDTO.getFirstName();
         this.lastName = userDTO.getLastName();
         this.email = userDTO.getEmail();

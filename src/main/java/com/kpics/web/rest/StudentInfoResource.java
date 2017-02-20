@@ -54,7 +54,9 @@ public class StudentInfoResource {
     public ResponseEntity<UserDTO> updateStudent(@Valid @RequestBody UserDTO userDTO) throws URISyntaxException {
         log.debug("REST request to update Student : {}", userDTO);
 
-        Optional<UserDTO> result = userService.updateUser(userDTO);
+        Optional<UserDTO> result = userService.getStudentById(userDTO.getId());
+        result.ifPresent(u -> userService.updateUser(userDTO));
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, result.orElse(null).getId()))
             .body(result.get());

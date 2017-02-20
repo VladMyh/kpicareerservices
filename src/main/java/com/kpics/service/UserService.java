@@ -177,6 +177,8 @@ public class UserService {
                 userDTO.getAuthorities().stream()
                     .map(authorityRepository::findOne)
                     .forEach(managedAuthorities::add);
+                user.setStudentInfo(userDTO.getStudentInfo());
+                user.setTeacherInfo(userDTO.getTeacherInfo());
                 userRepository.save(user);
                 log.debug("Changed Information for User: {}", user);
                 return user;
