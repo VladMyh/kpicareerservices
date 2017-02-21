@@ -57,8 +57,8 @@ jhipster:
                 token-validity-in-seconds: 86400
                 token-validity-in-seconds-for-remember-me: 2592000
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: kpics@localhost
-        base-url: http://my-server-url-to-change # Modify according to your server's URL
+        from: kpics@avs.com.ua
+        base-url: http://kpics.avs.com.ua:8082
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         graphite:
