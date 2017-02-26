@@ -119,8 +119,11 @@ public class TeacherInfoResource {
     public ResponseEntity<Void> deleteTeacher(@PathVariable String id) {
         log.debug("REST request to delete TeacherInfo : {}", id);
         Optional<UserDTO> userDTO = userService.getTeacherById(id);
-        userDTO.ifPresent(s -> userService.deleteUser(s.getEmail()));
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id)).build();
+
+        if(userDTO.isPresent() && userService.deleteTeacher(userDTO.get().getEmail())) {
+            return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id)).build();
+        }
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionFailedAlert(ENTITY_NAME, id)).build();
     }
 
     @GetMapping("/teacher-infos/find/{query}")

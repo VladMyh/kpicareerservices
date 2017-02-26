@@ -4,6 +4,7 @@ import com.kpics.KpicsApp;
 import com.kpics.domain.Authority;
 import com.kpics.domain.TeacherInfo;
 import com.kpics.domain.User;
+import com.kpics.repository.StreamRepository;
 import com.kpics.repository.UserRepository;
 import com.kpics.security.AuthoritiesConstants;
 import com.kpics.service.UserService;
@@ -64,6 +65,9 @@ public class TeacherInfoResourceIntTest {
     private UserRepository userRepository;
 
     @Autowired
+    private StreamRepository streamRepository;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -116,7 +120,8 @@ public class TeacherInfoResourceIntTest {
         user.setLinkedin(DEFAULT_LINKEDIN);
         user.setPassword("$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC");
         user.setTeacherInfo(teacherInfo);
-        user.setAuthorities(new HashSet<>(Arrays.asList(new Authority(AuthoritiesConstants.USER))));
+        user.setAuthorities(new HashSet<>(Arrays.asList(new Authority(AuthoritiesConstants.USER),
+                                                        new Authority(AuthoritiesConstants.TEACHER))));
         user.setImageUrl("http://placehold.it/50x50");
         user.setLangKey("ru");
         return user;
@@ -125,6 +130,7 @@ public class TeacherInfoResourceIntTest {
     @Before
     public void initTest() {
         userRepository.deleteAll();
+        streamRepository.deleteAll();
         teacherInfo = createTeacherInfoEntity();
         user = createUserEntity(teacherInfo);
     }

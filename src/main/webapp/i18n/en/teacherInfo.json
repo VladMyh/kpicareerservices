@@ -10,6 +10,7 @@
             "created": "A new Teacher is created with identifier {{ param }}",
             "updated": "A Teacher is updated with identifier {{ param }}",
             "deleted": "A Teacher is deleted with identifier {{ param }}",
+            "deleteFail": "Cannot delete teacher",
             "delete": {
                 "question": "Are you sure you want to delete Teacher {{ id }}?"
             },

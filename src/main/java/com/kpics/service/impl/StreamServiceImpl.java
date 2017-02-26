@@ -23,22 +23,19 @@ public class StreamServiceImpl implements StreamService{
     @Override
     public Stream save(Stream stream) {
         log.debug("Request to save Stream : {}", stream);
-        Stream result = streamRepository.save(stream);
-        return result;
+        return streamRepository.save(stream);
     }
 
     @Override
     public Page<Stream> findAll(Pageable pageable) {
         log.debug("Request to get all Streams");
-        Page<Stream> result = streamRepository.findAll(pageable);
-        return result;
+        return streamRepository.findAll(pageable);
     }
 
     @Override
     public Stream findOne(String id) {
         log.debug("Request to get Stream : {}", id);
-        Stream stream = streamRepository.findOne(id);
-        return stream;
+        return streamRepository.findOne(id);
     }
 
     @Override
