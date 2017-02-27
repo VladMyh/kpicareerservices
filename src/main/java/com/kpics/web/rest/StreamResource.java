@@ -45,6 +45,8 @@ public class StreamResource {
 
     private static final String TRACK = "track";
 
+    private static final String SUBJECT = "subject";
+
     private final StreamService streamService;
 
     private final UserService userService;
@@ -277,7 +279,7 @@ public class StreamResource {
     }
 
     /**
-     * GET  /streams/:streamId/tracks/:trackId : delete the track of the stream.
+     * DELETE  /streams/:streamId/tracks/:trackId : delete the track of the stream.
      *
      * @param streamId the id of the stream
      * @param trackId  the id of the track to delete
@@ -295,6 +297,31 @@ public class StreamResource {
         }
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityDeletionFailedAlert(TRACK, trackId))
+            .build();
+    }
+
+    /**
+     * DELETE  /streams/:streamId/tracks/:trackId/subjects/:subjectId : delete the track of the stream.
+     *
+     * @param streamId  the id of the stream
+     * @param trackId   the id of the track
+     * @param subjectId the id of the subject to delete
+     * @return         the ResponseEntity with status 200 (OK)
+     */
+    @DeleteMapping("/streams/{streamId}/tracks/{trackId}/subjects/{subjectId}")
+    @Timed
+    public ResponseEntity<?> deleteSubject(@PathVariable String streamId,
+                                           @PathVariable String trackId,
+                                           @PathVariable String subjectId) {
+        log.debug("REST request to delete subject from track : {}", streamId, trackId, subjectId);
+
+        if(streamService.deleteSubject(streamId, trackId, subjectId)) {
+            return ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityDeletionAlert(SUBJECT, subjectId))
+                .build();
+        }
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityDeletionFailedAlert(SUBJECT, subjectId))
             .build();
     }
 

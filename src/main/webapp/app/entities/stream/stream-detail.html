@@ -133,7 +133,20 @@
                                                             <div class="col-md-12">
                                                                 <div class="thumbnail">
                                                                     <div class="caption">
-                                                                        <h3>{{subject.name}}</h3>
+                                                                        <div class="row">
+                                                                            <div class="col-md-2">
+                                                                                <h3>{{subject.name}}</h3>
+                                                                            </div>
+
+                                                                            <div class="col-md-2 col-md-offset-8">
+                                                                                <button class="btn btn-danger btn-sm"
+                                                                                        ui-sref="stream-detail.deleteSubject({id: vm.stream.id, trackId: trackInfo.id, subjectId: subject.id})">
+                                                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                                                    Delete<!--TODO: add locale-->
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+
                                                                         <hr/>
                                                                         <p>Teacher: {{vm.getTeacher(trackInfo.teachers, subject.teacherId).firstName}} {{vm.getTeacher(trackInfo.teachers, subject.teacherId).lastName}}</p>
                                                                         <p>Semester: {{subject.semester}}</p>

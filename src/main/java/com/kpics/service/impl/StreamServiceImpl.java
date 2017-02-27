@@ -1,6 +1,7 @@
 package com.kpics.service.impl;
 
 import com.kpics.domain.Stream;
+import com.kpics.domain.Subject;
 import com.kpics.domain.Track;
 import com.kpics.repository.StreamRepository;
 import com.kpics.service.StreamService;
@@ -79,6 +80,35 @@ public class StreamServiceImpl implements StreamService{
 
     @Override
     public boolean deleteSubject(String streamId, String trackId, String subjectId) {
+        log.debug("Request to delete Subject : {}", streamId, trackId, subjectId);
+
+        Stream stream = streamRepository.findOne(streamId);
+
+        if(stream != null) {
+            Optional<Track> track = stream.getTracks()
+                .stream()
+                .filter(t -> t.getId().equals(trackId))
+                .findFirst();
+
+            if(track.isPresent() && !track.get().getSubjects().isEmpty()) {
+                Set<Subject> newSubjects = track.get().getSubjects()
+                    .stream()
+                    .filter(s -> !s.getId().equals(subjectId))
+                    .collect(Collectors.toSet());
+
+                track.get().setSubjects(newSubjects);
+
+                stream.setTracks(stream.getTracks()
+                    .stream()
+                    .map(t -> t.getId().equals(trackId) ? track.get() : t)
+                    .collect(Collectors.toSet()));
+
+                streamRepository.save(stream);
+
+                return true;
+            }
+        }
+
         return false;
     }
 }
