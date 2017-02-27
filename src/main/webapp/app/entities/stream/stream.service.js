@@ -55,6 +55,14 @@
             'addSubjectToTrack': {
                 method: 'PUT',
                 url: 'api/streams/:id/tracks/:trackId/addSubject'
+            },
+            'deleteTrack': {
+                method: 'DELETE',
+                url: 'api/streams/:id/tracks/:trackId'
+            },
+            'deleteSubject': {
+                method: 'DELETE',
+                url: 'api/streams/:id/tracks/:trackId/subjects/:subjectId'
             }
         });
     }
