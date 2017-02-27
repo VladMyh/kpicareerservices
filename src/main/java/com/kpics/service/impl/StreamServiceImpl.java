@@ -1,6 +1,7 @@
 package com.kpics.service.impl;
 
 import com.kpics.domain.Stream;
+import com.kpics.domain.Track;
 import com.kpics.repository.StreamRepository;
 import com.kpics.service.StreamService;
 import org.slf4j.Logger;
@@ -8,6 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class StreamServiceImpl implements StreamService{
@@ -42,5 +47,38 @@ public class StreamServiceImpl implements StreamService{
     public void delete(String id) {
         log.debug("Request to delete Stream : {}", id);
         streamRepository.delete(id);
+    }
+
+    @Override
+    public boolean deleteTrack(String streamId, String trackId) {
+        log.debug("Request to delete Track : {}", streamId, trackId);
+
+        Stream stream = streamRepository.findOne(streamId);
+
+        if(stream != null) {
+            Optional<Track> track = stream.getTracks()
+                .stream()
+                .filter(t -> t.getId().equals(trackId))
+                .findFirst();
+
+            if(track.isPresent() && track.get().getSubjects().isEmpty()) {
+                Set<Track> newTracks = stream.getTracks()
+                    .stream()
+                    .filter(t -> !t.getId().equals(trackId))
+                    .collect(Collectors.toSet());
+
+                stream.setTracks(newTracks);
+                streamRepository.save(stream);
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean deleteSubject(String streamId, String trackId, String subjectId) {
+        return false;
     }
 }

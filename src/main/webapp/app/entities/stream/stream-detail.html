@@ -32,10 +32,10 @@
                     <div class="panel-heading" contenteditable="false">
                         Tracks
 
-                        <div class="col-xs-2 pull-right">
+                        <div class="col-md-2 pull-right">
                             <button class="btn btn-primary btn-xs" ui-sref="stream-detail.newTrack({id:vm.stream.id})" >
                                 <span class="glyphicon glyphicon-plus"></span>
-                                Add Track<!--TODO: add locale-->
+                                Add<!--TODO: add locale-->
                             </button>
                         </div>
 
@@ -51,7 +51,20 @@
                             <div class="col-md-12">
                                 <div class="thumbnail">
                                     <div class="caption">
-                                        <h3>{{trackInfo.name}}</h3>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <h3>{{trackInfo.name}}</h3>
+                                            </div>
+
+                                            <div class="col-md-2 col-md-offset-8" ng-show="!trackInfo.subjects.length">
+                                                <button class="btn btn-danger btn-sm"
+                                                        ui-sref="stream-detail.deleteTrack({id: vm.stream.id, trackId: trackInfo.id})">
+                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                    Delete<!--TODO: add locale-->
+                                                </button>
+                                            </div>
+                                        </div>
+
                                         <hr/>
 
                                         <h4>Teachers:</h4>
@@ -98,15 +111,15 @@
                                                     <div class="panel-heading" contenteditable="false">
                                                         Subjects
 
-                                                        <div class="col-xs-2 pull-right">
+                                                        <div class="col-md-2 pull-right">
                                                             <button class="btn btn-success btn-xs" ng-show="trackInfo.teachers.length"
                                                                     ui-sref="stream-detail.addSubject({trackId:trackInfo.id})">
                                                                 <span class="glyphicon glyphicon-plus"></span>
-                                                                Add Subject<!--TODO: add locale-->
+                                                                Add<!--TODO: add locale-->
                                                             </button>
                                                             <button class="btn btn-success btn-xs" disabled="disabled" ng-show="!trackInfo.teachers.length">
                                                                 <span class="glyphicon glyphicon-plus"></span>
-                                                                Add Subject<!--TODO: add locale-->
+                                                                Add<!--TODO: add locale-->
                                                             </button>
                                                         </div>
                                                     </div>
