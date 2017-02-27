@@ -1,0 +1,17 @@
+<div>
+    <h2 data-translate="kpicsApp.studentInfo">Student Infos</h2>
+    <jhi-alert></jhi-alert>
+
+
+    <div>
+        <div id="gridContainer">
+            <div class="row grid-col">
+                <h2>{{vm.studentInfo.lastName}} {{vm.studentInfo.name}}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+    </div>
+    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
+</div>
