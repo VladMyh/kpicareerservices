@@ -1,27 +1,50 @@
 
 <div>
-    <h2><span data-translate="kpicsApp.stream.detail.title">Stream</span> {{vm.stream.name}}</h2>
+    <h2><span data-translate="kpicsApp.stream.detail.title">Stream</span> {{::vm.stream.name}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
+    <form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
     <dl class="row jh-entity-details">
         <dt><span data-translate="kpicsApp.stream.name">Name</span></dt>
         <dd>
-            <span>{{vm.stream.name}}</span>
+            <input type="text" class="form-control" name="name" id="field_name"
+                   ng-model="vm.stream.name"
+                   required/>
         </dd>
 
         <dt><span data-translate="kpicsApp.stream.startDate">Start Date</span></dt>
         <dd>
-            <span>{{vm.stream.startDate | date:'mediumDate'}}</span>
+            <div class="input-group">
+                <input id="field_startDate" type="text" class="form-control" name="startDate" uib-datepicker-popup="{{dateformat}}" ng-model="vm.stream.startDate" is-open="vm.datePickerOpenStatus.startDate"
+                       required/>
+                <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('startDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+            </div>
         </dd>
 
         <dt><span data-translate="kpicsApp.stream.endDate">End Date</span></dt>
         <dd>
-            <span>{{vm.stream.endDate | date:'mediumDate'}}</span>
+            <div class="input-group">
+                <input id="field_endDate" type="text" class="form-control" name="endDate" uib-datepicker-popup="{{dateformat}}" ng-model="vm.stream.endDate" is-open="vm.datePickerOpenStatus.endDate"
+                       required/>
+                <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('endDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+            </div>
         </dd>
 
         <dt><span data-translate="kpicsApp.stream.description">Description</span></dt>
         <dd>
-            <span>{{vm.stream.description}}</span>
+            <textarea class="form-control" name="description" id="field_description"
+                      ng-model="vm.stream.description"></textarea>
+        </dd>
+
+        <dt></dt>
+        <dd>
+            <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+                <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+            </button>
         </dd>
 
             <div class="row">
@@ -191,8 +214,5 @@
         <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
     </button>
 
-    <button type="button" ui-sref="" class="btn btn-primary">
-        <span class="glyphicon glyphicon-pencil"></span>
-        <span class="hidden-sm-down" data-translate="entity.action.save"> Save</span>
-    </button>
+    </form>
 </div>
