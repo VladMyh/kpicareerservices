@@ -79,12 +79,25 @@
                                                 <h3>{{trackInfo.name}}</h3>
                                             </div>
 
-                                            <div class="col-md-2 col-md-offset-8" ng-show="!trackInfo.subjects.length">
+                                            <div class="col-md-2 col-md-offset-8">
                                                 <button class="btn btn-danger btn-sm"
+                                                        ng-show="!trackInfo.subjects.length"
                                                         ui-sref="stream-detail.deleteTrack({id: vm.stream.id, trackId: trackInfo.id})">
                                                     <span class="glyphicon glyphicon-trash"></span>
-                                                    Delete<!--TODO: add locale-->
                                                 </button>
+                                                <button ui-sref="stream-detail.editTrack({id: vm.stream.id, trackId: trackInfo.id})"
+                                                        class="btn btn-primary btn-sm">
+                                                    <span class="glyphicon glyphicon-pencil"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <hr/>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <p><b>Description:</b></p><!--TODO: add locale-->
+                                                <p>{{trackInfo.description}}</p>
                                             </div>
                                         </div>
 
@@ -165,7 +178,6 @@
                                                                                 <button class="btn btn-danger btn-sm"
                                                                                         ui-sref="stream-detail.deleteSubject({id: vm.stream.id, trackId: trackInfo.id, subjectId: subject.id})">
                                                                                     <span class="glyphicon glyphicon-trash"></span>
-                                                                                    Delete<!--TODO: add locale-->
                                                                                 </button>
                                                                             </div>
                                                                         </div>

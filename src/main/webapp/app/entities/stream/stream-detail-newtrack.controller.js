@@ -20,12 +20,16 @@
         });
 
         function clear () {
-            $uibModalInstance.dismiss('cancel');
+               $uibModalInstance.dismiss('cancel');
         }
 
         function save () {
             vm.isSaving = true;
-            Stream.addTrack({id: vm.stream.id}, track);
+            if (vm.stream.id !== null) {
+                Stream.updateTrack({id: vm.stream.id}, track);
+            } else {
+                Stream.addTrack({id: vm.stream.id}, track);
+            }
             $uibModalInstance.close(true);
         }
 

@@ -41,6 +41,10 @@
                 }
             },
             'addTrack': {
+                method: 'POST',
+                url: 'api/streams/:id/tracks'
+            },
+            'updateTrack': {
                 method: 'PUT',
                 url: 'api/streams/:id/tracks'
             },
