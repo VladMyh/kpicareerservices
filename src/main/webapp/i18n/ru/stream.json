@@ -4,7 +4,7 @@
             "home": {
                 "title": "Потоки",
                 "createLabel": "Создать новый поток",
-                "createOrEditLabel": "Создать или отредактировать поток",
+                "createOrEditLabel": "Создать поток",
                 "search": "Найти поток"
             },
             "created": "Новый поток создан с идентификатором {{ param }}",

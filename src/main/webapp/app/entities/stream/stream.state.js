@@ -139,31 +139,6 @@
                 });
             }]
         })
-        .state('stream.edit', {
-            parent: 'stream',
-            url: '/{id}/edit',
-            data: {
-                authorities: ['ROLE_USER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/stream/stream-dialog.html',
-                    controller: 'StreamDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: ['Stream', function(Stream) {
-                            return Stream.get({id : $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('stream', null, { reload: 'stream' });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
-        })
         .state('stream.delete', {
             parent: 'stream',
             url: '/{id}/delete',
