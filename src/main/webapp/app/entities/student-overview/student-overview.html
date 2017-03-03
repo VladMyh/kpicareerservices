@@ -1,17 +1,71 @@
-<div>
-    <h2 data-translate="kpicsApp.studentInfo">Student Infos</h2>
-    <jhi-alert></jhi-alert>
+<h2>Student Infos</h2>
+    <div class="container">
 
+    <!-- =========================== BODY-HEADER LEFT PART ============================ -->
+        <div class="col-sm-3 mainleft">
+            <!-- ======================  NAME & AVATAR  ================================ -->
+            <div class="row mobmid">
+                <h2 align="middle">{{vm.studentInfo.lastName}}  {{vm.studentInfo.firstName}}</h2>
+                <div>
+                    <img class="img-polaroid" src="https://cdn.worldvectorlogo.com/logos/jhipster.svg" ng-style="{width: '100%'}">
+                </div>
+                <div class="row">
+                    <div class="col-ms-1 col-md-2 mobmid">
+                        <span />
+                    </div>
+                    <!--icon end-->
+                </div>
+                <!-- ======================  NAME & AVATAR  END ================================ -->
+                <div class="col-sm-11 col-md-10">
+                    <h3 class="mobmid">Programming skills</h3>
+                    <div ng-repeat="track in vm.studentInfo.tracks">
+                        <!-- ======================  MARKS DIAGRAM   ================================ -->
+                        <p>{{track.name}}</p>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="{{track.mark}}"
+                                 aria-valuemin="0" aria-valuemax="100" ng-style="{width:'{{track.mark}}%'}">
+                                <span class="sr-only">{{track.mark}} Complete</span>
+                            </div>
+                        </div>
+                        <!-- ======================  MARKS DIAGRAM END  ================================ -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ======================  BODY-HEADER RIGHT PART ================================ -->
+        <div class="col-sm-offset-1  col-sm-8 mainright">
+            <div class="row">
+                <div ng-repeat="track in vm.studentInfo.tracks">
+                    <div class="col-sm-5">
 
-    <div>
-        <div id="gridContainer">
-            <div class="row grid-col">
-                <h2>{{vm.studentInfo.lastName}} {{vm.studentInfo.name}}</h2>
+                            <p>{{track.name}}</p>
+                            <blockquote>
+                                <div ng-repeat="level in track.skills">
+                                <!-- ====================== LEVEL MARKS DIAGRAM   ================================ -->
+                                        <p>{{level.name}}</p>
+                                        <div class="progress" title="{{level.description}}">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="{{level.mark}}"
+                                                 aria-valuemin="0" aria-valuemax="100" ng-style="{width:'{{level.mark}}%'}">
+                                                <span class="sr-only">{{level.mark}} Complete</span>
+                                            </div>
+                                        </div>
+                                </div>
+                            </blockquote>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="text-center">
-        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
-    </div>
-    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
-</div>
+
+<h3>Description</h3>
+<p>{{vm.studentInfo.about}}</p>
+
+<h3>My projects:</h3>
+
+<a href="https://github.com/">Link1</a>
+<a href="https://github.com/">Link2</a>
+
+<h3>LinkedIn:</h3>
+<a href="https://www.linkedin.com/">https://www.linkedin.com/</a>
+
