@@ -7,7 +7,7 @@
             <div class="row mobmid">
                 <h2 align="middle">{{vm.studentInfo.lastName}}  {{vm.studentInfo.firstName}}</h2>
                 <div>
-                    <img class="img-polaroid" src="https://cdn.worldvectorlogo.com/logos/jhipster.svg" ng-style="{width: '100%'}">
+                    <img class="img-polaroid" src="{{vm.studentInfo.avatar}}" ng-style="{width: '100%'}">
                 </div>
                 <div class="row">
                     <div class="col-ms-1 col-md-2 mobmid">
@@ -38,7 +38,7 @@
                 <div ng-repeat="track in vm.studentInfo.tracks">
                     <div class="col-sm-5">
 
-                            <p>{{track.name}}</p>
+                            <h4>{{track.name}}</h4>
                             <blockquote>
                                 <div ng-repeat="level in track.skills">
                                 <!-- ====================== LEVEL MARKS DIAGRAM   ================================ -->

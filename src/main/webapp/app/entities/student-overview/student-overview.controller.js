@@ -29,6 +29,9 @@
         vm.studentInfo.faculty = "IOT";
         vm.studentInfo.department = "TK";
         vm.studentInfo.group = "IT-32";
+
+        vm.studentInfo.avatar = "https://cdn.worldvectorlogo.com/logos/jhipster.svg";
+
         vm.studentInfo.about = "Some about info. Information technology (IT) is the application of computers to store, study, retrieve, transmit, and manipulate data, or information, often in the context of a business or other enterprise. IT is considered a subset of information and communications technology (ICT). In 2012, Zuppo proposed an ICT hierarchy where each hierarchy level \"contain some degree of commonality in that they are related to technologies that facilitate the transfer of information and various types of electronically mediated communications.\"";
 
         vm.description = "This course introduces the scientific principles behind food safety and sanitation practices as well as practical and effective methods you can implement in your plant to keep your products safe.";
