@@ -5,13 +5,14 @@
         .module('kpicsApp')
         .controller('TrackNewSubjectDialogController', TrackNewSubjectDialogController);
 
-    TrackNewSubjectDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'track', 'stream', 'subject', 'Stream'];
+    TrackNewSubjectDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance',
+                                                'stream', 'track', 'subject', 'Stream'];
 
-    function TrackNewSubjectDialogController ($timeout, $scope, $stateParams, $uibModalInstance, track, stream, subject, Stream) {
+    function TrackNewSubjectDialogController ($timeout, $scope, $stateParams, $uibModalInstance, stream, track, subject, Stream) {
         var vm = this;
 
-        vm.track = track;
         vm.stream = stream;
+        vm.track = track;
         vm.subject = subject;
         vm.clear = clear;
         vm.save = save;
@@ -26,7 +27,12 @@
 
         function save () {
             vm.isSaving = true;
-            Stream.addSubjectToTrack({id: vm.stream.id, trackId: vm.track.id}, vm.subject);
+            if(vm.subject.id !== null) {
+                Stream.updateSubject({id: vm.stream.id, trackId: vm.track.id, subjectId: vm.subject.id}, vm.subject);
+            }
+            else {
+                Stream.addSubjectToTrack({id: vm.stream.id, trackId: vm.track.id}, vm.subject);
+            }
             $uibModalInstance.close(true);
         }
 

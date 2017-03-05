@@ -67,6 +67,14 @@
             'deleteSubject': {
                 method: 'DELETE',
                 url: 'api/streams/:id/tracks/:trackId/subjects/:subjectId'
+            },
+            'getSubject': {
+                method: 'GET',
+                url: 'api/streams/:id/tracks/:trackId/subjects/:subjectId'
+            },
+            'updateSubject': {
+                method: 'PUT',
+                url: 'api/streams/:id/tracks/:trackId/subjects/:subjectId'
             }
         });
     }

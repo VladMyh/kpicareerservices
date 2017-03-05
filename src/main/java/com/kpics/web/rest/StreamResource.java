@@ -10,6 +10,7 @@ import com.kpics.service.dto.UserDTO;
 import com.kpics.web.rest.util.HeaderUtil;
 import com.kpics.web.rest.util.PaginationUtil;
 import com.kpics.web.rest.vm.StreamVM;
+import com.kpics.web.rest.vm.SubjectVM;
 import com.kpics.web.rest.vm.TeacherVM;
 import com.kpics.web.rest.vm.TrackVM;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -210,7 +211,7 @@ public class StreamResource {
      * or with status 500 (Internal Server Error) if the stream couldnt be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PutMapping("/streams/{id}/tracks")
+    @PostMapping("/streams/{id}/tracks")
     @Timed
     public ResponseEntity<Stream> addTrackToStream(@PathVariable String id, @Valid @RequestBody TrackVM trackVM) throws URISyntaxException {
         log.debug("REST request to add Track to Stream : {}", id, trackVM);
@@ -279,6 +280,19 @@ public class StreamResource {
     }
 
     /**
+     *
+     *
+     * @param id
+     * @param trackVM
+     * @return
+     */
+//    @PutMapping("/streams/{streamId}/tracks/{trackId}")
+//    @Timed
+//    public ResponseEntity<TrackVM> updateTrack(@PathVariable String id, @Valid @RequestBody TrackVM trackVM) {
+//        //TODO: implement
+//    }
+
+    /**
      * DELETE  /streams/:streamId/tracks/:trackId : delete the track of the stream.
      *
      * @param streamId the id of the stream
@@ -298,6 +312,51 @@ public class StreamResource {
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityDeletionFailedAlert(TRACK, trackId))
             .build();
+    }
+
+    /**
+     * GET  /streams/:id/tracks/:trackId/subjects/:subjectId : get the subject of the track.
+     *
+     * @param streamId  the id of the stream
+     * @param trackId   the id of the track
+     * @param subjectId the id of the subject to retrieve
+     * @return          the ResponseEntity with status 200 (OK) and with body the stream, or with status 404 (Not Found)
+     */
+    @GetMapping("/streams/{streamId}/tracks/{trackId}/subjects/{subjectId}")
+    @Timed
+    public ResponseEntity<SubjectVM> getSubject(@PathVariable String streamId,
+                                                @PathVariable String trackId,
+                                                @PathVariable String subjectId) {
+        log.debug("REST request to get subject from track : {}", streamId, trackId, subjectId);
+        Stream stream = streamService.findOne(streamId);
+        SubjectVM result = null;
+
+        if(stream != null) {
+            Optional<Track> track = stream.getTracks()
+                .stream()
+                .filter(t -> t.getId().equals(trackId))
+                .findFirst();
+
+            if(track.isPresent()) {
+                Optional<Subject> subject = track.get().getSubjects()
+                    .stream()
+                    .filter(s -> s.getId().equals(subjectId))
+                    .findFirst();
+
+                if(subject.isPresent()) {
+                    result = new SubjectVM();
+                    result.setId(subject.get().getId());
+                    result.setName(subject.get().getName());
+                    result.setSemester(subject.get().getSemester());
+
+                    TeacherVM teacherVM = new TeacherVM(userService.getTeacherById(subject.get().getTeacherId()).get());
+                    result.setTeacher(teacherVM);
+
+                }
+            }
+        }
+
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
     }
 
     /**
@@ -403,6 +462,56 @@ public class StreamResource {
         return ResponseEntity.badRequest()
             .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "iddoesntexist", "Stream with giver id doesn't exists"))
             .body(null);
+    }
+
+
+    @PutMapping("/streams/{streamId}/tracks/{trackId}/subjects/{subjectId}")
+    @Timed
+    public ResponseEntity<?> updateSubject(@PathVariable String streamId,
+                                           @PathVariable String trackId,
+                                           @PathVariable String subjectId,
+                                           @RequestBody Subject data) {
+        log.debug("REST request to update subject, streamId: {}, trackId: {}, subjectId: {}, data: {}",
+            streamId, trackId, subjectId, data);
+
+        Stream stream = streamService.findOne(streamId);
+        SubjectVM result = null;
+
+        if(stream != null) {
+            Optional<Track> track = stream.getTracks()
+                .stream()
+                .filter(t -> t.getId().equals(trackId))
+                .findFirst();
+
+            if(track.isPresent()) {
+                Optional<Subject> subject = track.get().getSubjects()
+                    .stream()
+                    .filter(s -> s.getId().equals(subjectId))
+                    .findFirst();
+
+                if(subject.isPresent()) {
+                    subject.get().setName(data.getName());
+                    subject.get().setSemester(data.getSemester());
+                    subject.get().setTeacherId(data.getTeacherId());
+
+                    track.get().setSubjects(track.get().getSubjects()
+                        .stream()
+                        .map(s -> s.getId().equals(subjectId) ? subject.get() : s)
+                        .collect(Collectors.toSet()));
+
+                    stream.setTracks(stream.getTracks()
+                        .stream()
+                        .map(t -> t.getId().equals(trackId) ? track.get() : t)
+                        .collect(Collectors.toSet()));
+
+                    streamService.save(stream);
+                }
+            }
+        }
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(SUBJECT, subjectId))
+            .body(stream);
     }
 
 }
