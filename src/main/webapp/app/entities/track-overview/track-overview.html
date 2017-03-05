@@ -1,0 +1,110 @@
+<style>
+    .nav {
+        margin-bottom: 20px;
+        margin-left: 0;
+        list-style: none;
+    }
+    .tab-menu.nav-tabs {
+        border-bottom: none;
+    }
+    ul, ol {
+        padding: 0;
+        margin: 0 0 10px 25px;
+    }
+    .tab-menu.nav-tabs {
+        *zoom: 1;
+        margin-top: -46px;
+    }
+    .box {
+        background: #fff !important;
+        margin-bottom: 28px;
+    }
+    .row {
+         margin-right: 0px;
+         margin-left: 0px;
+    }
+    .box-header {
+        height: 40px;
+        font-size: 16px;
+        line-height: 16px;
+        padding: 10px;
+        background: #f5f5f5;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+        overflow: hidden;
+    }
+    .tab-menu.nav-tabs > .active > a {
+        color: #555555;
+        cursor: default;
+        background-color: #fff;
+        border: none;
+    }
+</style>
+
+<div>
+    <div class="row">
+        <div class="col-sm-6">
+            <h3>{{vm.trackInfo.name}}</h3>
+            <div class="row">
+                <!--<pre ng-style="{white-space:'pre-wrap'}">-->
+                <div class="col-sm-4">
+                    <img ng-style="{width: '100%'}" class="img-circle" src="{{vm.selectedInstructor.img}}">
+                </div>
+                <div class="col-sm-8" >
+                    <select ng-model="vm.selectedInstructor" ng-options="instructor.name for instructor in vm.trackInfo.teaching.instructors"/>
+                    <p>Faculty: {{vm.selectedInstructor.chair}}</p>
+                    <p>Description: {{vm.selectedInstructor.description}}</p>
+                </div>
+                <!--</pre>-->
+            </div>
+
+            <h4>Rating:</h4>
+            <div ng-repeat="skill in vm.trackInfo.skills">
+                <div>
+                    <h5>{{skill.name}}: {{skill.rating}}/100 </h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="row">
+                <h3 ng-style="{float: 'right', padding: '10px'}">Overall rating: {{vm.getOverallRating()}}/100</h3>
+            </div>
+            <p>Faculty: {{vm.trackInfo.faculty}}</p>
+            <p>Description: {{vm.trackInfo.description}}</p>
+        </div>
+    </div>
+
+
+
+
+    <div class="row">
+        <div class="box span12">
+            <div class="box-header"/>
+            <div class="box-content">
+                <ul class="nav tab-menu nav-tabs" id="myTab">
+                    <li ng-repeat="skill in vm.trackInfo.skills" class="active">
+                        <a data-value="{{$index}}" >{{skill.name}}</a>
+                    </li>
+
+                    <li class="active">
+                        <select class="nav tab-menu nav-tabs" ng-model="vm.selectedSkill" ng-options="skill.name for skill in vm.trackInfo.skills"/>
+                    </li>
+                </ul>
+
+
+
+                <div id="myTabContent" class="tab-content">
+                    <div>
+                        <p ng-style="{margin: '15px', lineHeight: '20px'}">{{vm.selectedSkill.description}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
