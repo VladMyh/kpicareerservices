@@ -14,7 +14,7 @@
             url: '/student-overview?page&sort&search',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'kpicsApp.studentInfo.home.title'
+                pageTitle: 'kpicsApp.studentOverview.home.title'
             },
             views: {
                 'content@': {
@@ -45,7 +45,7 @@
                     };
                 }],
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('studentInfo');
+                    $translatePartialLoader.addPart('studentOverview');
                     $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]

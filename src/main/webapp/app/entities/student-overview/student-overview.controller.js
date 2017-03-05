@@ -42,18 +42,18 @@
                 mark: 85,
                 skills: [
                     {
-                        name: "Level 1",
+                        name: "Level 1 (.Net Core)",
                         description: ".Net Core. " + vm.description ,
                         mark: 53
                     },
                     {
-                        name: "Level 2",
+                        name: "Level 2 (ADO)",
                         description: "ADO. "+ vm.description ,
                         mark: 21
 
                     },
                     {
-                        name: "Level 3",
+                        name: "Level 3 (ASP .NET.)",
                         description: "ASP .NET." + vm.description,
                         mark: 80
                     }
@@ -64,18 +64,18 @@
                 mark: 67,
                 skills: [
                     {
-                        name: "Level 1",
+                        name: "Level 1 (Java Core)",
                         description: "Java Core. " + vm.description ,
                         mark: 43
                     },
                     {
-                        name: "Level 2",
+                        name: "Level 2 (JAVA EE)",
                         description: "JAVA EE. "+ vm.description ,
                         mark: 82
 
                     },
                     {
-                        name: "Level 3",
+                        name: "Level 3 (SPRING MVC)",
                         description: "SPRING MVC. " + vm.description,
                         mark: 27
                     }
@@ -86,12 +86,12 @@
                 mark:58,
                 skills: [
                     {
-                        name: "Level 1",
+                        name: "Level 1 (JS Core)",
                         description: "JS Core. " + vm.description ,
                         mark: 53
                     },
                     {
-                        name: "Level 2",
+                        name: "Level 2 (ECMAScript)",
                         description: "ECMAScript. "+ vm.description ,
                         mark: 72
 
@@ -103,18 +103,18 @@
                 mark:42,
                 skills: [
                     {
-                        name: "Level 1",
+                        name: "Level 1 (Core)",
                         description: "Core. " + vm.description ,
                         mark: 78
                     },
                     {
-                        name: "Level 2",
+                        name: "Level 2 (Apps dev)",
                         description: "Apps dev. "+ vm.description ,
                         mark: 20
 
                     },
                     {
-                        name: "Level 3",
+                        name: "Level 3 (Apps dev pro)",
                         description: "Apps dev pro. " + vm.description,
                         mark: 55
                     }
@@ -125,18 +125,18 @@
                 mark:8,
                 skills: [
                     {
-                        name: "Level 1",
+                        name: "Level 1 (FLAGS)",
                         description: "FLAGS. " + vm.description ,
                         mark: 25
                     },
                     {
-                        name: "Level 2",
+                        name: "Level 2 (MOV|JUMP)",
                         description: "MOV|JUMP. "+ vm.description ,
                         mark: 39
 
                     },
                     {
-                        name: "Level 3",
+                        name: "Level 3 (NE|NZ)",
                         description: "NE|NZ." + vm.description,
                         mark: 17
                     }

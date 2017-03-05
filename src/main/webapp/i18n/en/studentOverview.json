@@ -2,7 +2,7 @@
     "kpicsApp": {
         "studentOverview" : {
             "home": {
-                "title": "Student Infos",
+                "title": "Student Overview",
                 "createLabel": "Create a new Student Info",
                 "createOrEditLabel": "Create or edit a Student Info",
                 "search": "Search for Student Info"
