@@ -46,7 +46,7 @@
             },
             'updateTrack': {
                 method: 'PUT',
-                url: 'api/streams/:id/tracks'
+                url: 'api/streams/:id/tracks/:trackId'
             },
             'getTrack': {
                 method: 'GET',

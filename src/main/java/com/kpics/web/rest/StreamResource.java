@@ -280,17 +280,46 @@ public class StreamResource {
     }
 
     /**
+     * PUT /streams/:streamId/tracks/:trackId
      *
-     *
-     * @param id
-     * @param trackVM
+     * @param streamId      Id of the stream.
+     * @param trackId Id of the track.
+     * @param trackVM Updated track.
      * @return
      */
-//    @PutMapping("/streams/{streamId}/tracks/{trackId}")
-//    @Timed
-//    public ResponseEntity<TrackVM> updateTrack(@PathVariable String id, @Valid @RequestBody TrackVM trackVM) {
-//        //TODO: implement
-//    }
+    @PutMapping("/streams/{streamId}/tracks/{trackId}")
+    @Timed
+    public ResponseEntity<?> updateTrack(@PathVariable String streamId,
+                                         @PathVariable String trackId,
+                                         @Valid @RequestBody TrackVM trackVM) {
+        log.debug("REST request to update track, streamId: {}, trackId: {}, data: {}", streamId, trackId, trackVM);
+
+        Stream stream = streamService.findOne(streamId);
+
+        if(stream != null) {
+            Optional<Track> track = stream.getTracks()
+                .stream()
+                .filter(t -> t.getId().equals(trackId))
+                .findFirst();
+
+            if(track.isPresent()) {
+                track.get().setName(trackVM.getName());
+                track.get().setDescription(trackVM.getDescription());
+
+                stream.setTracks(stream.getTracks()
+                    .stream()
+                    .map(t -> t.getId().equals(trackId) ? track.get() : t)
+                    .collect(Collectors.toSet()));
+
+                streamService.save(stream);
+            }
+        }
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(TRACK, trackId))
+            .body(stream);
+
+    }
 
     /**
      * DELETE  /streams/:streamId/tracks/:trackId : delete the track of the stream.
@@ -475,7 +504,6 @@ public class StreamResource {
             streamId, trackId, subjectId, data);
 
         Stream stream = streamService.findOne(streamId);
-        SubjectVM result = null;
 
         if(stream != null) {
             Optional<Track> track = stream.getTracks()
