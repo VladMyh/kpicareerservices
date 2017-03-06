@@ -16,6 +16,7 @@
         vm.save = save;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
+        vm.isTeacherUsed = isTeacherUsed;
 
         function getTeacher(arr, id) {
             return arr.find(function (t) {
@@ -23,6 +24,16 @@
                     return t;
                 }
             })
+        }
+
+        function isTeacherUsed(trackInfo, teacherId) {
+            for (var i = 0; i < trackInfo.subjects.length; i++) {
+                if (trackInfo.subjects[i].teacherId === teacherId) {
+                    return true
+                }
+            }
+
+            return false;
         }
 
         function save () {

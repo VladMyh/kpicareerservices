@@ -111,4 +111,46 @@ public class StreamServiceImpl implements StreamService{
 
         return false;
     }
+
+    @Override
+    public boolean deleteTeacher(String streamId, String trackId, String teacherId) {
+        log.debug("Request to delete teacher from track, streamId : {}, trackId: {}, teacherId: {}",
+            streamId, trackId, teacherId);
+
+        Stream stream = streamRepository.findOne(streamId);
+
+        if(stream != null) {
+            Optional<Track> track = stream.getTracks()
+                .stream()
+                .filter(t -> t.getId().equals(trackId))
+                .findFirst();
+
+            if(track.isPresent() && !track.get().getTeacherIds().isEmpty()) {
+                Optional<Subject> subject = track.get().getSubjects()
+                    .stream()
+                    .filter(s -> s.getTeacherId().equals(teacherId))
+                    .findFirst();
+
+                if(!subject.isPresent()) {
+                    Set<String> newTeachers = track.get().getTeacherIds()
+                        .stream()
+                        .filter(t -> !t.equals(teacherId))
+                        .collect(Collectors.toSet());
+
+                    track.get().setTeacherIds(newTeachers);
+
+                    stream.setTracks(stream.getTracks()
+                        .stream()
+                        .map(t -> t.getId().equals(trackId) ? track.get() : t)
+                        .collect(Collectors.toSet()));
+
+                    streamRepository.save(stream);
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 }

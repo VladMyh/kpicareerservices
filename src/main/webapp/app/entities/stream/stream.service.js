@@ -56,6 +56,10 @@
                 method: 'PUT',
                 url: 'api/streams/:id/tracks/:trackId/addTeacher'
             },
+            'deleteTeacher': {
+                method: 'DELETE',
+                url: 'api/streams/:id/tracks/:trackId/teachers/:teacherId'
+            },
             'addSubjectToTrack': {
                 method: 'PUT',
                 url: 'api/streams/:id/tracks/:trackId/addSubject'

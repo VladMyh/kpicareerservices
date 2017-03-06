@@ -48,6 +48,8 @@ public class StreamResource {
 
     private static final String SUBJECT = "subject";
 
+    private static final String TEACHER = "teacher";
+
     private final StreamService streamService;
 
     private final UserService userService;
@@ -450,6 +452,32 @@ public class StreamResource {
         return ResponseEntity.badRequest()
             .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "iddoesntexist", "Stream with giver id doesn't exists"))
             .body(null);
+    }
+
+    /**
+     * DELETE  /streams/:streamId/tracks/:trackId/teachers/:teacherId : delete the teacher from track.
+     *
+     * @param streamId  the id of the stream
+     * @param trackId   the id of the track
+     * @param teacherId the id of the teacher to delete
+     * @return         the ResponseEntity with status 200 (OK)
+     */
+    @DeleteMapping("/streams/{streamId}/tracks/{trackId}/teachers/{teacherId}")
+    @Timed
+    public ResponseEntity<?> removeTeacher(@PathVariable String streamId,
+                                           @PathVariable String trackId,
+                                           @PathVariable String teacherId) {
+        log.debug("REST request to delete teacher from track, streamId : {}, trackId: {}, teacherId: {}",
+            streamId, trackId, teacherId);
+
+        if(streamService.deleteTeacher(streamId, trackId, teacherId)) {
+            return ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityDeletionAlert(TEACHER, teacherId))
+                .build();
+        }
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityDeletionFailedAlert(TEACHER, teacherId))
+            .build();
     }
 
     /**
