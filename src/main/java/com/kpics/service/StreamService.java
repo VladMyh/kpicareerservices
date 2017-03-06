@@ -39,4 +39,33 @@ public interface StreamService {
      *  @param id the id of the entity
      */
     void delete(String id);
+
+    /**
+     * Delete track from stream.
+     *
+     * @param streamId Stream id.
+     * @param trackId  Track id.
+     * @return         True if track is deleted, false otherwise.
+     */
+    boolean deleteTrack(String streamId, String trackId);
+
+    /**
+     * Delete subject from track.
+     *
+     * @param streamId  Stream id.
+     * @param trackId   Track id.
+     * @param subjectId Subject id.
+     * @return          True if subject is deleted, false otherwise.
+     */
+    boolean deleteSubject(String streamId, String trackId, String subjectId);
+
+    /**
+     * Delete teacher from track.
+     *
+     * @param streamId  Stream id.
+     * @param trackId   Track id.
+     * @param teacherId Teacher id.
+     * @return          True if teacher is deleted, false otherwise.
+     */
+    boolean deleteTeacher(String streamId, String trackId, String teacherId);
 }

@@ -26,11 +26,7 @@
 
         function save () {
             vm.isSaving = true;
-            if (vm.stream.id !== null) {
-                Stream.update(vm.stream, onSaveSuccess, onSaveError);
-            } else {
-                Stream.save(vm.stream, onSaveSuccess, onSaveError);
-            }
+            Stream.save(vm.stream, onSaveSuccess, onSaveError);
         }
 
         function onSaveSuccess (result) {

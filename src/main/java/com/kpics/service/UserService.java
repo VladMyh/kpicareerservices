@@ -1,10 +1,8 @@
 package com.kpics.service;
 
-import com.kpics.domain.Authority;
-import com.kpics.domain.StudentInfo;
-import com.kpics.domain.TeacherInfo;
-import com.kpics.domain.User;
+import com.kpics.domain.*;
 import com.kpics.repository.AuthorityRepository;
+import com.kpics.repository.StreamRepository;
 import com.kpics.repository.UserRepository;
 import com.kpics.security.AuthoritiesConstants;
 import com.kpics.security.SecurityUtils;
@@ -31,12 +29,16 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final StreamRepository streamRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     private final AuthorityRepository authorityRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
+    public UserService(UserRepository userRepository, StreamRepository streamRepository,
+                       PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
         this.userRepository = userRepository;
+        this.streamRepository = streamRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
     }
@@ -186,8 +188,37 @@ public class UserService {
     public void deleteUser(String email) {
         userRepository.findOneByEmail(email).ifPresent(user -> {
             userRepository.delete(user);
-            log.debug("Deleted User: {}", user);
+            log.debug("Deleted student: {}", user);
         });
+    }
+
+    public boolean deleteTeacher(String email) {
+        Optional<User> user =  userRepository.findOneByEmail(email);
+
+        if(user.isPresent() &&
+            user.get().getAuthorities().contains(new Authority(AuthoritiesConstants.TEACHER)) &&
+            checkTeacherDeletionValidity(user.get())) {
+            userRepository.delete(user.get());
+            log.debug("Deleted teacher: {}", user);
+            return true;
+        }
+        else {
+            log.debug("Teacher cannot be deleted: {}", user);
+        }
+
+        return false;
+    }
+
+    /**
+     * This function checks if teacher can be deleted.
+     *
+     * @param user User entity.
+     * @return     True if user can be deleted, false otherwise.
+     */
+    private boolean checkTeacherDeletionValidity(User user) {
+        log.debug("Checking deletion validity for teacher: {}", user);
+        Optional<Stream> stream = streamRepository.findOneByTracksTeacherIds(user.getId());
+        return !stream.isPresent();
     }
 
     public void changePassword(String password) {

@@ -139,31 +139,6 @@
                 });
             }]
         })
-        .state('stream.edit', {
-            parent: 'stream',
-            url: '/{id}/edit',
-            data: {
-                authorities: ['ROLE_USER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/stream/stream-dialog.html',
-                    controller: 'StreamDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: ['Stream', function(Stream) {
-                            return Stream.get({id : $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('stream', null, { reload: 'stream' });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
-        })
         .state('stream.delete', {
             parent: 'stream',
             url: '/{id}/delete',
@@ -188,6 +163,78 @@
                 });
             }]
         })
+            .state('stream-detail.deleteTrack', {
+                parent: 'stream-detail',
+                url: '/track/{trackId}/delete',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/stream/stream-track-delete-dialog.html',
+                        controller: 'StreamTrackDeleteController',
+                        controllerAs: 'vm',
+                        size: 'md',
+                        resolve: {
+                            stream: ['Stream', function(Stream) {
+                                return Stream.get({id : $stateParams.id}).$promise;
+                            }]
+                        }
+                    }).result.then(function() {
+                        $state.go('stream-detail', null, { reload: 'stream-detail' });
+                    }, function() {
+                        $state.go('^');
+                    });
+                }]
+            })
+            .state('stream-detail.deleteSubject', {
+                parent: 'stream-detail',
+                url: '/track/{trackId}/subject/{subjectId}/delete',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/stream/stream-track-subject-delete-dialog.html',
+                        controller: 'StreamTrackSubjectDeleteController',
+                        controllerAs: 'vm',
+                        size: 'md',
+                        resolve: {
+                            stream: ['Stream', function(Stream) {
+                                return Stream.get({id : $stateParams.id}).$promise;
+                            }]
+                        }
+                    }).result.then(function() {
+                        $state.go('stream-detail', null, { reload: 'stream-detail' });
+                    }, function() {
+                        $state.go('^');
+                    });
+                }]
+            })
+            .state('stream-detail.deleteTeacher', {
+                            parent: 'stream-detail',
+                            url: '/track/{trackId}/teacher/{teacherId}/delete',
+                            data: {
+                                authorities: ['ROLE_USER']
+                            },
+                            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                                $uibModal.open({
+                                    templateUrl: 'app/entities/stream/stream-track-teacher-delete-dialog.html',
+                                    controller: 'StreamTrackTeacherDeleteController',
+                                    controllerAs: 'vm',
+                                    size: 'md',
+                                    resolve: {
+                                        stream: ['Stream', function(Stream) {
+                                            return Stream.get({id : $stateParams.id}).$promise;
+                                        }]
+                                    }
+                                }).result.then(function() {
+                                    $state.go('stream-detail', null, { reload: 'stream-detail' });
+                                }, function() {
+                                    $state.go('^');
+                                });
+                            }]
+                        })
         .state('stream-detail.newTrack', {
             parent: 'stream-detail',
             url: '/newTrack',
@@ -220,6 +267,34 @@
                 }, function() {
                     $state.go('stream-detail');
                 });
+                }]
+            })
+            .state('stream-detail.editTrack', {
+                parent: 'stream-detail',
+                url: '/track/{trackId}/edit',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/stream/stream-detail-newtrack.html',
+                        controller: 'StreamNewTrackDialogController',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'lg',
+                        resolve: {
+                            track: ['Stream', function(Stream) {
+                                return Stream.getTrack({id: $stateParams.id, trackId: $stateParams.trackId}).$promise;
+                            }],
+                            entity: ['Stream', function(Stream) {
+                                return Stream.get({id : $stateParams.id}).$promise;
+                            }]
+                        }
+                    }).result.then(function() {
+                        $state.go('stream-detail', null, { reload: 'stream-detail' });
+                    }, function() {
+                        $state.go('stream-detail');
+                    });
                 }]
             })
             .state('stream-detail.addTeacher', {
@@ -268,8 +343,7 @@
                                 return {
                                     name: null,
                                     id: null,
-                                    teacherId: null,
-                                    subjects: null
+                                    teacherId: null
                                 };
                             },
                             stream: ['Stream', function(Stream) {
@@ -277,6 +351,39 @@
                             }],
                             track: ['Stream', function(Stream) {
                                 return Stream.getTrack({id: $stateParams.id, trackId: $stateParams.trackId}).$promise;
+                            }]
+                        }
+                    }).result.then(function() {
+                        $state.go('stream-detail', null, { reload: 'stream-detail' });
+                    }, function() {
+                        $state.go('stream-detail');
+                    });
+                }]
+            })
+            .state('stream-detail.editSubject', {
+                parent: 'stream-detail',
+                url: '/track/{trackId}/subject/{subjectId}/edit',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/stream/stream-track-add-subject-dialog.html',
+                        controller: 'TrackNewSubjectDialogController',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'lg',
+                        resolve: {
+                            stream: ['Stream', function(Stream) {
+                                return Stream.get({id : $stateParams.id}).$promise;
+                            }],
+                            track: ['Stream', function(Stream) {
+                                return Stream.getTrack({id: $stateParams.id, trackId: $stateParams.trackId}).$promise;
+                            }],
+                            subject: ['Stream', function(Stream) {
+                                return Stream.getSubject({id: $stateParams.id,
+                                                          trackId: $stateParams.trackId,
+                                                          subjectId: $stateParams.subjectId}).$promise;
                             }]
                         }
                     }).result.then(function() {

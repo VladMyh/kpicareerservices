@@ -1,27 +1,50 @@
 
 <div>
-    <h2><span data-translate="kpicsApp.stream.detail.title">Stream</span> {{vm.stream.name}}</h2>
+    <h2><span data-translate="kpicsApp.stream.detail.title">Stream</span> {{::vm.stream.name}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
+    <form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
     <dl class="row jh-entity-details">
         <dt><span data-translate="kpicsApp.stream.name">Name</span></dt>
         <dd>
-            <span>{{vm.stream.name}}</span>
+            <input type="text" class="form-control" name="name" id="field_name"
+                   ng-model="vm.stream.name"
+                   required/>
         </dd>
 
         <dt><span data-translate="kpicsApp.stream.startDate">Start Date</span></dt>
         <dd>
-            <span>{{vm.stream.startDate | date:'mediumDate'}}</span>
+            <div class="input-group">
+                <input id="field_startDate" type="text" class="form-control" name="startDate" uib-datepicker-popup="{{dateformat}}" ng-model="vm.stream.startDate" is-open="vm.datePickerOpenStatus.startDate"
+                       required/>
+                <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('startDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+            </div>
         </dd>
 
         <dt><span data-translate="kpicsApp.stream.endDate">End Date</span></dt>
         <dd>
-            <span>{{vm.stream.endDate | date:'mediumDate'}}</span>
+            <div class="input-group">
+                <input id="field_endDate" type="text" class="form-control" name="endDate" uib-datepicker-popup="{{dateformat}}" ng-model="vm.stream.endDate" is-open="vm.datePickerOpenStatus.endDate"
+                       required/>
+                <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('endDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+            </div>
         </dd>
 
         <dt><span data-translate="kpicsApp.stream.description">Description</span></dt>
         <dd>
-            <span>{{vm.stream.description}}</span>
+            <textarea class="form-control" name="description" id="field_description"
+                      ng-model="vm.stream.description"></textarea>
+        </dd>
+
+        <dt></dt>
+        <dd>
+            <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+                <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+            </button>
         </dd>
 
             <div class="row">
@@ -32,10 +55,10 @@
                     <div class="panel-heading" contenteditable="false">
                         Tracks
 
-                        <div class="col-xs-2 pull-right">
+                        <div class="col-md-2 pull-right">
                             <button class="btn btn-primary btn-xs" ui-sref="stream-detail.newTrack({id:vm.stream.id})" >
                                 <span class="glyphicon glyphicon-plus"></span>
-                                Add Track<!--TODO: add locale-->
+                                Add<!--TODO: add locale-->
                             </button>
                         </div>
 
@@ -51,7 +74,33 @@
                             <div class="col-md-12">
                                 <div class="thumbnail">
                                     <div class="caption">
-                                        <h3>{{trackInfo.name}}</h3>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <h3>{{trackInfo.name}}</h3>
+                                            </div>
+
+                                            <div class="col-md-2 col-md-offset-8">
+                                                <button class="btn btn-danger btn-sm"
+                                                        ng-show="!trackInfo.subjects.length"
+                                                        ui-sref="stream-detail.deleteTrack({id: vm.stream.id, trackId: trackInfo.id})">
+                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                </button>
+                                                <button ui-sref="stream-detail.editTrack({id: vm.stream.id, trackId: trackInfo.id})"
+                                                        class="btn btn-primary btn-sm">
+                                                    <span class="glyphicon glyphicon-pencil"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <hr/>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <p><b>Description:</b></p><!--TODO: add locale-->
+                                                <p>{{trackInfo.description}}</p>
+                                            </div>
+                                        </div>
+
                                         <hr/>
 
                                         <h4>Teachers:</h4>
@@ -80,7 +129,11 @@
                                                 <td>{{teacher.faculty}}</td>
                                                 <td>{{teacher.department}}</td>
                                                 <td class="text-right">
-                                                    <!--Add button-->
+                                                    <button class="btn btn-danger btn-sm"
+                                                            ng-show="vm.isTeacherUsed(trackInfo, teacher.id)"
+                                                            ui-sref="stream-detail.deleteTeacher({id: vm.stream.id, trackId: trackInfo.id, teacherId: teacher.id})">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </button>
                                                 </td>
                                             </tr>
                                             <tr ng-show="!trackInfo.teachers.length">
@@ -98,15 +151,15 @@
                                                     <div class="panel-heading" contenteditable="false">
                                                         Subjects
 
-                                                        <div class="col-xs-2 pull-right">
+                                                        <div class="col-md-2 pull-right">
                                                             <button class="btn btn-success btn-xs" ng-show="trackInfo.teachers.length"
                                                                     ui-sref="stream-detail.addSubject({trackId:trackInfo.id})">
                                                                 <span class="glyphicon glyphicon-plus"></span>
-                                                                Add Subject<!--TODO: add locale-->
+                                                                Add<!--TODO: add locale-->
                                                             </button>
                                                             <button class="btn btn-success btn-xs" disabled="disabled" ng-show="!trackInfo.teachers.length">
                                                                 <span class="glyphicon glyphicon-plus"></span>
-                                                                Add Subject<!--TODO: add locale-->
+                                                                Add<!--TODO: add locale-->
                                                             </button>
                                                         </div>
                                                     </div>
@@ -120,7 +173,23 @@
                                                             <div class="col-md-12">
                                                                 <div class="thumbnail">
                                                                     <div class="caption">
-                                                                        <h3>{{subject.name}}</h3>
+                                                                        <div class="row">
+                                                                            <div class="col-md-2">
+                                                                                <h3>{{subject.name}}</h3>
+                                                                            </div>
+
+                                                                            <div class="col-md-2 col-md-offset-8">
+                                                                                <button class="btn btn-danger btn-sm"
+                                                                                        ui-sref="stream-detail.deleteSubject({id: vm.stream.id, trackId: trackInfo.id, subjectId: subject.id})">
+                                                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                                                </button>
+                                                                                <button ui-sref="stream-detail.editSubject({id: vm.stream.id, trackId: trackInfo.id, subjectId: subject.id})"
+                                                                                        class="btn btn-primary btn-sm">
+                                                                                    <span class="glyphicon glyphicon-pencil"></span>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+
                                                                         <hr/>
                                                                         <p>Teacher: {{vm.getTeacher(trackInfo.teachers, subject.teacherId).firstName}} {{vm.getTeacher(trackInfo.teachers, subject.teacherId).lastName}}</p>
                                                                         <p>Semester: {{subject.semester}}</p>
@@ -165,8 +234,5 @@
         <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
     </button>
 
-    <button type="button" ui-sref="stream-detail.edit({id:vm.stream.id})" class="btn btn-primary">
-        <span class="glyphicon glyphicon-pencil"></span>
-        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
-    </button>
+    </form>
 </div>
