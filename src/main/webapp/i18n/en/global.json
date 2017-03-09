@@ -11,6 +11,7 @@
                 "teacherInfo": "Teacher",
                 "track": "Track",
                 "stream": "Stream",
+                "faculty": "Faculty",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
