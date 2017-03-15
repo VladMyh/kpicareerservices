@@ -39,6 +39,8 @@
         vm.studentInfo.tracks = [
             {
                 name: "C#",
+                academicYearStarted: 2015,
+                academicYearEnded: 2016,
                 mark: 85,
                 skills: [
                     {
@@ -61,6 +63,8 @@
             },
             {
                 name: "JAVA",
+                academicYearStarted: 2014,
+                academicYearEnded: 2015,
                 mark: 67,
                 skills: [
                     {
@@ -83,6 +87,8 @@
             },
             {
                 name:"JavaScript",
+                academicYearStarted: 2013,
+                academicYearEnded: 2015,
                 mark:58,
                 skills: [
                     {
@@ -100,6 +106,8 @@
             },
             {
                 name:"C++",
+                academicYearStarted: 2012,
+                academicYearEnded: 2014,
                 mark:42,
                 skills: [
                     {
@@ -122,6 +130,8 @@
             },
             {
                 name:"Assembler",
+                academicYearStarted: 2016,
+                academicYearEnded: 2017,
                 mark:8,
                 skills: [
                     {

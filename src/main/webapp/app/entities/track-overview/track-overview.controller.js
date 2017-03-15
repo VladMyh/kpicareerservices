@@ -8,7 +8,7 @@
     StudentOverviewController.$inject = ['$scope', '$state', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
 
     function StudentOverviewController ($scope, $state, ParseLinks, AlertService, paginationConstants, pagingParams) {
-        var vm = this;
+        let vm = this;
 
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
@@ -52,8 +52,8 @@
                     img: "http://s018.radikal.ru/i520/1703/d7/22c7278c8e72.png"
                 },
                 {
-                    name : "Name2 Surname2",
-                    chair: "PBF",
+                    name : "Name3 Surname3",
+                    chair: "TEF",
                     description: "This is the teacher to whom students know they can go with any problems or concerns or even to share a funny story.",
                     img: "http://s02.radikal.ru/i175/1703/f1/fd56e568c824.jpg"
                 }
@@ -63,13 +63,11 @@
         if (vm.trackInfo.skills.length > 0)
             vm.selectedSkill = vm.trackInfo.skills[0];
 
-        if (vm.trackInfo.teaching.instructors.length > 0)
-            vm.selectedInstructor =  vm.trackInfo.teaching.instructors[0];
 
         vm.getOverallRating = function () {
             let trackRating = 0;
-            for (let skill of vm.trackInfo.skills){
-                trackRating += skill.rating;
+            for (let i=0; i < vm.trackInfo.skills.length; i++){
+                trackRating += vm.trackInfo.skills[i].rating;
             }
             let overallRating = trackRating / vm.trackInfo.skills.length;
             return overallRating;
