@@ -58,4 +58,13 @@ public interface FacultyService {
      * @param departmentId Department id.
      */
     void deleteDepartment(String facultyId, String departmentId);
+
+    /**
+     * This method finds department by id.
+     *
+     * @param facultyId    Id of the Faculty.
+     * @param departmentId Id of the Department.
+     * @return             Department object.
+     */
+    Department findDepartment(String facultyId, String departmentId);
 }

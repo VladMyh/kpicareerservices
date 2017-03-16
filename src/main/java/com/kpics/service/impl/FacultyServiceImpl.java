@@ -126,5 +126,26 @@ public class FacultyServiceImpl implements FacultyService{
         }
     }
 
+    @Override
+    public Department findDepartment(String facultyId, String departmentId) {
+        log.debug("Request to find department, facultyId: {}, departmentId: {}", facultyId, departmentId);
+
+        Department result = null;
+        Faculty faculty = findOne(facultyId);
+
+        if(faculty != null) {
+            Optional<Department> department = faculty.getDepartments()
+                .stream()
+                .filter(d -> d.getId().equals(departmentId))
+                .findFirst();
+
+            if(department.isPresent()) {
+                result = department.get();
+            }
+        }
+
+        return result;
+    }
+
 
 }

@@ -32,6 +32,10 @@
             'deleteDepartment': {
                 method: 'DELETE',
                 url: 'api/faculties/:id/departments/:departmentId'
+            },
+            'getDepartment': {
+                method: 'GET',
+                url: 'api/faculties/:id/departments/:departmentId'
             }
         });
     }

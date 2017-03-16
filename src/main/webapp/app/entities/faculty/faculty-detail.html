@@ -30,7 +30,13 @@
                 <tr ng-repeat="department in vm.faculty.departments track by department.id">
                     <td>{{department.name}}</td>
                     <td class="text-right">
-                        <!--TODO: add buttons-->
+                        <button class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                        <button ui-sref="faculty-detail.editDepartment({id: vm.faculty.id, departmentId: department.id})"
+                                class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
                     </td>
                 </tr>
                 <tr ng-show="!vm.faculty.departments.length">

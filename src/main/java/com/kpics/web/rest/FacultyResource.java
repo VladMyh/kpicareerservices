@@ -193,4 +193,19 @@ public class FacultyResource {
         facultyService.deleteDepartment(facultyId, departmentId);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(DEPARTMENT, facultyId)).build();
     }
+
+    /**
+     * GET  /faculties/:facultyId/departments/:departmentId : get the department of the faculty.
+     *
+     * @param facultyId    the id of the stream
+     * @param departmentId the id of the track
+     * @return             the ResponseEntity with status 200 (OK) and with body the stream, or with status 404 (Not Found)
+     */
+    @GetMapping("/faculties/{facultyId}/departments/{departmentId}")
+    @Timed
+    public ResponseEntity<Department> getDepartment(@PathVariable String facultyId,
+                                                    @PathVariable String departmentId) {
+        log.debug("REST request to get department, faculty: {}, department: {}", facultyId, departmentId);
+        return ResponseEntity.ok().body(facultyService.findDepartment(facultyId, departmentId));
+    }
 }
