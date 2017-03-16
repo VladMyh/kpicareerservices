@@ -138,7 +138,7 @@ public class FacultyResource {
      * @return             the ResponseEntity with status 201 (Created) and with body faculty, or with status 400 (Bad Request) if the faculty has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("/faculties/{facultyId}/departments")
+    @PostMapping("/faculties/{id}/departments")
     @Timed
     public ResponseEntity<Faculty> createDepartment(@PathVariable String id,
                                                     @Valid @RequestBody Department department) throws URISyntaxException {

@@ -8,6 +8,39 @@
         <dd>
             <span>{{vm.faculty.name}}</span>
         </dd>
+
+        <dt>Departments</dt>
+        <dd>
+            <div class="pull-right">
+                <button class="btn btn-success btn-sm" ui-sref="faculty-detail.addDepartment({id: vm.faculty.id})">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    Add Department<!--TODO: add locale-->
+                </button>
+            </div>
+
+            <table class="jh-table table">
+                <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse">
+                    <!--TODO:add localization-->
+                    <th jh-sort-by="fname">Name<span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="department in vm.faculty.departments track by department.id">
+                    <td>{{department.name}}</td>
+                    <td class="text-right">
+                        <!--TODO: add buttons-->
+                    </td>
+                </tr>
+                <tr ng-show="!vm.faculty.departments.length">
+                    <td>
+                        <p>No departments</p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </dd>
     </dl>
 
     <button type="submit"

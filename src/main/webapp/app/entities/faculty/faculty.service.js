@@ -20,7 +20,19 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'createDepartment': {
+                method: 'POST',
+                url: 'api/faculties/:id/departments'
+            },
+            'updateDepartment': {
+                method: 'PUT',
+                url: 'api/faculties/:id/departments/:departmentId'
+            },
+            'deleteDepartment': {
+                method: 'DELETE',
+                url: 'api/faculties/:id/departments/:departmentId'
+            }
         });
     }
 })();

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -61,23 +62,32 @@ public class FacultyServiceImpl implements FacultyService{
 
     @Override
     public Faculty saveDepartment(String facultyId, Department department) {
-        log.debug("Request to save department, facultyId: {}, department: {}");
+        log.debug("Request to save department, facultyId: {}, department: {}", facultyId, department);
 
         Faculty faculty = findOne(facultyId);
 
         if(faculty != null) {
-
             if(department.getId() == null) {
-                Optional<Department> dep = faculty.getDepartments()
-                    .stream()
-                    .filter(d -> d.getName().equals(department.getName()))
-                    .findFirst();
-
-                if(!dep.isPresent()) {
+                if(faculty.getDepartments() == null) {
+                    HashSet<Department> departments = new HashSet<>();
                     department.setId(ObjectId.get().toString());
-                    faculty.getDepartments().add(department);
+                    departments.add(department);
+                    faculty.setDepartments(departments);
 
                     save(faculty);
+                }
+                else {
+                    Optional<Department> dep = faculty.getDepartments()
+                        .stream()
+                        .filter(d -> d.getName().equals(department.getName()))
+                        .findFirst();
+
+                    if(!dep.isPresent()) {
+                        department.setId(ObjectId.get().toString());
+                        faculty.getDepartments().add(department);
+
+                        save(faculty);
+                    }
                 }
             }
             else {
