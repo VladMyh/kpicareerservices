@@ -1,20 +1,15 @@
 package com.kpics.domain;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.validation.constraints.*;
-import java.io.Serializable;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
-import java.util.Set;
 
 /**
- * A Faculty.
+ * A department.
  */
-
-@Document(collection = "faculty")
-public class Faculty implements Serializable {
+public class Department {
 
     private static final long serialVersionUID = 1L;
 
@@ -24,9 +19,6 @@ public class Faculty implements Serializable {
     @NotNull
     @Field("name")
     private String name;
-
-    @Field("departments")
-    private Set<Department> departments;
 
     public String getId() {
         return id;
@@ -40,21 +32,8 @@ public class Faculty implements Serializable {
         return name;
     }
 
-    public Faculty name(String name) {
-        this.name = name;
-        return this;
-    }
-
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Set<Department> getDepartments() {
-        return departments;
-    }
-
-    public void setDepartments(Set<Department> departments) {
-        this.departments = departments;
     }
 
     @Override
@@ -62,11 +41,10 @@ public class Faculty implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Faculty faculty = (Faculty) o;
+        Department that = (Department) o;
 
-        if (!id.equals(faculty.id)) return false;
-        if (!name.equals(faculty.name)) return false;
-        return departments != null ? departments.equals(faculty.departments) : faculty.departments == null;
+        if (!id.equals(that.id)) return false;
+        return name.equals(that.name);
     }
 
     @Override
@@ -76,10 +54,9 @@ public class Faculty implements Serializable {
 
     @Override
     public String toString() {
-        return "Faculty{" +
+        return "Department{" +
             "id='" + id + '\'' +
             ", name='" + name + '\'' +
-            ", departments=" + departments +
             '}';
     }
 }
