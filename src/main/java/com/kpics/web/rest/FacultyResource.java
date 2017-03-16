@@ -1,6 +1,7 @@
 package com.kpics.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.kpics.domain.Department;
 import com.kpics.domain.Faculty;
 import com.kpics.service.FacultyService;
 import com.kpics.web.rest.util.HeaderUtil;
@@ -31,8 +32,10 @@ public class FacultyResource {
 
     private final Logger log = LoggerFactory.getLogger(FacultyResource.class);
 
-    private static final String ENTITY_NAME = "faculty";
-        
+    private static final String FACULTY = "faculty";
+
+    private static final String DEPARTMENT = "department";
+
     private final FacultyService facultyService;
 
     public FacultyResource(FacultyService facultyService) {
@@ -51,11 +54,11 @@ public class FacultyResource {
     public ResponseEntity<Faculty> createFaculty(@Valid @RequestBody Faculty faculty) throws URISyntaxException {
         log.debug("REST request to save Faculty : {}", faculty);
         if (faculty.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new faculty cannot already have an ID")).body(null);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(FACULTY, "idexists", "A new faculty cannot already have an ID")).body(null);
         }
         Faculty result = facultyService.save(faculty);
         return ResponseEntity.created(new URI("/api/faculties/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(FACULTY, result.getId().toString()))
             .body(result);
     }
 
@@ -77,7 +80,7 @@ public class FacultyResource {
         }
         Faculty result = facultyService.save(faculty);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, faculty.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(FACULTY, faculty.getId().toString()))
             .body(result);
     }
 
@@ -116,14 +119,93 @@ public class FacultyResource {
      * DELETE  /faculties/:id : delete the "id" faculty.
      *
      * @param id the id of the faculty to delete
-     * @return the ResponseEntity with status 200 (OK)
+     * @return   the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/faculties/{id}")
     @Timed
     public ResponseEntity<Void> deleteFaculty(@PathVariable String id) {
         log.debug("REST request to delete Faculty : {}", id);
         facultyService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(FACULTY, id.toString())).build();
     }
 
+
+    /**
+     * POST  /faculties/:id/departments : Create a new department.
+     *
+     * @param id           Faculty id.
+     * @param department   the Department to create
+     * @return             the ResponseEntity with status 201 (Created) and with body faculty, or with status 400 (Bad Request) if the faculty has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/faculties/{id}/departments")
+    @Timed
+    public ResponseEntity<Faculty> createDepartment(@PathVariable String id,
+                                                    @Valid @RequestBody Department department) throws URISyntaxException {
+        log.debug("REST request to save create Department, facultyId: {}, department: {}", id, department);
+        if (department.getId() != null) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(DEPARTMENT, "idexists", "A new department cannot already have an ID")).body(null);
+        }
+        Faculty result = facultyService.saveDepartment(id, department);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(DEPARTMENT, id))
+            .body(result);
+    }
+
+    /**
+     * PUT  /faculties/:facultyId/departments/:departmentId : Updates an existing department.
+     *
+     * @param facultyId    Faculty id.
+     * @param departmentId Department id.
+     * @param department   the faculty to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated faculty,
+     * or with status 400 (Bad Request) if the department is not valid,
+     * or with status 500 (Internal Server Error) if the faculty couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping("/faculties/{facultyId}/departments/{departmentId}")
+    @Timed
+    public ResponseEntity<Faculty> updateDepartment(@PathVariable String facultyId,
+                                                    @PathVariable String departmentId,
+                                                    @Valid @RequestBody Department department) throws URISyntaxException {
+        log.debug("REST request to update Department, facultyId: {}, departmentId: {}, department: {}", facultyId, departmentId, department);
+        if (department.getId() == null) {
+            return createDepartment(facultyId, department);
+        }
+        Faculty result = facultyService.saveDepartment(facultyId, department);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(DEPARTMENT, facultyId))
+            .body(result);
+    }
+
+    /**
+     * DELETE  /faculties/:facultyId/departments/:departmentId : delete the department.
+     *
+     * @param facultyId    Faculty id.
+     * @param departmentId The id of the department to delete.
+     * @return             the ResponseEntity with status 200 (OK)
+     */
+    @DeleteMapping("/faculties/{facultyId}/departments/{departmentId}")
+    @Timed
+    public ResponseEntity<Void> deleteDepartment(@PathVariable String facultyId,
+                                                 @PathVariable String departmentId) {
+        log.debug("REST request to delete Department, facultyId: {}, departmentId: {}", facultyId, departmentId);
+        facultyService.deleteDepartment(facultyId, departmentId);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(DEPARTMENT, facultyId)).build();
+    }
+
+    /**
+     * GET  /faculties/:facultyId/departments/:departmentId : get the department of the faculty.
+     *
+     * @param facultyId    the id of the stream
+     * @param departmentId the id of the track
+     * @return             the ResponseEntity with status 200 (OK) and with body the stream, or with status 404 (Not Found)
+     */
+    @GetMapping("/faculties/{facultyId}/departments/{departmentId}")
+    @Timed
+    public ResponseEntity<Department> getDepartment(@PathVariable String facultyId,
+                                                    @PathVariable String departmentId) {
+        log.debug("REST request to get department, faculty: {}, department: {}", facultyId, departmentId);
+        return ResponseEntity.ok().body(facultyService.findDepartment(facultyId, departmentId));
+    }
 }

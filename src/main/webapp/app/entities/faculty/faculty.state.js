@@ -53,7 +53,7 @@
         })
         .state('faculty-detail', {
             parent: 'faculty',
-            url: '/faculty/{id}',
+            url: '/{id}',
             data: {
                 authorities: ['ROLE_USER'],
                 pageTitle: 'kpicsApp.faculty.detail.title'
@@ -184,7 +184,67 @@
                     $state.go('^');
                 });
             }]
-        });
+        })
+        .state('faculty-detail.addDepartment', {
+                    parent: 'faculty-detail',
+                    url: '/department/new',
+                    data: {
+                        authorities: ['ROLE_USER']
+                    },
+                    onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                        $uibModal.open({
+                            templateUrl: 'app/entities/faculty/faculty-department-dialog.html',
+                            controller: 'FacultyDepartmentDialogController',
+                            controllerAs: 'vm',
+                            backdrop: 'static',
+                            size: 'lg',
+                            resolve: {
+                                department: function () {
+                                    return {
+                                        name: null,
+                                        id: null
+                                    };
+                                },
+                                faculty: ['$stateParams', 'Faculty', function($stateParams, Faculty) {
+                                                    return Faculty.get({id : $stateParams.id}).$promise;
+                                                }]
+                            }
+                        }).result.then(function() {
+                            $state.go('faculty-detail', null, { reload: 'faculty-detail' });
+                        }, function() {
+                            $state.go('faculty-detail');
+                        });
+                    }]
+                })
+                .state('faculty-detail.editDepartment', {
+                            parent: 'faculty-detail',
+                            url: '/department/{departmentId}/edit',
+                            data: {
+                                authorities: ['ROLE_USER']
+                            },
+                            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                                $uibModal.open({
+                                    templateUrl: 'app/entities/faculty/faculty-department-dialog.html',
+                                    controller: 'FacultyDepartmentDialogController',
+                                    controllerAs: 'vm',
+                                    backdrop: 'static',
+                                    size: 'lg',
+                                    resolve: {
+                                        department: ['Faculty', function(Faculty) {
+                                            return Faculty.getDepartment({id : $stateParams.id,
+                                                                          departmentId : $stateParams.departmentId}).$promise;
+                                            }],
+                                        faculty: ['Faculty', function(Faculty) {
+                                            return Faculty.get({id : $stateParams.id}).$promise;
+                                        }]
+                                    }
+                                }).result.then(function() {
+                                    $state.go('^', {}, { reload: false });
+                                }, function() {
+                                    $state.go('^');
+                                });
+                            }]
+                        });
     }
 
 })();
