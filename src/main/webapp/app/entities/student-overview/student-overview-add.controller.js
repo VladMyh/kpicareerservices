@@ -8,7 +8,7 @@
     StudentOverviewAddController.$inject = ['$scope', '$state', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
 
     function StudentOverviewAddController ($scope, $state, ParseLinks, AlertService, paginationConstants, pagingParams) {
-        var vm = this;
+        let vm = this;
 
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
@@ -23,7 +23,7 @@
         function loadAll () {
 
             function sort() {
-                var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
+                let result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
                 if (vm.predicate !== 'id') {
                     result.push('id');
                 }

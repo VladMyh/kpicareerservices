@@ -40,25 +40,28 @@
         vm.trackInfo.teaching = {
             instructors: [
                 {
-                    name : "Name1 Surname1",
+                    name : "Mike Surname1",
                     chair: "TK",
                     description: "This teacher creates a welcoming learning environment for all students.",
                     img: "http://s020.radikal.ru/i712/1703/91/405c60fa613c.png"
                 },
                 {
-                    name : "Name2 Surname2",
+                    name : "Alice Surname2",
                     chair: "PBF",
                     description: "A great teacher lets students know that they can depend not only on her, but also on the entire class.",
                     img: "http://s018.radikal.ru/i520/1703/d7/22c7278c8e72.png"
                 },
                 {
-                    name : "Name3 Surname3",
+                    name : "Bob Surname3",
                     chair: "TEF",
                     description: "This is the teacher to whom students know they can go with any problems or concerns or even to share a funny story.",
                     img: "http://s02.radikal.ru/i175/1703/f1/fd56e568c824.jpg"
                 }
             ]
         };
+
+        vm.selectedInstructor = vm.trackInfo.teaching.instructors[0];
+        vm.isNewDesign = true;
 
         if (vm.trackInfo.skills.length > 0)
             vm.selectedSkill = vm.trackInfo.skills[0];
@@ -78,7 +81,7 @@
         function loadAll () {
 
             function sort() {
-                var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
+                let result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
                 if (vm.predicate !== 'id') {
                     result.push('id');
                 }
