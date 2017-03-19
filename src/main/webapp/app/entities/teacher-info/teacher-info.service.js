@@ -7,7 +7,7 @@
     TeacherInfo.$inject = ['$resource'];
 
     function TeacherInfo ($resource) {
-        var resourceUrl =  'api/teacher-infos/:id';
+        let resourceUrl =  'api/teacher-infos/:id';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
