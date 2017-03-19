@@ -19,7 +19,7 @@
         loadAll();
 
         vm.trackInfo = {};
-        vm.trackInfo.name = "JAVA Course";
+        vm.trackInfo.name = "JAVA";
         vm.trackInfo.description = "Some skill description. Before I go into details on how to screen Java skills first let me share some basics that will allow you to become more familiar with this technology.        Firstly, Java world changes often, so experience with framework gained 5 years ago is not valid anymore. Bare this in mind when you assess Java skills based on so far employment. Secondly, in Java world ecosystem knowledge of tools and libraries is more valuable than knowledge of the language itself. Without it a programmer will write everything by himself from scratch and just waste time. Last but not least only commercial experience is important. Java knowledge from university is hardly ever useful for business coding. So unless you recruit for an entry, junior position you can skip assessing Java skills based solely on university education and degree. In that case what is more important is candidate’s real life coding projects, it doesn’t have to be a commercial one – it can be hobby or open source programming project.";
 
         vm.trackInfo.faculty = "OIT";

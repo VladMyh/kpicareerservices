@@ -45,7 +45,10 @@
 <div>
     <div class="row">
         <div class="col-sm-6">
-            <h3>{{vm.trackInfo.name}}</h3>
+            <h3>
+                <split data-translate="kpicsApp.trackOverview.course"></split>
+                <split>{{vm.trackInfo.name}}</split>
+            </h3>
 
             <div class="row">
 
@@ -67,15 +70,19 @@
                     </div>
                     <div class="col-sm-8" >
                         <select ng-model="vm.selectedInstructor" ng-options="instructor.name for instructor in vm.trackInfo.teaching.instructors"/>
-                        <p>Faculty: {{vm.selectedInstructor.chair}}</p>
-                        <p>Description: {{vm.selectedInstructor.description}}</p>
+                        <p>
+                            <split data-translate="kpicsApp.trackOverview.faculty">Faculty</split>: {{vm.selectedInstructor.chair}}
+                        </p>
+                        <p>
+                            <split data-translate="kpicsApp.trackOverview.description">Description</split>: {{vm.selectedInstructor.description}}
+                        </p>
                     </div>
                     <!--</pre>-->
                 </div>
 
             </div>
 
-            <h4>Rating:</h4>
+            <h4 data-translate="kpicsApp.trackOverview.rating">Course rating:</h4>
             <div ng-repeat="skill in vm.trackInfo.skills">
                 <div>
                     <h5>{{skill.name}}: {{skill.rating}}/100 </h5>
@@ -85,10 +92,16 @@
 
         <div class="col-sm-6">
             <div class="row">
-                <h3 ng-style="{float: 'right', padding: '10px'}">Overall rating: {{vm.getOverallRating()}}/100</h3>
+                <h3 ng-style="{float: 'right', padding: '10px'}">
+                    <split data-translate="kpicsApp.trackOverview.overallRating">Overall rating</split>: {{vm.getOverallRating()}}/100
+                </h3>
             </div>
-            <p>Faculty: {{vm.trackInfo.faculty}}</p>
-            <p>Description: {{vm.trackInfo.description}}</p>
+            <p>
+                <split data-translate="kpicsApp.trackOverview.faculty">Faculty</split>: {{vm.trackInfo.faculty}}
+            </p>
+            <p>
+                <split data-translate="kpicsApp.trackOverview.description">Description</split>: {{vm.trackInfo.description}}
+            </p>
         </div>
     </div>
 

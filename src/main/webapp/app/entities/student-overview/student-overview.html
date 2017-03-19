@@ -1,4 +1,4 @@
-<h2>Student Infos</h2>
+<h2 class="text-center" data-translate="kpicsApp.studentOverview.title">Student skills</h2>
     <div class="container">
 
     <!-- =========================== BODY-HEADER LEFT PART ============================ -->
@@ -17,7 +17,7 @@
                 </div>
                 <!-- ======================  NAME & AVATAR  END ================================ -->
                 <div class="col-sm-11 col-md-10">
-                    <h3 class="mobmid">Programming skills</h3>
+                    <h3 class="mobmid" data-translate="kpicsApp.studentOverview.programmingSkills">Programming skills</h3>
                     <div ng-repeat="track in vm.studentInfo.tracks">
                         <!-- ======================  MARKS DIAGRAM   ================================ -->
                         <p>{{track.name}}</p>
@@ -58,14 +58,14 @@
         </div>
     </div>
 
-<h3>Description</h3>
+<h3 data-translate="kpicsApp.studentOverview.description">Description</h3>
 <p>{{vm.studentInfo.about}}</p>
 
-<h3>My projects:</h3>
+<h3 data-translate="kpicsApp.studentOverview.projects">My Projects</h3>
 
 <a href="https://github.com/">Link1</a>
 <a href="https://github.com/">Link2</a>
 
-<h3>LinkedIn:</h3>
+<h3 data-translate="kpicsApp.studentOverview.linkedin">My LinkedIn</h3>
 <a href="https://www.linkedin.com/">https://www.linkedin.com/</a>
 
