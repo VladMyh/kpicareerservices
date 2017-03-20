@@ -11,10 +11,10 @@
         $stateProvider
         .state('student-overview', {
             parent: 'entity',
-            url: '/student-overview?page&sort&search',
+            url: '/student-overview/{id}',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'kpicsApp.studentOverview.home.title'
+                pageTitle: 'kpicsApp.studentOverview.title'
             },
             views: {
                 'content@': {
@@ -23,32 +23,15 @@
                     controllerAs: 'vm'
                 }
             },
-            params: {
-                page: {
-                    value: '1',
-                    squash: true
-                },
-                sort: {
-                    value: 'id,asc',
-                    squash: true
-                },
-                search: null
-            },
             resolve: {
-                pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
-                    return {
-                        page: PaginationUtil.parsePage($stateParams.page),
-                        sort: $stateParams.sort,
-                        predicate: PaginationUtil.parsePredicate($stateParams.sort),
-                        ascending: PaginationUtil.parseAscending($stateParams.sort),
-                        search: $stateParams.search
-                    };
-                }],
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('studentOverview');
-                    $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]
+                 ,
+                 entity: ['$stateParams', 'StudentOverview', function($stateParams, StudentOverview) {
+                     return StudentOverview.get({id: $stateParams.id}).$promise;
+                 }]
             }
         })
     }
