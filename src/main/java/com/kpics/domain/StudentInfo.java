@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * A StudentInfo.
@@ -36,6 +37,10 @@ public class StudentInfo implements Serializable {
     @Size(max = 200)
     @Field("about")
     private String about;
+
+    @NotNull
+    @Field("skills")
+    private Set<Skill> skills;
 
     public StudentInfo() {}
 
@@ -112,6 +117,14 @@ public class StudentInfo implements Serializable {
         this.about = about;
     }
 
+    public Set<Skill> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(Set<Skill> skills) {
+        this.skills = skills;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -123,7 +136,8 @@ public class StudentInfo implements Serializable {
         if (department != null ? !department.equals(that.department) : that.department != null) return false;
         if (group != null ? !group.equals(that.group) : that.group != null) return false;
         if (github != null ? !github.equals(that.github) : that.github != null) return false;
-        return about != null ? about.equals(that.about) : that.about == null;
+        if (about != null ? !about.equals(that.about) : that.about != null) return false;
+        return skills != null ? skills.equals(that.skills) : that.skills == null;
     }
 
     @Override
@@ -133,6 +147,7 @@ public class StudentInfo implements Serializable {
         result = 31 * result + (group != null ? group.hashCode() : 0);
         result = 31 * result + (github != null ? github.hashCode() : 0);
         result = 31 * result + (about != null ? about.hashCode() : 0);
+        result = 31 * result + (skills != null ? skills.hashCode() : 0);
         return result;
     }
 
