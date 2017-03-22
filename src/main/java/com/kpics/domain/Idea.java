@@ -7,7 +7,10 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * An idea of project
@@ -34,18 +37,24 @@ public class Idea implements Serializable {
     @Field("company")
     private Company company;
 
+    @NotNull
+    @Field("tags")
+    private Set<Tag> tags = new HashSet<>();
+
     public Idea() { }
 
     public Idea(String id,
                 String description,
                 LocalDate createDate,
                 LocalDate deadlineDate,
-                Company company) {
+                Company company,
+                Set<Tag> tags) {
         this.id = id;
         this.description = description;
         this.createDate = createDate;
         this.deadlineDate = deadlineDate;
         this.company = company;
+        this.tags = tags;
     }
 
 
@@ -88,6 +97,14 @@ public class Idea implements Serializable {
 
     public void setCompanyName(Company company) {
         this.company = company;
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
     //endregion
 
