@@ -8,13 +8,14 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Created by acube on 23.03.2017.
+ * Spring Data MongoDB repository for the Idea entity.
  */
+@SuppressWarnings("unused")
 public interface IdeaRepository extends MongoRepository<Idea, String> {
 
     Optional<Idea> findById(String id);
 
-    Page<Idea> findByCompanyId(String id);
+    Optional<Idea> findByCompanyId(String id);
 
-    Page<Idea> findByTagId(String id);
+    Optional<Idea> findByTags(String id);
 }

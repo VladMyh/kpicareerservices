@@ -11,7 +11,7 @@ import java.io.Serializable;
  * Tags for projects, ideas and other entities
  * Such as (hashtags)
  */
-@Document(collection = "tag")
+@Document(collection = "tags")
 public class Tag implements Serializable {
 
     @Id

@@ -7,13 +7,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
-/**
- * Created by acube on 23.03.2017.
- */
+import java.util.Optional;
+
+@Service
 public class IdeaServiceImpl implements IdeaService {
 
-    private final Logger log = LoggerFactory.getLogger(StreamServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(IdeaServiceImpl.class);
 
     private final IdeaRepository ideaRepository;
 
@@ -34,15 +35,15 @@ public class IdeaServiceImpl implements IdeaService {
     }
 
     @Override
-    public Page<Idea> findByCompanyId(String id) {
+    public Optional<Idea> findByCompanyId(String id) {
         log.debug("Request to get Ideas by company id : {}", id);
         return ideaRepository.findByCompanyId(id);
     }
 
     @Override
-    public Page<Idea> findByTagId(String id) {
+    public Optional<Idea> findByTagId(String id) {
         log.debug("Request to get Ideas by tag id : {}", id);
-        return ideaRepository.findByTagId(id);
+        return ideaRepository.findByTags(id);
     }
 
     @Override

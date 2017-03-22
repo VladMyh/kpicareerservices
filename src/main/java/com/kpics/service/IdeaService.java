@@ -4,6 +4,8 @@ import com.kpics.domain.Idea;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 /**
  * Service Interface for managing Ideas.
  */
@@ -31,7 +33,7 @@ public interface IdeaService {
      * @param id company id
      * @return the list of entities
      */
-    Page<Idea> findByCompanyId(String id);
+    Optional<Idea> findByCompanyId(String id);
 
     /**
      * Get all ideas by tag id
@@ -39,7 +41,7 @@ public interface IdeaService {
      * @param id tag id
      * @return the list of entities
      */
-    Page<Idea> findByTagId(String id);
+    Optional<Idea> findByTagId(String id);
 
     /**
      *  Get the "id" idea.
