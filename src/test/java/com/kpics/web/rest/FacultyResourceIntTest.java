@@ -225,9 +225,4 @@ public class FacultyResourceIntTest {
         List<Faculty> facultyList = facultyRepository.findAll();
         assertThat(facultyList).hasSize(databaseSizeBeforeDelete - 1);
     }
-
-    @Test
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Faculty.class);
-    }
 }
