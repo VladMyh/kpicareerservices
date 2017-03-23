@@ -1,0 +1,22 @@
+{
+    "kpicsApp": {
+        "group" : {
+            "home": {
+                "title": "Groups",
+                "createLabel": "Создать новый Group",
+                "createOrEditLabel": "Создать или отредактировать Group",
+                "search": "Найти Group"
+            },
+            "created": "Новый Group создан с идентификатором {{ param }}",
+            "updated": "Group обновлен с идентификатором {{ param }}",
+            "deleted": "Group удален с идентификатором {{ param }}",
+            "delete": {
+                "question": "Вы уверены что хотите удалить Group {{ id }}?"
+            },
+            "detail": {
+                "title": "Group"
+            },
+            "name": "Name"
+        }
+    }
+}

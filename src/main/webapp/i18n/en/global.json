@@ -12,6 +12,7 @@
                 "track": "Track",
                 "stream": "Stream",
                 "faculty": "Faculty",
+                "group": "Group",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
