@@ -125,7 +125,9 @@
                         entity: function () {
                             return {
                                 name: null,
-                                id: null
+                                id: null,
+                                faculty: null,
+                                department: null
                             };
                         }
                     }

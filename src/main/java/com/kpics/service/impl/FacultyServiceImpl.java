@@ -2,6 +2,7 @@ package com.kpics.service.impl;
 
 import com.kpics.domain.Department;
 import com.kpics.domain.Faculty;
+import com.kpics.domain.Group;
 import com.kpics.repository.FacultyRepository;
 import com.kpics.service.FacultyService;
 import org.bson.types.ObjectId;
@@ -11,8 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
+import javax.swing.text.html.Option;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -33,24 +34,21 @@ public class FacultyServiceImpl implements FacultyService{
     public Faculty save(Faculty faculty) {
         log.debug("Request to save Faculty : {}", faculty);
 
-        Faculty result = facultyRepository.save(faculty);
-        return result;
+        return facultyRepository.save(faculty);
     }
 
     @Override
     public Page<Faculty> findAll(Pageable pageable) {
         log.debug("Request to get all Faculties");
 
-        Page<Faculty> result = facultyRepository.findAll(pageable);
-        return result;
+        return facultyRepository.findAll(pageable);
     }
 
     @Override
     public Faculty findOne(String id) {
         log.debug("Request to get Faculty : {}", id);
 
-        Faculty faculty = facultyRepository.findOne(id);
-        return faculty;
+        return facultyRepository.findOne(id);
     }
 
     @Override
@@ -146,6 +144,4 @@ public class FacultyServiceImpl implements FacultyService{
 
         return result;
     }
-
-
 }

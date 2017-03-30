@@ -18,7 +18,7 @@ import java.util.List;
 public class GroupServiceImpl implements GroupService{
 
     private final Logger log = LoggerFactory.getLogger(GroupServiceImpl.class);
-    
+
     private final GroupRepository groupRepository;
 
     public GroupServiceImpl(GroupRepository groupRepository) {
@@ -34,21 +34,19 @@ public class GroupServiceImpl implements GroupService{
     @Override
     public Group save(Group group) {
         log.debug("Request to save Group : {}", group);
-        Group result = groupRepository.save(group);
-        return result;
+        return groupRepository.save(group);
     }
 
     /**
      *  Get all the groups.
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Override
     public Page<Group> findAll(Pageable pageable) {
         log.debug("Request to get all Groups");
-        Page<Group> result = groupRepository.findAll(pageable);
-        return result;
+        return groupRepository.findAll(pageable);
     }
 
     /**
@@ -60,8 +58,7 @@ public class GroupServiceImpl implements GroupService{
     @Override
     public Group findOne(String id) {
         log.debug("Request to get Group : {}", id);
-        Group group = groupRepository.findOne(id);
-        return group;
+        return groupRepository.findOne(id);
     }
 
     /**

@@ -13,6 +13,8 @@
             <input type="text" class="form-control" id="id" name="id"
                     ng-model="vm.group.id" readonly />
         </div>
+
+        <!--Name-->
         <div class="form-group">
             <label class="control-label" data-translate="kpicsApp.group.name" for="field_name">Name</label>
             <input type="text" class="form-control" name="name" id="field_name"
@@ -28,6 +30,22 @@
                     This field cannot be longer than 20 characters.
                 </p>
             </div>
+        </div>
+
+        <!--Faculty-->
+        <div class="form-group">
+            <label class="control-label" data-translate="kpicsApp.group.faculty" for="field_faculty">Faculty</label>
+            <select class="form-control" name="field_faculty" id="field_faculty"
+                    ng-model="vm.selectedFaculty" ng-options="x.name for x in vm.faculties" ng-change="vm.onSelectChange()" required>
+            </select>
+        </div>
+
+        <!--Department-->
+        <div class="form-group">
+            <label class="control-label" data-translate="kpicsApp.group.department" for="field_department">Department</label>
+            <select class="form-control" name="field_department" id="field_department"
+                    ng-model="vm.selectedDepartment" ng-options="y.name for y in vm.departments" required>
+            </select>
         </div>
 
     </div>

@@ -38,6 +38,12 @@ public class GroupResourceIntTest {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
+    private static final String DEFAULT_FACULTY = "AAAAAAAAAA";
+    private static final String UPDATED_FACULTY = "BBBBBBBBBB";
+
+    private static final String DEFAULT_DEPARTMENT = "AAAAAAAAAA";
+    private static final String UPDATED_DEPARTMENT = "BBBBBBBBBB";
+
     @Autowired
     private GroupRepository groupRepository;
 
@@ -71,7 +77,9 @@ public class GroupResourceIntTest {
      */
     public static Group createEntity() {
         Group group = new Group()
-                .name(DEFAULT_NAME);
+                .name(DEFAULT_NAME)
+                .faculty(DEFAULT_FACULTY)
+                .department(DEFAULT_DEPARTMENT);
         return group;
     }
 
@@ -97,6 +105,8 @@ public class GroupResourceIntTest {
         assertThat(groupList).hasSize(databaseSizeBeforeCreate + 1);
         Group testGroup = groupList.get(groupList.size() - 1);
         assertThat(testGroup.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testGroup.getFaculty()).isEqualTo(DEFAULT_FACULTY);
+        assertThat(testGroup.getDepartment()).isEqualTo(DEFAULT_DEPARTMENT);
     }
 
     @Test
@@ -145,7 +155,9 @@ public class GroupResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(group.getId())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].faculty").value(hasItem(DEFAULT_FACULTY)))
+            .andExpect(jsonPath("$.[*].department").value(hasItem(DEFAULT_DEPARTMENT)));
     }
 
     @Test
@@ -158,7 +170,9 @@ public class GroupResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(group.getId()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.faculty").value(DEFAULT_FACULTY))
+            .andExpect(jsonPath("$.department").value(DEFAULT_DEPARTMENT));
     }
 
     @Test
@@ -178,7 +192,9 @@ public class GroupResourceIntTest {
         // Update the group
         Group updatedGroup = groupRepository.findOne(group.getId());
         updatedGroup
-                .name(UPDATED_NAME);
+                .name(UPDATED_NAME)
+                .faculty(UPDATED_FACULTY)
+                .department(UPDATED_DEPARTMENT);
 
         restGroupMockMvc.perform(put("/api/groups")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -190,6 +206,8 @@ public class GroupResourceIntTest {
         assertThat(groupList).hasSize(databaseSizeBeforeUpdate);
         Group testGroup = groupList.get(groupList.size() - 1);
         assertThat(testGroup.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testGroup.getFaculty()).isEqualTo(UPDATED_FACULTY);
+        assertThat(testGroup.getDepartment()).isEqualTo(UPDATED_DEPARTMENT);
     }
 
     @Test
@@ -224,10 +242,5 @@ public class GroupResourceIntTest {
         // Validate the database is empty
         List<Group> groupList = groupRepository.findAll();
         assertThat(groupList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Group.class);
     }
 }

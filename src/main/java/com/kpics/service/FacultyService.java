@@ -4,7 +4,6 @@ import com.kpics.domain.Department;
 import com.kpics.domain.Faculty;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import java.util.List;
 
 /**
  * Service Interface for managing Faculty.

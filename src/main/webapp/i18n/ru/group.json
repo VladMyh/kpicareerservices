@@ -2,21 +2,23 @@
     "kpicsApp": {
         "group" : {
             "home": {
-                "title": "Groups",
-                "createLabel": "Создать новый Group",
-                "createOrEditLabel": "Создать или отредактировать Group",
-                "search": "Найти Group"
+                "title": "Группы",
+                "createLabel": "Создать новую группу",
+                "createOrEditLabel": "Создать или отредактировать группу",
+                "search": "Найти группу"
             },
-            "created": "Новый Group создан с идентификатором {{ param }}",
-            "updated": "Group обновлен с идентификатором {{ param }}",
-            "deleted": "Group удален с идентификатором {{ param }}",
+            "created": "Новая группа создана с идентификатором {{ param }}",
+            "updated": "Группа обновлена с идентификатором {{ param }}",
+            "deleted": "Группа удалена с идентификатором {{ param }}",
             "delete": {
-                "question": "Вы уверены что хотите удалить Group {{ id }}?"
+                "question": "Вы уверены что хотите удалить группу {{ id }}?"
             },
             "detail": {
-                "title": "Group"
+                "title": "Группа"
             },
-            "name": "Name"
+            "name": "Название",
+            "faculty": "Факультет",
+            "department": "Кафедра"
         }
     }
 }

@@ -16,7 +16,9 @@
             "detail": {
                 "title": "Group"
             },
-            "name": "Name"
+            "name": "Name",
+            "faculty": "Faculty",
+            "department": "Department"
         }
     }
 }

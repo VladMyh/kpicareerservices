@@ -1,12 +1,22 @@
 
 <div>
-    <h2><span data-translate="kpicsApp.group.detail.title">Group</span> {{vm.group.id}}</h2>
+    <h2><span data-translate="kpicsApp.group.detail.title">Group</span> {{vm.group.name}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row jh-entity-details">
         <dt><span data-translate="kpicsApp.group.name">Name</span></dt>
         <dd>
             <span>{{vm.group.name}}</span>
+        </dd>
+
+        <dt><span data-translate="kpicsApp.group.faculty">Faculty</span></dt>
+        <dd>
+            <span>{{vm.group.faculty}}</span>
+        </dd>
+
+        <dt><span data-translate="kpicsApp.group.department">Department</span></dt>
+        <dd>
+            <span>{{vm.group.department}}</span>
         </dd>
     </dl>
 
@@ -16,7 +26,7 @@
         <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
     </button>
 
-    <button type="button" ui-sref="group-detail.edit({id:vm.group.id})" class="btn btn-primary">
+    <button type="button" ui-sref="group-detail.edit({id:vm.group.id})" class="btn btn-primary" disabled>
         <span class="glyphicon glyphicon-pencil"></span>
         <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
     </button>
