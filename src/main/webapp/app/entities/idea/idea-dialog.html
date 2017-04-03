@@ -14,22 +14,6 @@
                     ng-model="vm.idea.id" readonly />
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="kpicsApp.idea.description" for="field_description">Description</label>
-            <input type="text" class="form-control" name="description" id="field_description"
-                    ng-model="vm.idea.description"
-                    required ng-maxlength="2000"/>
-            <div ng-show="editForm.description.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.description.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.description.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="2000">
-                    This field cannot be longer than 2000 characters.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
             <label class="control-label" data-translate="kpicsApp.idea.name" for="field_name">Name</label>
             <input type="text" class="form-control" name="name" id="field_name"
                     ng-model="vm.idea.name"
@@ -42,6 +26,22 @@
                 <p class="help-block"
                     ng-show="editForm.name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
                     This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="kpicsApp.idea.description" for="field_description">Description</label>
+            <input type="text" class="form-control" name="description" id="field_description"
+                   ng-model="vm.idea.description"
+                   required ng-maxlength="2000"/>
+            <div ng-show="editForm.description.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.description.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                   ng-show="editForm.description.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="2000">
+                    This field cannot be longer than 2000 characters.
                 </p>
             </div>
         </div>

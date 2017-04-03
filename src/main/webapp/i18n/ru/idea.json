@@ -2,26 +2,26 @@
     "kpicsApp": {
         "idea" : {
             "home": {
-                "title": "Ideas",
-                "createLabel": "Создать новый Idea",
-                "createOrEditLabel": "Создать или отредактировать Idea",
-                "search": "Найти Idea"
+                "title": "Список идей",
+                "createLabel": "Создать новую Идею",
+                "createOrEditLabel": "Создать или отредактировать Идею",
+                "search": "Найти Идею"
             },
-            "created": "Новый Idea создан с идентификатором {{ param }}",
-            "updated": "Idea обновлен с идентификатором {{ param }}",
-            "deleted": "Idea удален с идентификатором {{ param }}",
+            "created": "Новая Идея создан с идентификатором {{ param }}",
+            "updated": "Идея обновлена с идентификатором {{ param }}",
+            "deleted": "Идея удалена с идентификатором {{ param }}",
             "delete": {
-                "question": "Вы уверены что хотите удалить Idea {{ id }}?"
+                "question": "Вы уверены что хотите удалить Идею {{ name }}?"
             },
             "detail": {
-                "title": "Idea"
+                "title": "Идея"
             },
-            "description": "Description",
-            "name": "Name",
-            "createDate": "Create Date",
-            "deadlineDate": "Deadline Date",
-            "companyName": "Company Name",
-            "companyWebsite": "Company Website"
+            "description": "Описание",
+            "name": "Имя",
+            "createDate": "Дата создание",
+            "deadlineDate": "Дедлайн",
+            "companyName": "Название компании",
+            "companyWebsite": "Сайт компании"
         }
     }
 }

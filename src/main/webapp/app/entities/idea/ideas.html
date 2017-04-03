@@ -18,9 +18,8 @@
         <table class="jh-table table table-striped">
             <thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="description"><span data-translate="kpicsApp.idea.description">Description</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="name"><span data-translate="kpicsApp.idea.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="description"><span data-translate="kpicsApp.idea.description">Description</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="createDate"><span data-translate="kpicsApp.idea.createDate">Create Date</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="deadlineDate"><span data-translate="kpicsApp.idea.deadlineDate">Deadline Date</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="companyName"><span data-translate="kpicsApp.idea.companyName">Company Name</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -30,11 +29,10 @@
             </thead>
             <tbody>
                 <tr ng-repeat="idea in vm.ideas track by idea.id">
-                    <td><a ui-sref="idea-detail({id:idea.id})">{{idea.id}}</a></td>
-                    <td>{{idea.description}}</td>
                     <td>{{idea.name}}</td>
-                        <td>{{idea.createDate | date:'mediumDate'}}</td>
-                        <td>{{idea.deadlineDate | date:'mediumDate'}}</td>
+                    <td>{{idea.description}}</td>
+                    <td>{{idea.createDate | date:'mediumDate'}}</td>
+                    <td>{{idea.deadlineDate | date:'mediumDate'}}</td>
                     <td>{{idea.companyName}}</td>
                     <td>{{idea.companyWebsite}}</td>
                     <td class="text-right">
