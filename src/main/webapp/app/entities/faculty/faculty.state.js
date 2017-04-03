@@ -185,6 +185,34 @@
                 });
             }]
         })
+        .state('faculty-detail.deleteDepartment', {
+                    parent: 'faculty-detail',
+                    url: '/{id}/department/{departmentId}/delete',
+                    data: {
+                        authorities: ['ROLE_USER']
+                    },
+                    onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                        $uibModal.open({
+                            templateUrl: 'app/entities/faculty/faculty-delete-department-dialog.html',
+                            controller: 'FacultyDepartmentDeleteController',
+                            controllerAs: 'vm',
+                            size: 'md',
+                            resolve: {
+                                faculty: ['Faculty', function(Faculty) {
+                                    return Faculty.get({id : $stateParams.id}).$promise;
+                                }],
+                                department: ['Faculty', function(Faculty) {
+                                    return Faculty.getDepartment({id : $stateParams.id,
+                                                                  departmentId : $stateParams.departmentId}).$promise;
+                                }]
+                            }
+                        }).result.then(function() {
+                            $state.go('faculty-detail', null, { reload: 'faculty-detail' });
+                        }, function() {
+                            $state.go('faculty-detail');
+                        });
+                    }]
+                })
         .state('faculty-detail.addDepartment', {
                     parent: 'faculty-detail',
                     url: '/department/new',

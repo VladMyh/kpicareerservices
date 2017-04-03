@@ -4,6 +4,7 @@ import com.kpics.domain.Department;
 import com.kpics.domain.Faculty;
 import com.kpics.domain.Group;
 import com.kpics.repository.FacultyRepository;
+import com.kpics.repository.GroupRepository;
 import com.kpics.service.FacultyService;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -12,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,8 +26,12 @@ public class FacultyServiceImpl implements FacultyService{
 
     private final FacultyRepository facultyRepository;
 
-    public FacultyServiceImpl(FacultyRepository facultyRepository) {
+    private final GroupRepository groupRepository;
+
+    public FacultyServiceImpl(FacultyRepository facultyRepository,
+                              GroupRepository groupRepository) {
         this.facultyRepository = facultyRepository;
+        this.groupRepository = groupRepository;
     }
 
     @Override
@@ -102,8 +106,8 @@ public class FacultyServiceImpl implements FacultyService{
     }
 
     @Override
-    public void deleteDepartment(String facultyId, String departmentId) {
-        log.debug("Request to delete department, facultyId: {}, departmentId: {}");
+    public boolean deleteDepartment(String facultyId, String departmentId) {
+        log.debug("Request to delete department, facultyId: {}, departmentId: {}", facultyId, departmentId);
 
         Faculty faculty = findOne(facultyId);
 
@@ -114,14 +118,27 @@ public class FacultyServiceImpl implements FacultyService{
                 .findFirst();
 
             if(department.isPresent()) {
+                if(checkDepartmentUsage(department.get().getName())) {
+                    return false;
+                }
+
                 faculty.setDepartments(faculty.getDepartments()
                     .stream()
                     .filter(d -> !d.getId().equals(departmentId))
                     .collect(Collectors.toSet()));
 
                 save(faculty);
+                return true;
             }
         }
+
+        return false;
+    }
+
+    private boolean checkDepartmentUsage(String department) {
+        Optional<Group> group = groupRepository.findOneByDepartment(department);
+
+        return group.isPresent();
     }
 
     @Override

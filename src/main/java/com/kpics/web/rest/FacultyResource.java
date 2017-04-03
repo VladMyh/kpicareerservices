@@ -190,8 +190,16 @@ public class FacultyResource {
     public ResponseEntity<Void> deleteDepartment(@PathVariable String facultyId,
                                                  @PathVariable String departmentId) {
         log.debug("REST request to delete Department, facultyId: {}, departmentId: {}", facultyId, departmentId);
-        facultyService.deleteDepartment(facultyId, departmentId);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(DEPARTMENT, facultyId)).build();
+
+        if(facultyService.deleteDepartment(facultyId, departmentId)) {
+            return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(DEPARTMENT, facultyId)).build();
+        }
+        else {
+//            return ResponseEntity.badRequest().headers(HeaderUtil.createEntityDeletionFailedAlert(DEPARTMENT, facultyId)).build();
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert(DEPARTMENT, "entityinuse", "Cannot delete department!"))
+                .body(null);
+        }
     }
 
     /**

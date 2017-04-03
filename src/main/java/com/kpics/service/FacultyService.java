@@ -52,11 +52,10 @@ public interface FacultyService {
 
     /**
      * This method deleted Department from Faculty.
-     *
-     * @param facultyId    Faculty id.
+     *  @param facultyId    Faculty id.
      * @param departmentId Department id.
      */
-    void deleteDepartment(String facultyId, String departmentId);
+    boolean deleteDepartment(String facultyId, String departmentId);
 
     /**
      * This method finds department by id.

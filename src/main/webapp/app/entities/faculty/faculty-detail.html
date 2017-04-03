@@ -40,7 +40,8 @@
                     <tr ng-repeat="department in vm.faculty.departments track by department.id">
                     <td>{{department.name}}</td>
                     <td class="text-right">
-                        <button class="btn btn-danger btn-sm">
+                        <button ui-sref="faculty-detail.deleteDepartment({id: vm.faculty.id, departmentId: department.id})"
+                            class="btn btn-danger btn-sm">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
                         <button ui-sref="faculty-detail.editDepartment({id: vm.faculty.id, departmentId: department.id})"
