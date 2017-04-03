@@ -3,11 +3,10 @@ package com.kpics.service;
 import com.kpics.domain.Idea;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import java.util.Optional;
+import java.util.List;
 
 /**
- * Service Interface for managing Ideas.
+ * Service Interface for managing Idea.
  */
 public interface IdeaService {
 
@@ -20,28 +19,12 @@ public interface IdeaService {
     Idea save(Idea idea);
 
     /**
-     * Get all the ideas
-     *
-     * @param pageable the pagination information
-     * @return the list of all ideas
+     *  Get all the ideas.
+     *  
+     *  @param pageable the pagination information
+     *  @return the list of entities
      */
     Page<Idea> findAll(Pageable pageable);
-
-    /**
-     * Get all ideas by created company's
-     *
-     * @param id company id
-     * @return the list of entities
-     */
-    Optional<Idea> findByCompanyId(String id);
-
-    /**
-     * Get all ideas by tag id
-     *
-     * @param id tag id
-     * @return the list of entities
-     */
-    Optional<Idea> findByTagId(String id);
 
     /**
      *  Get the "id" idea.

@@ -4,26 +4,32 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
- * An idea of project
+ * A Idea.
  */
+
 @Document(collection = "idea")
 public class Idea implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     private String id;
 
     @NotNull
+    @Size(max = 2000)
     @Field("description")
     private String description;
+
+    @NotNull
+    @Size(max = 100)
+    @Field("name")
+    private String name;
 
     @NotNull
     @Field("create_date")
@@ -34,31 +40,14 @@ public class Idea implements Serializable {
     private LocalDate deadlineDate;
 
     @NotNull
-    @Field("company")
-    private Company company;
+    @Size(max = 100)
+    @Field("company_name")
+    private String companyName;
 
-    @NotNull
-    @Field("tags")
-    private Set<Tag> tags = new HashSet<>();
+    @Size(max = 200)
+    @Field("company_website")
+    private String companyWebsite;
 
-    public Idea() { }
-
-    public Idea(String id,
-                String description,
-                LocalDate createDate,
-                LocalDate deadlineDate,
-                Company company,
-                Set<Tag> tags) {
-        this.id = id;
-        this.description = description;
-        this.createDate = createDate;
-        this.deadlineDate = deadlineDate;
-        this.company = company;
-        this.tags = tags;
-    }
-
-
-    //region Getters and Setters
     public String getId() {
         return id;
     }
@@ -71,12 +60,35 @@ public class Idea implements Serializable {
         return description;
     }
 
+    public Idea description(String description) {
+        this.description = description;
+        return this;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public Idea name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public LocalDate getCreateDate() {
         return createDate;
+    }
+
+    public Idea createDate(LocalDate createDate) {
+        this.createDate = createDate;
+        return this;
     }
 
     public void setCreateDate(LocalDate createDate) {
@@ -87,41 +99,54 @@ public class Idea implements Serializable {
         return deadlineDate;
     }
 
+    public Idea deadlineDate(LocalDate deadlineDate) {
+        this.deadlineDate = deadlineDate;
+        return this;
+    }
+
     public void setDeadlineDate(LocalDate deadlineDate) {
         this.deadlineDate = deadlineDate;
     }
 
-    public Company getCompanyName() {
-        return company;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setCompanyName(Company company) {
-        this.company = company;
+    public Idea companyName(String companyName) {
+        this.companyName = companyName;
+        return this;
     }
 
-    public Set<Tag> getTags() {
-        return tags;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
-    public void setTags(Set<Tag> tags) {
-        this.tags = tags;
+    public String getCompanyWebsite() {
+        return companyWebsite;
     }
-    //endregion
 
-    //region Override methods
+    public Idea companyWebsite(String companyWebsite) {
+        this.companyWebsite = companyWebsite;
+        return this;
+    }
+
+    public void setCompanyWebsite(String companyWebsite) {
+        this.companyWebsite = companyWebsite;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Idea idea = (Idea) o;
-
-        return (id != null ? id.equals(idea.id) : idea.id == null)
-            && (createDate != null ? createDate.equals(idea.createDate) : idea.createDate == null)
-            && (deadlineDate != null ? deadlineDate.equals(idea.deadlineDate) : idea.deadlineDate == null)
-            && (description != null ? description.equals(idea.description) : idea.description == null)
-            && (company != null ? company.equals(idea.company) : idea.company == null);
-
+        if (idea.id == null || id == null) {
+            return false;
+        }
+        return Objects.equals(id, idea.id);
     }
 
     @Override
@@ -132,12 +157,13 @@ public class Idea implements Serializable {
     @Override
     public String toString() {
         return "Idea{" +
-            "id='" + id + '\'' +
-            ", description= '" + description + '\'' +
-            ", createDate= " + createDate +
-            ", deadline Date= " + deadlineDate +
-            ", company = " + company.toString() +
+            "id=" + id +
+            ", description='" + description + "'" +
+            ", name='" + name + "'" +
+            ", createDate='" + createDate + "'" +
+            ", deadlineDate='" + deadlineDate + "'" +
+            ", companyName='" + companyName + "'" +
+            ", companyWebsite='" + companyWebsite + "'" +
             '}';
     }
-    //endregion
 }
