@@ -56,10 +56,27 @@ public class FacultyServiceImpl implements FacultyService{
     }
 
     @Override
-    public void delete(String id) {
+    public boolean delete(String id) {
         log.debug("Request to delete Faculty : {}", id);
 
-        facultyRepository.delete(id);
+        Faculty faculty = findOne(id);
+
+        if(faculty != null) {
+            if(checkFacultyUsage(faculty.getName())) {
+                return false;
+            }
+
+            facultyRepository.delete(id);
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean checkFacultyUsage(String name) {
+        Optional<Group> group = groupRepository.findOneByFaculty(name);
+
+        return group.isPresent();
     }
 
     @Override

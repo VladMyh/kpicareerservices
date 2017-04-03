@@ -125,8 +125,14 @@ public class FacultyResource {
     @Timed
     public ResponseEntity<Void> deleteFaculty(@PathVariable String id) {
         log.debug("REST request to delete Faculty : {}", id);
-        facultyService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(FACULTY, id.toString())).build();
+        if(facultyService.delete(id)) {
+            return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(FACULTY, id.toString())).build();
+        }
+        else {
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert(FACULTY, "entityinuse", "Cannot delete department!"))
+                .body(null);
+        }
     }
 
 
@@ -195,7 +201,6 @@ public class FacultyResource {
             return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(DEPARTMENT, facultyId)).build();
         }
         else {
-//            return ResponseEntity.badRequest().headers(HeaderUtil.createEntityDeletionFailedAlert(DEPARTMENT, facultyId)).build();
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert(DEPARTMENT, "entityinuse", "Cannot delete department!"))
                 .body(null);

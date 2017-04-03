@@ -13,4 +13,6 @@ import java.util.Optional;
 public interface GroupRepository extends MongoRepository<Group,String> {
 
     Optional<Group> findOneByDepartment(String department);
+
+    Optional<Group> findOneByFaculty(String faculty);
 }

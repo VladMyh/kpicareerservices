@@ -37,9 +37,9 @@ public interface FacultyService {
     /**
      *  Delete Faculty by id.
      *
-     *  @param id The id of the entity.
+     * @param id The id of the entity.
      */
-    void delete(String id);
+    boolean delete(String id);
 
     /**
      * This method adds or updates Department.
