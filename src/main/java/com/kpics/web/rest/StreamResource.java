@@ -570,4 +570,17 @@ public class StreamResource {
             .body(stream);
     }
 
+    @PutMapping("/streams/{streamId}/addGroup")
+    @Timed
+    public ResponseEntity<?> addGroup(@PathVariable String streamId,
+                                      @RequestBody String groupId) {
+        Boolean result = streamService.addGroupToStream(streamId, groupId);
+
+        if(result) {
+            return ResponseEntity.ok().build();
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
+
 }

@@ -1,8 +1,10 @@
 package com.kpics.service.impl;
 
+import com.kpics.domain.Group;
 import com.kpics.domain.Stream;
 import com.kpics.domain.Subject;
 import com.kpics.domain.Track;
+import com.kpics.repository.GroupRepository;
 import com.kpics.repository.StreamRepository;
 import com.kpics.service.StreamService;
 import org.slf4j.Logger;
@@ -10,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Optional;
 import java.util.Set;
@@ -22,8 +25,12 @@ public class StreamServiceImpl implements StreamService{
 
     private final StreamRepository streamRepository;
 
-    public StreamServiceImpl(StreamRepository streamRepository) {
+    private final GroupRepository groupRepository;
+
+    public StreamServiceImpl(StreamRepository streamRepository,
+                             GroupRepository groupRepository) {
         this.streamRepository = streamRepository;
+        this.groupRepository = groupRepository;
     }
 
     @Override
@@ -152,5 +159,25 @@ public class StreamServiceImpl implements StreamService{
         }
 
         return false;
+    }
+
+    @Override
+    public boolean addGroupToStream(String streamId, String groupId) {
+        log.debug("Request to add group to stream, streamId: {}, groupId: {}", streamId, groupId);
+
+        Stream stream = streamRepository.findOne(streamId);
+        Group group = groupRepository.findOne(groupId);
+
+        if(stream != null && group != null) {
+            stream.getGroups().add(groupId);
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public void removeGroupFromStream(String streamId, String groupId) {
+        throw new NotImplementedException();//TODO: implement method
     }
 }
