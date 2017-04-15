@@ -1,0 +1,104 @@
+<p>
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="student-skill-detail.addSkill({id:vm.studentInfo.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="kpicsApp.studentSkill.action.create">Add new</span>
+    </button>
+
+    <h2 class="text-center" data-translate="kpicsApp.studentOverview.title">Student skills</h2>
+</p>
+
+
+
+
+<div class="container">
+
+    <!-- =========================== BODY-HEADER LEFT PART ============================ -->
+        <div class="col-sm-3 mainleft">
+            <!-- ======================  NAME & AVATAR  ================================ -->
+            <div class="row mobmid">
+                <h2 align="middle">{{vm.studentInfo.lastName}}  {{vm.studentInfo.firstName}}</h2>
+                <div><img class="img-polaroid" src="{{vm.studentInfo.linkedin}}" ng-style="{width: '100%'}"></div>
+                <div class="row">
+                    <div class="col-ms-1 col-md-2 mobmid"><span /></div>
+                    <!--icon end-->
+                </div>
+                <!-- ======================  NAME & AVATAR  END ================================ -->
+                <div class="col-sm-11 col-md-10">
+                    <h3 class="mobmid" data-translate="kpicsApp.studentOverview.programmingSkills">Programming skills</h3>
+                    <div ng-repeat="trackName in vm.tracks">
+                        <!-- ======================  MARKS DIAGRAM   ================================ -->
+                        <p>{{trackName.name}}</p>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="{{trackName.mark}}"
+                                 aria-valuemin="0" aria-valuemax="100" ng-style="{width:'{{trackName.mark}}%'}">
+                                <span>{{trackName.mark.toFixed(2)}}</span>
+                            </div>
+                        </div>
+                        <!-- ======================  MARKS DIAGRAM END  ================================ -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ======================  BODY-HEADER RIGHT PART ================================ -->
+        <div class="col-sm-offset-1  col-sm-8 mainright">
+            <div class="row">
+                <div ng-repeat="trackName in vm.tracks">
+                    <div class="col-sm-5">
+
+                            <h4>{{trackName.name}}  ({{trackName.startDate}}-{{trackName.endDate}})</h4>
+                            <blockquote>
+                                <div ng-repeat="skill in trackName.skills">
+                                <!-- ====================== LEVEL MARKS DIAGRAM   ================================ -->
+
+
+                                        <p ng-style="{display:'inline-block', marginRight:'10px', lineHeight:'1.5'}">{{skill.name}}</p>
+                                        <div ng-style="{display:'inline-block'}">
+                                            <button ng-style="{marginRight:'10px'}"
+                                                    type="button"
+                                                    ng-click="vm.edit({skill})"
+                                                    class="btn btn-warning btn-sm">
+                                                <span class="glyphicon glyphicon-eye-open"></span>
+                                                <span class="hidden-sm-down" data-translate="entity.action.edit">Edit</span>
+                                            </button>
+                                            <button ng-style="{marginRight:'10px'}"
+                                                    type="button"
+                                                    ng-click="vm.delete({skill})"
+                                                    class="btn btn-danger btn-sm">
+                                                <span class="glyphicon glyphicon-eye-open"></span>
+                                                <span class="hidden-sm-down" data-translate="entity.action.delete">Delete</span>
+                                            </button>
+                                        </div>
+
+                                        <p>({{skill.academicYear}}), {{skill.semester}} semester</p>
+                                        <div class="progress" title="{{level.description}}">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="{{skill.mark}}"
+                                                 aria-valuemin="0" aria-valuemax="100" ng-style="{width:'{{skill.mark}}%'}">
+                                                <span>{{skill.mark}}</span>
+                                            </div>
+                                        </div>
+                                </div>
+                            </blockquote>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<h3 data-translate="kpicsApp.studentOverview.description">Description</h3>
+<p>{{vm.studentInfo.about}}</p>
+
+<h3 data-translate="kpicsApp.studentOverview.projects">My Projects</h3>
+
+<a href="https://github.com/">Link1</a>
+<a href="https://github.com/">Link2</a>
+
+<h3 data-translate="kpicsApp.studentOverview.linkedin">My LinkedIn</h3>
+<a href="https://www.linkedin.com/">https://www.linkedin.com/</a>
+

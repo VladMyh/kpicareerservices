@@ -1,0 +1,167 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="mySkillLabel">Create Skill</h4><!--TODO: add locale-->
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <!--Track Name-->
+        <div class="form-group">
+            <label class="control-label" for="field_trackDefinition">Track name</label>
+            <select class="form-control" name="trackDefinition" id="field_trackDefinition"
+                    ng-model="vm.skill.trackName"
+                    ng-change="vm.clearSkillName()"
+                    required>
+                <option ng-repeat="trackDefinition in vm.trackDefinition" value="{{trackDefinition.name}}">
+                    {{trackDefinition.name}}
+                </option>
+            </select>
+            <div ng-show="editForm.trackDefinition.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.trackDefinition.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+
+        <!--Name-->
+        <div class="form-group" ng-hide="editForm.trackDefinition.$invalid">
+            <label class="control-label" for="field_skillDefinition">Name</label>
+            <select class="form-control" name="skillDefinition" id="field_skillDefinition" ng-model="vm.skill.name" required>
+                <option ng-repeat="skillDefinition in vm.getSkillsByTrackName(vm.skill.trackName)" value="{{skillDefinition}}">
+                    {{skillDefinition}}
+                </option>
+            </select>
+            <div ng-show="editForm.skillDefinition.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.skillDefinition.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+
+        <!--Teacher-->
+        <div class="form-group">
+            <label class="control-label" for="field_teacher">Teacher</label>
+            <select class="form-control" name="teacher" id="field_teacher" ng-model="vm.skill.teacherId" required>
+                <option ng-repeat="teacher in vm.teacher" value="{{teacher.id}}">
+                    {{teacher.firstName}} {{teacher.lastName}}
+                </option>
+            </select>
+            <div ng-show="editForm.teacher.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.teacher.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <!--Semester-->
+        <div class="form-group">
+            <label class="control-label" for="field_semester">Semester</label>
+            <select class="form-control" name="semester" id="field_semester" ng-model="vm.skill.semester" required>
+                <option value='1'>1</option>
+                <option value='2'>2</option>
+            </select>
+            <div ng-show="editForm.semester.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.semester.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+
+        <!--Mark-->
+        <div class="form-group">
+            <label class="control-label">Mark (60-100)</label>
+            <input type="number" min="60" max="100" class="form-control" name="mark" id="field_mark"
+                   ng-model="vm.skill.mark"
+                   required/>
+            <div ng-show="editForm.mark.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.mark.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+
+        <!--Academic year-->
+        <div class="form-group">
+            <label class="control-label" for="field_semester">Academic year</label>
+            <select class="form-control" name="academicYear" id="field_academicYear" ng-model="vm.skill.academicYear" required>
+                <option ng-repeat="academicYear in vm.academicYears" value="{{academicYear}}">
+                    {{academicYear}}
+                </option>
+            </select>
+            <div ng-show="editForm.semester.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.semester.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <!--&lt;!&ndash;StartDate&ndash;&gt;-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label">Start Date</label>-->
+            <!--<input type="text" class="form-control" name="startDate" id="field_startDate"-->
+                   <!--ng-model="vm.skill.startDate"-->
+                   <!--required/>-->
+            <!--<div ng-show="editForm.startDate.$invalid">-->
+                <!--<p class="help-block"-->
+                   <!--ng-show="editForm.startDate.$error.required" data-translate="entity.validation.required">-->
+                    <!--This field is required.-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</div>-->
+
+
+
+        <!--&lt;!&ndash;EndDate&ndash;&gt;-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label">End Date</label>-->
+            <!--<input type="date" class="form-control" name="endDate" id="field_endDate"-->
+                   <!--ng-model="vm.skill.endDate"-->
+                   <!--required/>-->
+            <!--<div ng-show="editForm.endDate.$invalid">-->
+                <!--<p class="help-block"-->
+                   <!--ng-show="editForm.endDate.$error.required" data-translate="entity.validation.required">-->
+                    <!--This field is required.-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</div>-->
+
+
+        <!--Review-->
+        <div class="form-group">
+            <label class="control-label" for="field_review">Review</label>
+            <input type="text" class="form-control" name="review" id="field_review"
+                   ng-model="vm.skill.review"
+                   required/>
+            <div ng-show="editForm.review.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.review.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>
