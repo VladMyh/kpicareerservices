@@ -1,0 +1,71 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myTrackDefinitionLabel" data-translate="kpicsApp.trackDefinition.home.createOrEditLabel">Create or edit a Track Definition</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert></jhi-alert>
+        <div class="form-group" ng-show="vm.trackDefinition.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.trackDefinition.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="kpicsApp.trackDefinition.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                    ng-model="vm.trackDefinition.name"
+                    required/>
+            <div ng-show="editForm.name.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.name.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="kpicsApp.trackDefinition.skillDefinitions" for="field_skillDefinitions">Skill Definitions</label>
+            <ul class="list-group" id="field_skillDefinitions">
+                <li class="list-group-item"
+                    ng-repeat="skillDefinition in vm.trackDefinition.skillDefinitions">
+                    {{skillDefinition}}
+                    <button type="button"
+                            ng-click="vm.removeSkillDefinition({skillDefinition})"
+                            class="btn btn-danger btn-sm">
+                        <span class="glyphicon glyphicon-remove-circle"></span>
+                        <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                    </button>
+
+                </li>
+            </ul>
+
+
+
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="kpicsApp.trackDefinition.addSkillDefinition.title" for="field_name">Skill Definition</label>
+            <input type="text" class="form-control" name="skillDefinition" id="field_skillDefinition"
+                   ng-model="vm.skillDefinition"/>
+            <button type="button" ng-click="vm.addSkillDefinition()" ng-disabled="editForm.skillDefinition.$error.required" class="btn btn-primary">
+                <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="kpicsApp.trackDefinition.addSkillDefinition.create">Add Skill Definition</span>
+            </button>
+
+        </div>
+
+
+    </div>
+
+
+
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>
