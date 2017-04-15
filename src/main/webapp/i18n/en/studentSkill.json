@@ -1,0 +1,28 @@
+{
+    "kpicsApp": {
+        "studentSkill" : {
+            "action": {
+                "create": "Add Skill"
+            },
+            "home": {
+                "title": "Student Skills",
+                "createLabel": "Create a new Student Skill",
+                "createOrEditLabel": "Create or edit a Student Skill",
+                "search": "Search for Student Info"
+            },
+            "created": "A new Student Skill is created with identifier {{ param }}",
+            "updated": "A Student Skill is updated with identifier {{ param }}",
+            "deleted": "A Student Skill is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Student Skill: {{trackName}} -> {{ name }}?"
+            },
+            "detail": {
+                "title": "Student Skill"
+            },
+            "averageRating": "Average rating",
+            "faculty": "Faculty",
+            "department": "Department",
+            "group": "Group"
+        }
+    }
+}

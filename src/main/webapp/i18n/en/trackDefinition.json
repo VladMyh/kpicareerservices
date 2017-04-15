@@ -1,0 +1,29 @@
+{
+    "kpicsApp": {
+        "trackDefinition" : {
+            "home": {
+                "title": "Track Definitions",
+                "createLabel": "Create a new Track Definition",
+                "createOrEditLabel": "Create or edit a Track Definition",
+                "search": "Search for Track Definition"
+            },
+            "created": "A new Track Definition is created with identifier {{ param }}",
+            "updated": "A Track Definition is updated with identifier {{ param }}",
+            "deleted": "A Track Definition is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Track Definition {{ id }}?"
+            },
+            "detail": {
+                "title": "Track Definition"
+            },
+            "name": "Name",
+            "skillDefinitions": "Skill Definitions",
+            "addSkillDefinition": {
+                "title": "Skill Definition",
+                "create": "Add",
+                "required": "Skill Definition is required",
+                "alreadyAdded": "Skill Definitions already contains {{ param }}"
+            }
+        }
+    }
+}
