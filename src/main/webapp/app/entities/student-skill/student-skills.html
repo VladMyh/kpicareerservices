@@ -1,0 +1,56 @@
+<div>
+    <h2 data-translate="kpicsApp.studentSkill.home.title">Student Skills</h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+            <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                <th jh-sort-by="name"><span data-translate="global.form.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="surname"><span data-translate="global.form.surname">Surname</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="faculty"><span data-translate="kpicsApp.studentSkill.averageRating">Average Rating</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="faculty"><span data-translate="kpicsApp.studentSkill.faculty">Faculty</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="department"><span data-translate="kpicsApp.studentSkill.department">Department</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="group"><span data-translate="kpicsApp.studentSkill.group">Group</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="studentInfo in vm.studentInfos track by studentInfo.id">
+                <td>{{studentInfo.firstName}}</td>
+                <td>{{studentInfo.lastName}}</td>
+                <td>{{studentInfo.averageRating}}</td>
+                <td>{{studentInfo.faculty}}</td>
+                <td>{{studentInfo.department}}</td>
+                <td>{{studentInfo.group}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                ui-sref="student-skill.addSkill({id:studentInfo.id})"
+                                class="btn btn-info btn-sm">
+                            <span class="glyphicon glyphicon-eye-open"></span>
+                            <span class="hidden-sm-down">Add Skill</span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="student-skill-detail({id:studentInfo.id})"
+                                class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-eye-open"></span>
+                            <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                        </button>
+                        <button type="submit" ng-disabled="true"
+                                ui-sref="student-skill.edit({id:studentInfo.id})"
+                                class="btn btn-warning btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+    </div>
+    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
+</div>

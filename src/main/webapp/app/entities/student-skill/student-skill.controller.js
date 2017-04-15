@@ -3,11 +3,11 @@
 
     angular
         .module('kpicsApp')
-        .controller('StudentOverviewAddController', StudentOverviewAddController);
+        .controller('StudentSkillController', StudentSkillController);
 
-    StudentOverviewAddController.$inject = ['$scope', '$state', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    StudentSkillController.$inject = ['$scope', '$state', '$stateParams', 'StudentInfo', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
 
-    function StudentOverviewAddController ($scope, $state, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function StudentSkillController ($scope, $state, $stateParams, StudentInfo, ParseLinks, AlertService, paginationConstants, pagingParams) {
         let vm = this;
 
         vm.loadPage = loadPage;
@@ -18,10 +18,18 @@
 
         loadAll();
 
-
+        function calculateAverageRating(){
+             vm.studentInfos.forEach(function (element) {
+                 element.averageRating = (element.skills.map(function (a){return a.mark;}).reduce(function (a,b) {return a + b;},0) / element.skills.length).toFixed(2);
+             });
+        }
 
         function loadAll () {
-
+            StudentInfo.query({
+                page: pagingParams.page - 1,
+                size: vm.itemsPerPage,
+                sort: sort()
+            }, onSuccess, onError);
             function sort() {
                 let result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
                 if (vm.predicate !== 'id') {
@@ -35,6 +43,9 @@
                 vm.queryCount = vm.totalItems;
                 vm.studentInfos = data;
                 vm.page = pagingParams.page;
+
+                //Remove if it will be too slow
+                calculateAverageRating();
             }
             function onError(error) {
                 AlertService.error(error.data.message);
