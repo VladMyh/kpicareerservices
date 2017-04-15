@@ -1,6 +1,8 @@
 package com.kpics.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.kpics.domain.Skill;
+import com.kpics.domain.StudentInfo;
 import com.kpics.service.UserService;
 import com.kpics.service.dto.UserDTO;
 import com.kpics.web.rest.util.HeaderUtil;
@@ -19,8 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -116,6 +117,113 @@ public class StudentInfoResource {
         Optional<UserDTO> userDTO = userService.getStudentById(id);
         userDTO.ifPresent(u -> userService.deleteUser(u.getEmail()));
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id)).build();
+    }
+
+    @PutMapping("/student-infos/{id}/addSkill")
+    @Timed
+    public ResponseEntity<StudentVM> addSkillToStudent(@PathVariable String id, @Valid @RequestBody Skill skill) throws URISyntaxException {
+        log.debug("Rest request to add Skill to Student : {}", id, skill);
+        Optional<UserDTO> userDTO = userService.getStudentById(id);
+
+        if(userDTO.isPresent()){
+            StudentVM studentVM = null;
+
+            for(Skill studentSkill : userDTO.get().getStudentInfo().getSkills()) {
+                if (studentSkill.equals(skill)){
+                    return ResponseEntity.badRequest()
+                        .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "alreadyexist", "Skill already exists"))
+                        .body(null);
+                }
+            }
+
+
+            userDTO.get().getStudentInfo().getSkills().add(skill);
+            userService.updateUser(userDTO.get());
+
+            studentVM = new StudentVM(userDTO.get());
+
+            return ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, userDTO.get().getId()))
+                .body(studentVM);
+        }
+
+        return ResponseEntity.badRequest()
+            .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "iddoesntexist", "Student with giver id doesn't exists"))
+            .body(null);
+    }
+
+    @PutMapping("/student-infos/{id}/updateSkill")
+    @Timed
+    public ResponseEntity<StudentVM> updateSkill(@PathVariable String id, @Valid @RequestBody Skill[] skills) throws URISyntaxException {
+        log.debug("Rest request to update Skill for Student : {}", id, skills);
+        Optional<UserDTO> userDTO = userService.getStudentById(id);
+
+        if (skills.length != 2){
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "skillshavetobetwo", "Skills array doesn't contain two skills"))
+                .body(null);
+        }
+
+
+        if(userDTO.isPresent()){
+            StudentVM studentVM = null;
+
+            Skill oldSkill = skills[0];
+            Skill newSkill = skills[1];
+
+            Set<Skill> skillsSet = userDTO.get().getStudentInfo().getSkills();
+
+            if (skillsSet.contains(oldSkill)){
+                skillsSet.remove(oldSkill);
+                skillsSet.add(newSkill);
+
+                userService.updateUser(userDTO.get());
+                studentVM = new StudentVM(userDTO.get());
+
+                return ResponseEntity.ok()
+                    .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, userDTO.get().getId()))
+                    .body(studentVM);
+            }
+
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "skilldoesntexist", "Student skill doesn't exists"))
+                .body(null);
+        }
+
+        return ResponseEntity.badRequest()
+            .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "iddoesntexist", "Student with giver id doesn't exists"))
+            .body(null);
+    }
+
+    @PutMapping("/student-infos/{id}/deleteSkill")
+    @Timed
+    public ResponseEntity<StudentVM> deleteSkill(@PathVariable String id, @Valid @RequestBody Skill skill) throws URISyntaxException {
+        log.debug("Rest request to delete Skill from Student : {}", id, skill);
+        Optional<UserDTO> userDTO = userService.getStudentById(id);
+
+        if(userDTO.isPresent()){
+            StudentVM studentVM = null;
+
+            for(Skill studentSkill : userDTO.get().getStudentInfo().getSkills()) {
+                if (studentSkill.equals(skill)){
+                    userDTO.get().getStudentInfo().getSkills().remove(studentSkill);
+                    userService.updateUser(userDTO.get());
+                    studentVM = new StudentVM(userDTO.get());
+
+                    return ResponseEntity.ok()
+                        .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, userDTO.get().getId()))
+                        .body(studentVM);
+                }
+            }
+
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "skilldoesntexist", "Student skill doesn't exists"))
+                .body(null);
+        }
+
+        return ResponseEntity.badRequest()
+            .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "iddoesntexist", "Student with giver id doesn't exists"))
+            .body(null);
     }
 
 }
