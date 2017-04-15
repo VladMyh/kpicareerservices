@@ -20,7 +20,19 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'addSkillToStudent': {
+                method: 'PUT',
+                url: 'api/student-infos/:id/addSkill'
+            },
+            'updateSkill': {
+                method: 'PUT',
+                url: 'api/student-infos/:id/updateSkill'
+            },
+            'deleteSkill': {
+                method: 'PUT',
+                url: 'api/student-infos/:id/deleteSkill'
+            }
         });
     }
 })();

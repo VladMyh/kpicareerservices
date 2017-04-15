@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -40,7 +41,7 @@ public class StudentInfo implements Serializable {
 
     @NotNull
     @Field("skills")
-    private Set<Skill> skills;
+    private Set<Skill> skills = new HashSet<>();
 
     public StudentInfo() {}
 

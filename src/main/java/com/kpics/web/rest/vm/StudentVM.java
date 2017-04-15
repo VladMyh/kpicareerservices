@@ -1,7 +1,11 @@
 package com.kpics.web.rest.vm;
 
+import com.kpics.domain.Skill;
 import com.kpics.domain.StudentInfo;
 import com.kpics.service.dto.UserDTO;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class StudentVM {
     private String id;
@@ -26,20 +30,26 @@ public class StudentVM {
 
     private String about;
 
+    private Set<Skill> skills = new HashSet<>();
+
     public StudentVM() {}
 
-    public StudentVM(String id, String firstName, String lastName, String email,
-                     String linkedin, boolean activated, String faculty,
-                     String department, String about) {
+    public StudentVM(String id, String firstName, String lastName, String email, String linkedin,
+                     String github, boolean activated, String faculty, String department, String group,
+                     String about, Set<Skill> skills) {
         this.id = id;
         this.firstName = firstName;
+
         this.lastName = lastName;
         this.email = email;
         this.linkedin = linkedin;
+        this.github = github;
         this.activated = activated;
         this.faculty = faculty;
         this.department = department;
+        this.group = group;
         this.about = about;
+        this.skills = skills;
     }
 
     public StudentVM(UserDTO userDTO) {
@@ -47,13 +57,16 @@ public class StudentVM {
         this.firstName = userDTO.getFirstName();
         this.lastName = userDTO.getLastName();
         this.email = userDTO.getEmail();
-        this.linkedin = userDTO.getLinkedin();
+        this.linkedin = userDTO.getLinkedin() != null ?
+                                    userDTO.getLinkedin() :
+                                    "https://cdn.worldvectorlogo.com/logos/jhipster.svg";
         this.github = userDTO.getStudentInfo().getGithub();
         this.activated = userDTO.isActivated();
         this.faculty = userDTO.getStudentInfo().getFaculty();
         this.department = userDTO.getStudentInfo().getDepartment();
         this.group = userDTO.getStudentInfo().getGroup();
         this.about = userDTO.getStudentInfo().getAbout();
+        this.skills = userDTO.getStudentInfo().getSkills();
     }
 
     public String getId() {
@@ -144,6 +157,14 @@ public class StudentVM {
         this.group = group;
     }
 
+    public Set<Skill> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(Set<Skill> skills) {
+        this.skills = skills;
+    }
+
     @Override
     public String toString() {
         return "StudentVM{" +
@@ -158,6 +179,7 @@ public class StudentVM {
             ", department='" + department + '\'' +
             ", group='" + group + '\'' +
             ", about='" + about + '\'' +
+            ", skills=" + skills +
             '}';
     }
 }
