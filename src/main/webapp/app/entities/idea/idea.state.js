@@ -189,7 +189,31 @@
                     $state.go('^');
                 });
             }]
-        });
+        })
+            .state('idea.pmconfirm', {
+                parent: 'idea',
+                url: '/{id}/pmconfirm',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/idea/idea-pm-confirm-dialog.html',
+                        controller: 'IdeaPmConfirmController',
+                        controllerAs: 'vm',
+                        size: 'md',
+                        resolve: {
+                            entity: ['Idea', function(Idea) {
+                                return Idea.get({id : $stateParams.id}).$promise;
+                            }]
+                        }
+                    }).result.then(function() {
+                        $state.go('idea', null, { reload: 'idea' });
+                    }, function() {
+                        $state.go('^');
+                    });
+                }]
+            });
     }
 
 })();

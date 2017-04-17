@@ -16,6 +16,9 @@
             "detail": {
                 "title": "Идея"
             },
+            "projectmanager": {
+                "question": "Вы действительно хотите подтвердить участие в {{ name }}?"
+            },
             "description": "Описание",
             "name": "Имя",
             "createDate": "Дата создание",

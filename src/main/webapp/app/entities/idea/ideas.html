@@ -19,24 +19,27 @@
             <thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                     <th jh-sort-by="name"><span data-translate="kpicsApp.idea.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="description"><span data-translate="kpicsApp.idea.description">Description</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="createDate"><span data-translate="kpicsApp.idea.createDate">Create Date</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="deadlineDate"><span data-translate="kpicsApp.idea.deadlineDate">Deadline Date</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="companyName"><span data-translate="kpicsApp.idea.companyName">Company Name</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="companyWebsite"><span data-translate="kpicsApp.idea.companyWebsite">Company Website</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="idea in vm.ideas track by idea.id">
                     <td>{{idea.name}}</td>
-                    <td>{{idea.description}}</td>
                     <td>{{idea.createDate | date:'mediumDate'}}</td>
                     <td>{{idea.deadlineDate | date:'mediumDate'}}</td>
                     <td>{{idea.companyName}}</td>
-                    <td>{{idea.companyWebsite}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ng-hide="idea.isIdeaHasPM"
+                                    ui-sref="idea.pmconfirm({id:idea.id})"
+                                    class="btn btn-success btn-sm">
+                                <span class="glyphicon glyphicon-thumbs-up"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.projectManager"></span>
+                            </button>
                             <button type="submit"
                                     ui-sref="idea-detail({id:idea.id})"
                                     class="btn btn-info btn-sm">

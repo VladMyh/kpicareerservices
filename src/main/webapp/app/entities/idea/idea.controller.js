@@ -15,6 +15,7 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
+        //vm.isIdeaHasProjectManager = false;
 
         loadAll();
 

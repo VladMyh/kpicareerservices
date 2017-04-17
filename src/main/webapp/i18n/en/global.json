@@ -104,7 +104,8 @@
             "edit": "Edit",
             "open": "Open",
             "save": "Save",
-            "view": "View"
+            "view": "View",
+            "projectManager": "Confirm participation"
         },
         "detail": {
             "field": "Field",
@@ -112,6 +113,9 @@
         },
         "delete": {
             "title": "Confirm delete operation"
+        },
+        "projectManager": {
+            "title": "Confirm participation"
         },
         "validation": {
             "required": "This field is required.",

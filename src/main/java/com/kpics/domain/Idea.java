@@ -48,6 +48,12 @@ public class Idea implements Serializable {
     @Field("company_website")
     private String companyWebsite;
 
+    @Field("project_manager")
+    private User projectManager;
+
+    @Field("isIdeaHasPM")
+    private boolean isIdeaHasPM;
+
     public String getId() {
         return id;
     }
@@ -132,6 +138,18 @@ public class Idea implements Serializable {
 
     public void setCompanyWebsite(String companyWebsite) {
         this.companyWebsite = companyWebsite;
+    }
+
+    public User getProjectManager() {
+        return projectManager;
+    }
+
+    public void setProjectManager(User projectManager) {
+        this.projectManager = projectManager;
+    }
+
+    public boolean isIdeaHasPM() {
+        return projectManager != null;
     }
 
     @Override
