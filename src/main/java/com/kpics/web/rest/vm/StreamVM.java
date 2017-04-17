@@ -1,5 +1,7 @@
 package com.kpics.web.rest.vm;
 
+import com.kpics.domain.Group;
+
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -22,15 +24,20 @@ public class StreamVM {
 
     private Set<TrackVM> tracks = new HashSet<>();
 
+    private Set<Group> groups = new HashSet<>();
+
     public StreamVM() {}
 
-    public StreamVM(String id, String name, LocalDate startDate, LocalDate endDate, String description, Set<TrackVM> tracks) {
+    public StreamVM(String id, String name, LocalDate startDate,
+                    LocalDate endDate, String description, Set<TrackVM> tracks,
+                    Set<Group> groups) {
         this.id = id;
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
         this.description = description;
         this.tracks = tracks;
+        this.groups = groups;
     }
 
     public String getId() {
@@ -81,6 +88,14 @@ public class StreamVM {
         this.tracks = tracks;
     }
 
+    public Set<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<Group> groups) {
+        this.groups = groups;
+    }
+
     @Override
     public String toString() {
         return "StreamVM{" +
@@ -90,6 +105,7 @@ public class StreamVM {
             ", endDate=" + endDate +
             ", description='" + description + '\'' +
             ", tracks=" + tracks +
+            ", groups=" + groups +
             '}';
     }
 }

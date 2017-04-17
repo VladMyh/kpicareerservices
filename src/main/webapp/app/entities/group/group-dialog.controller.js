@@ -24,9 +24,6 @@
             for(var i = 0; i < vm.faculties.length; i++) {
                 if(vm.faculties[i].name === vm.selectedFaculty.name) {
                     vm.departments = vm.faculties[i].departments;
-
-                    console.log(vm.selectedFaculty);
-                    console.log(vm.selectedDepartment);
                 }
             }
         }

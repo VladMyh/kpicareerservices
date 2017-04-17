@@ -20,7 +20,17 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'getByFaculty': {
+                method: 'GET',
+                url: 'api/groups/faculty/:faculty',
+                isArray: true
+            },
+            'getByFacultyAndDepartment': {
+                method: 'GET',
+                url: 'api/groups/faculty/:faculty/department/:department',
+                isArray: true
+            }
         });
     }
 })();

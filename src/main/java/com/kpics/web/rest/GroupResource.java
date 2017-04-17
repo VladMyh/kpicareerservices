@@ -32,7 +32,7 @@ public class GroupResource {
     private final Logger log = LoggerFactory.getLogger(GroupResource.class);
 
     private static final String ENTITY_NAME = "group";
-        
+
     private final GroupService groupService;
 
     public GroupResource(GroupService groupService) {
@@ -124,6 +124,24 @@ public class GroupResource {
         log.debug("REST request to delete Group : {}", id);
         groupService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    @GetMapping("/groups/faculty/{faculty}")
+    @Timed
+    public ResponseEntity<?> getGroupsByFaculty(@PathVariable String faculty) {
+        log.debug("REST request to find groups by faculty, faculty: {}", faculty);
+
+        return ResponseEntity.ok(groupService.findByFaculty(faculty));
+    }
+
+    @GetMapping("/groups/faculty/{faculty}/department/{department}")
+    @Timed
+    public ResponseEntity<?> getGroupsByFacultyAndDepartment(@PathVariable String faculty,
+                                                             @PathVariable String department) {
+        log.debug("REST request to find groups by faculty and department, faculty: {}, department: {}",
+            faculty, department);
+
+        return ResponseEntity.ok(groupService.findByFacultyAndDepartment(faculty, department));
     }
 
 }

@@ -170,6 +170,7 @@ public class StreamServiceImpl implements StreamService{
 
         if(stream != null && group != null) {
             stream.getGroups().add(groupId);
+            streamRepository.save(stream);
             return true;
         }
 

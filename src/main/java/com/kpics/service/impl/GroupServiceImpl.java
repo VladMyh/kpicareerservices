@@ -25,50 +25,42 @@ public class GroupServiceImpl implements GroupService{
         this.groupRepository = groupRepository;
     }
 
-    /**
-     * Save a group.
-     *
-     * @param group the entity to save
-     * @return the persisted entity
-     */
     @Override
     public Group save(Group group) {
         log.debug("Request to save Group : {}", group);
         return groupRepository.save(group);
     }
 
-    /**
-     *  Get all the groups.
-     *
-     *  @param pageable the pagination information
-     *  @return the list of entities
-     */
     @Override
     public Page<Group> findAll(Pageable pageable) {
         log.debug("Request to get all Groups");
         return groupRepository.findAll(pageable);
     }
 
-    /**
-     *  Get one group by id.
-     *
-     *  @param id the id of the entity
-     *  @return the entity
-     */
     @Override
     public Group findOne(String id) {
         log.debug("Request to get Group : {}", id);
         return groupRepository.findOne(id);
     }
 
-    /**
-     *  Delete the  group by id.
-     *
-     *  @param id the id of the entity
-     */
     @Override
     public void delete(String id) {
         log.debug("Request to delete Group : {}", id);
         groupRepository.delete(id);
+    }
+
+    @Override
+    public List<Group> findByFaculty(String faculty) {
+        log.debug("Request to find groups by faculty, faculty: {}", faculty);
+
+        return groupRepository.findByFaculty(faculty);
+    }
+
+    @Override
+    public List<Group> findByFacultyAndDepartment(String faculty, String department) {
+        log.debug("Request to find groups by faculty and department, faculty: {}, department: {}",
+            faculty, department);
+
+        return groupRepository.findByFacultyAndDepartment(faculty, department);
     }
 }
