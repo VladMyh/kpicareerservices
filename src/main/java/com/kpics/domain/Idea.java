@@ -149,7 +149,12 @@ public class Idea implements Serializable {
     }
 
     public boolean isIdeaHasPM() {
-        return projectManager != null;
+        return isIdeaHasPM;
+        //return projectManager != null;
+    }
+
+    public void setIdeaHasPM(boolean ideaHasPM) {
+        isIdeaHasPM = ideaHasPM;
     }
 
     @Override
@@ -182,6 +187,8 @@ public class Idea implements Serializable {
             ", deadlineDate='" + deadlineDate + "'" +
             ", companyName='" + companyName + "'" +
             ", companyWebsite='" + companyWebsite + "'" +
+            ", projectManager='" + projectManager + "'" +
+            ", isIdeaHasPM='" + isIdeaHasPM + "'" +
             '}';
     }
 }

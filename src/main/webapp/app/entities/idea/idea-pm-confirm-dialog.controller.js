@@ -5,9 +5,9 @@
         .module('kpicsApp')
         .controller('IdeaPmConfirmController', IdeaPmConfirmController);
 
-    IdeaPmConfirmController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Idea'];
+    IdeaPmConfirmController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Idea', 'Account'];
 
-    function IdeaPmConfirmController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Idea) {
+    function IdeaPmConfirmController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Idea, Account) {
         var vm = this;
 
         vm.idea = entity;
@@ -20,6 +20,10 @@
 
         function save () {
             vm.isSaving = false;
+            if (vm.idea.id !== null) {
+                console.log(Account.get());
+                clear();
+            }
             /*
             vm.isSaving = true;
             if (vm.idea.id !== null) {
