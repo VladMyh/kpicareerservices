@@ -6,9 +6,9 @@
         .controller('RegisterController', RegisterController);
 
 
-    RegisterController.$inject = ['$translate', '$timeout', 'Auth', 'LoginService'];
+    RegisterController.$inject = ['$translate', '$timeout', 'Auth', 'LoginService', 'Faculty'];
 
-    function RegisterController ($translate, $timeout, Auth, LoginService) {
+    function RegisterController ($translate, $timeout, Auth, LoginService, Faculty) {
         var vm = this;
 
         vm.doNotMatch = null;
@@ -19,6 +19,11 @@
         vm.registerAccount = {};
         vm.registerAccount.studentInfo = {};
         vm.success = null;
+        vm.faculties = Faculty.query(onFacultySuccess);
+        vm.departments = null;
+        vm.onSelectChange = onSelectChange;
+        vm.selectedFaculty = null;
+        vm.selectedDepartment = null;
 
         $timeout(function (){angular.element('#login').focus();});
 
@@ -27,6 +32,8 @@
                 vm.doNotMatch = 'ERROR';
             } else {
                 vm.registerAccount.langKey = $translate.use();
+                vm.registerAccount.studentInfo.faculty = vm.selectedFaculty.name;
+                vm.registerAccount.studentInfo.department = vm.selectedDepartment.name;
                 vm.doNotMatch = null;
                 vm.error = null;
                 vm.errorUserExists = null;
@@ -43,6 +50,18 @@
                     }
                 });
             }
+        }
+
+        function onSelectChange() {
+            for(var i = 0; i < vm.faculties.length; i++) {
+                if(vm.faculties[i].name === vm.selectedFaculty.name) {
+                    vm.departments = vm.faculties[i].departments;
+                }
+            }
+        }
+
+        function onFacultySuccess() {
+            vm.departments = vm.faculties[0].departments;
         }
     }
 })();

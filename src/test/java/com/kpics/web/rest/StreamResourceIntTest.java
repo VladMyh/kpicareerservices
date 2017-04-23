@@ -2,8 +2,10 @@ package com.kpics.web.rest;
 
 import com.kpics.KpicsApp;
 
+import com.kpics.domain.Group;
 import com.kpics.domain.Stream;
 import com.kpics.repository.StreamRepository;
+import com.kpics.service.GroupService;
 import com.kpics.service.StreamService;
 
 import com.kpics.service.UserService;
@@ -57,6 +59,9 @@ public class StreamResourceIntTest {
     private UserService userService;
 
     @Autowired
+    private GroupService groupService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -69,7 +74,7 @@ public class StreamResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        StreamResource streamResource = new StreamResource(streamService, userService);
+        StreamResource streamResource = new StreamResource(streamService, userService, groupService);
         this.restStreamMockMvc = MockMvcBuilders.standaloneSetup(streamResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();

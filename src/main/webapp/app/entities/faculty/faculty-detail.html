@@ -1,12 +1,22 @@
 
 <div>
-    <h2><span data-translate="kpicsApp.faculty.detail.title">Faculty</span> {{vm.faculty.name}}</h2>
+    <h2><span data-translate="kpicsApp.faculty.detail.title">Faculty</span> {{::vm.faculty.name}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
+    <form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
     <dl class="row jh-entity-details">
         <dt><span data-translate="kpicsApp.faculty.name">Name</span></dt>
         <dd>
-            <span>{{vm.faculty.name}}</span>
+            <input type="text" class="form-control" name="name" id="field_name"
+                   ng-model="vm.faculty.name"
+                   required/>
+        </dd>
+
+        <dt></dt>
+        <dd>
+            <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+                <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+            </button>
         </dd>
 
         <dt>Departments</dt>
@@ -27,10 +37,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="department in vm.faculty.departments track by department.id">
+                    <tr ng-repeat="department in vm.faculty.departments track by department.id">
                     <td>{{department.name}}</td>
                     <td class="text-right">
-                        <button class="btn btn-danger btn-sm">
+                        <button ui-sref="faculty-detail.deleteDepartment({id: vm.faculty.id, departmentId: department.id})"
+                            class="btn btn-danger btn-sm">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
                         <button ui-sref="faculty-detail.editDepartment({id: vm.faculty.id, departmentId: department.id})"
@@ -48,6 +59,7 @@
             </table>
         </dd>
     </dl>
+    </form>
 
     <button type="submit"
             ui-sref="{{ vm.previousState }}"

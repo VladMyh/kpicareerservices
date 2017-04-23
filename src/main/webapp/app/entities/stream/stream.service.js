@@ -79,6 +79,10 @@
             'updateSubject': {
                 method: 'PUT',
                 url: 'api/streams/:id/tracks/:trackId/subjects/:subjectId'
+            },
+            'addGroup': {
+                method: 'POST',
+                url: 'api/streams/:id/addGroup'
             }
         });
     }

@@ -41,6 +41,9 @@ public class Stream implements Serializable {
     @Field("tracks")
     private Set<Track> tracks = new HashSet<>();
 
+    @Field("groups")
+    private Set<String> groups = new HashSet<>();
+
     public String getId() {
         return id;
     }
@@ -115,6 +118,19 @@ public class Stream implements Serializable {
         this.tracks = tracks;
     }
 
+    public void setGroups(Set<String> groups) {
+        this.groups = groups;
+    }
+
+    public Set<String> getGroups() {
+        return groups;
+    }
+
+    public Stream groups(Set<String> groups) {
+        this.groups = groups;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -122,12 +138,13 @@ public class Stream implements Serializable {
 
         Stream stream = (Stream) o;
 
-        if (id != null ? !id.equals(stream.id) : stream.id != null) return false;
-        if (name != null ? !name.equals(stream.name) : stream.name != null) return false;
-        if (startDate != null ? !startDate.equals(stream.startDate) : stream.startDate != null) return false;
-        if (endDate != null ? !endDate.equals(stream.endDate) : stream.endDate != null) return false;
+        if (!id.equals(stream.id)) return false;
+        if (!name.equals(stream.name)) return false;
+        if (!startDate.equals(stream.startDate)) return false;
+        if (!endDate.equals(stream.endDate)) return false;
         if (description != null ? !description.equals(stream.description) : stream.description != null) return false;
-        return tracks != null ? tracks.equals(stream.tracks) : stream.tracks == null;
+        if (tracks != null ? !tracks.equals(stream.tracks) : stream.tracks != null) return false;
+        return groups != null ? groups.equals(stream.groups) : stream.groups == null;
     }
 
     @Override
@@ -144,6 +161,7 @@ public class Stream implements Serializable {
             ", endDate=" + endDate +
             ", description='" + description + '\'' +
             ", tracks=" + tracks +
+            ", groups=" + groups +
             '}';
     }
 }

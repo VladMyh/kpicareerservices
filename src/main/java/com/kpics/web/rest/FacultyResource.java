@@ -91,7 +91,7 @@ public class FacultyResource {
      * @return the ResponseEntity with status 200 (OK) and the list of faculties in body
      * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
-    @GetMapping("/faculties")
+    @GetMapping("/faculties/all")
     @Timed
     public ResponseEntity<List<Faculty>> getAllFaculties(@ApiParam Pageable pageable)
         throws URISyntaxException {
@@ -125,8 +125,14 @@ public class FacultyResource {
     @Timed
     public ResponseEntity<Void> deleteFaculty(@PathVariable String id) {
         log.debug("REST request to delete Faculty : {}", id);
-        facultyService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(FACULTY, id.toString())).build();
+        if(facultyService.delete(id)) {
+            return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(FACULTY, id.toString())).build();
+        }
+        else {
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert(FACULTY, "entityinuse", "Cannot delete department!"))
+                .body(null);
+        }
     }
 
 
@@ -190,8 +196,15 @@ public class FacultyResource {
     public ResponseEntity<Void> deleteDepartment(@PathVariable String facultyId,
                                                  @PathVariable String departmentId) {
         log.debug("REST request to delete Department, facultyId: {}, departmentId: {}", facultyId, departmentId);
-        facultyService.deleteDepartment(facultyId, departmentId);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(DEPARTMENT, facultyId)).build();
+
+        if(facultyService.deleteDepartment(facultyId, departmentId)) {
+            return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(DEPARTMENT, facultyId)).build();
+        }
+        else {
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert(DEPARTMENT, "entityinuse", "Cannot delete department!"))
+                .body(null);
+        }
     }
 
     /**

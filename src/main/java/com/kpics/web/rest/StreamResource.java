@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.kpics.domain.Stream;
 import com.kpics.domain.Subject;
 import com.kpics.domain.Track;
+import com.kpics.service.GroupService;
 import com.kpics.service.StreamService;
 import com.kpics.service.UserService;
 import com.kpics.service.dto.UserDTO;
@@ -26,6 +27,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashSet;
@@ -54,9 +56,14 @@ public class StreamResource {
 
     private final UserService userService;
 
-    public StreamResource(StreamService streamService, UserService userService) {
+    private final GroupService groupService;
+
+    public StreamResource(StreamService streamService,
+                          UserService userService,
+                          GroupService groupService) {
         this.streamService = streamService;
         this.userService = userService;
+        this.groupService = groupService;
     }
 
     /**
@@ -149,7 +156,11 @@ public class StreamResource {
                     .stream()
                     .map(id -> new TeacherVM(new UserDTO(userService.getUserWithAuthorities(id))))
                     .collect(Collectors.toSet()), t.getSubjects()))
-                .collect(Collectors.toSet())))
+                .collect(Collectors.toSet()),
+                l.getGroups()
+                    .stream()
+                    .map(groupService::findOne)
+                    .collect(Collectors.toSet())))
             .collect(Collectors.toList());
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/streams");
@@ -568,6 +579,20 @@ public class StreamResource {
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(SUBJECT, subjectId))
             .body(stream);
+    }
+
+    @PostMapping("/streams/{streamId}/addGroup")
+    @Timed
+    public ResponseEntity<?> addGroup(@PathVariable String streamId,
+                                      @RequestBody String groupId) {
+        log.debug("REST request to add group to stream, streamId: {}, groupId: {}", streamId, groupId);
+        Boolean result = streamService.addGroupToStream(streamId, groupId);
+
+        if(result) {
+            return ResponseEntity.ok().build();
+        }
+
+        return ResponseEntity.badRequest().build();
     }
 
 }

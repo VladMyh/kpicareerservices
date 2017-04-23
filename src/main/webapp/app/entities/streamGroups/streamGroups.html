@@ -1,0 +1,50 @@
+<div>
+    <h2>Stream groups</h2><!--TODO: add localozation-->
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive">
+        <div ng-repeat="stream in vm.streams track by stream.id"
+             class="panel panel-default">
+            <div class="panel-heading">
+                {{stream.name}}
+
+                <div class="col-md-2 pull-right">
+                    <button class="btn btn-primary btn-xs"
+                            ui-sref="streamGroups.addGroup({streamId:stream.id})">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        Add<!--TODO: add locale-->
+                    </button>
+                </div>
+            </div>
+
+            <table class="table table-striped panel-body">
+                <tr>
+                    <th></th>
+                    <th>Group</th>
+                    <th>Faculty</th>
+                    <th>Department</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="group in stream.groups">
+                    <td></td>
+                    <td>{{group.name}}</td>
+                    <td>{{group.faculty}}</td>
+                    <td>{{group.department}}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="panel-body" ng-show="!stream.groups.length">
+                <p>No tracks</p>
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+    </div>
+    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
+</div>

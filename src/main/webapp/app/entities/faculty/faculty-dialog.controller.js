@@ -24,9 +24,7 @@
 
         function save () {
             vm.isSaving = true;
-            if (vm.faculty.id !== null) {
-                Faculty.update(vm.faculty, onSaveSuccess, onSaveError);
-            } else {
+            if (vm.faculty.id === null) {
                 Faculty.save(vm.faculty, onSaveSuccess, onSaveError);
             }
         }

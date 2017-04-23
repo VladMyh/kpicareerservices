@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -26,7 +27,7 @@ public class Faculty implements Serializable {
     private String name;
 
     @Field("departments")
-    private Set<Department> departments;
+    private Set<Department> departments = new HashSet<>();
 
     public String getId() {
         return id;

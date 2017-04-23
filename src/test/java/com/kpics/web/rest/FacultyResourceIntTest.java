@@ -141,7 +141,7 @@ public class FacultyResourceIntTest {
         facultyRepository.save(faculty);
 
         // Get all the facultyList
-        restFacultyMockMvc.perform(get("/api/faculties?sort=id,desc"))
+        restFacultyMockMvc.perform(get("/api/faculties/all?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(faculty.getId())))
@@ -224,10 +224,5 @@ public class FacultyResourceIntTest {
         // Validate the database is empty
         List<Faculty> facultyList = facultyRepository.findAll();
         assertThat(facultyList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Faculty.class);
     }
 }

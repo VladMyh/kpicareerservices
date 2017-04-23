@@ -2,7 +2,9 @@ package com.kpics.service.impl;
 
 import com.kpics.domain.Department;
 import com.kpics.domain.Faculty;
+import com.kpics.domain.Group;
 import com.kpics.repository.FacultyRepository;
+import com.kpics.repository.GroupRepository;
 import com.kpics.service.FacultyService;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -11,8 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -25,39 +26,57 @@ public class FacultyServiceImpl implements FacultyService{
 
     private final FacultyRepository facultyRepository;
 
-    public FacultyServiceImpl(FacultyRepository facultyRepository) {
+    private final GroupRepository groupRepository;
+
+    public FacultyServiceImpl(FacultyRepository facultyRepository,
+                              GroupRepository groupRepository) {
         this.facultyRepository = facultyRepository;
+        this.groupRepository = groupRepository;
     }
 
     @Override
     public Faculty save(Faculty faculty) {
         log.debug("Request to save Faculty : {}", faculty);
 
-        Faculty result = facultyRepository.save(faculty);
-        return result;
+        return facultyRepository.save(faculty);
     }
 
     @Override
     public Page<Faculty> findAll(Pageable pageable) {
         log.debug("Request to get all Faculties");
 
-        Page<Faculty> result = facultyRepository.findAll(pageable);
-        return result;
+        return facultyRepository.findAll(pageable);
     }
 
     @Override
     public Faculty findOne(String id) {
         log.debug("Request to get Faculty : {}", id);
 
-        Faculty faculty = facultyRepository.findOne(id);
-        return faculty;
+        return facultyRepository.findOne(id);
     }
 
     @Override
-    public void delete(String id) {
+    public boolean delete(String id) {
         log.debug("Request to delete Faculty : {}", id);
 
-        facultyRepository.delete(id);
+        Faculty faculty = findOne(id);
+
+        if(faculty != null) {
+            if(checkFacultyUsage(faculty.getName())) {
+                return false;
+            }
+
+            facultyRepository.delete(id);
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean checkFacultyUsage(String name) {
+        Optional<Group> group = groupRepository.findOneByFaculty(name);
+
+        return group.isPresent();
     }
 
     @Override
@@ -104,8 +123,8 @@ public class FacultyServiceImpl implements FacultyService{
     }
 
     @Override
-    public void deleteDepartment(String facultyId, String departmentId) {
-        log.debug("Request to delete department, facultyId: {}, departmentId: {}");
+    public boolean deleteDepartment(String facultyId, String departmentId) {
+        log.debug("Request to delete department, facultyId: {}, departmentId: {}", facultyId, departmentId);
 
         Faculty faculty = findOne(facultyId);
 
@@ -116,14 +135,27 @@ public class FacultyServiceImpl implements FacultyService{
                 .findFirst();
 
             if(department.isPresent()) {
+                if(checkDepartmentUsage(department.get().getName())) {
+                    return false;
+                }
+
                 faculty.setDepartments(faculty.getDepartments()
                     .stream()
                     .filter(d -> !d.getId().equals(departmentId))
                     .collect(Collectors.toSet()));
 
                 save(faculty);
+                return true;
             }
         }
+
+        return false;
+    }
+
+    private boolean checkDepartmentUsage(String department) {
+        Optional<Group> group = groupRepository.findOneByDepartment(department);
+
+        return group.isPresent();
     }
 
     @Override
@@ -146,6 +178,4 @@ public class FacultyServiceImpl implements FacultyService{
 
         return result;
     }
-
-
 }
