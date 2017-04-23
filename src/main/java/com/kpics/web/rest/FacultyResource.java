@@ -91,7 +91,7 @@ public class FacultyResource {
      * @return the ResponseEntity with status 200 (OK) and the list of faculties in body
      * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
-    @GetMapping("/faculties")
+    @GetMapping("/faculties/all")
     @Timed
     public ResponseEntity<List<Faculty>> getAllFaculties(@ApiParam Pageable pageable)
         throws URISyntaxException {

@@ -141,7 +141,7 @@ public class FacultyResourceIntTest {
         facultyRepository.save(faculty);
 
         // Get all the facultyList
-        restFacultyMockMvc.perform(get("/api/faculties?sort=id,desc"))
+        restFacultyMockMvc.perform(get("/api/faculties/all?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(faculty.getId())))

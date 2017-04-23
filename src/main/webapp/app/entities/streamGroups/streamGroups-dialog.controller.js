@@ -56,9 +56,11 @@
         }
 
         function addGroupToStream(groupId) {
-            Stream.addGroup({id: vm.streamId}, groupId);
+            Stream.addGroup({id: vm.streamId}, groupId, onAddSuccess);
 
-            clear();
+            function onAddSuccess(result) {
+                $uibModalInstance.close(result);
+            }
         }
     }
 })();
