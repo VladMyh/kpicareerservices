@@ -19,12 +19,19 @@ public interface GroupService {
     Group save(Group group);
 
     /**
-     *  Get all the groups.
+     *  Get page of groups.
      *
      *  @param pageable the pagination information.
      *  @return         the list of entities.
      */
     Page<Group> findAll(Pageable pageable);
+
+    /**
+     * Get all groups.
+     *
+     * @return a list of groups
+     */
+    List<Group> findAll();
 
     /**
      *  Get the "id" group.

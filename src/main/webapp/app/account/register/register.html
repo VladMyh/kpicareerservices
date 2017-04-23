@@ -71,7 +71,8 @@
                 <div class="form-group">
                     <label class="control-label" data-translate="global.form.faculty" for="field_faculty">Faculty</label>
                     <select class="form-control" name="field_faculty" id="field_faculty"
-                            ng-model="vm.selectedFaculty" ng-options="x.name for x in vm.faculties" ng-change="vm.onSelectChange()" required>
+                            ng-model="vm.selectedFaculty" ng-options="x.name for x in vm.faculties"
+                            ng-change="vm.onFacultySelectChange()" required>
                     </select>
                 </div>
 
@@ -79,18 +80,17 @@
                 <div class="form-group">
                     <label class="control-label" data-translate="global.form.department" for="field_department">Department</label>
                     <select class="form-control" name="field_department" id="field_department"
-                            ng-model="vm.selectedDepartment" ng-options="y.name for y in vm.departments" required>
+                            ng-model="vm.selectedDepartment" ng-options="y.name for y in vm.departments"
+                            ng-change="vm.onDepartmentSelectChange()" required>
                     </select>
                 </div>
 
                 <!--Group-->
                 <div class="form-group">
-                    <label class="control-label" for="group" data-translate="global.form.group">Group</label>
-                    <input type="text" class="form-control" id="group" name="group" placeholder="{{'global.form.group.placeholder' | translate}}"
-                           ng-model="vm.registerAccount.studentInfo.group" ng-minlength=1 ng-maxlength=10 ng-pattern="/^[_'.@A-Za-z0-9-]*$/" required>
-                    <div ng-show="form.login.$dirty && form.login.$invalid">
-                        <!--TODO: add invalid messages-->
-                    </div>
+                    <label class="control-label" data-translate="global.form.group" for="field_group">Group</label>
+                    <select class="form-control" name="field_group" id="field_group"
+                            ng-model="vm.selectedGroup" ng-options="z.name for z in vm.groups" required>
+                    </select>
                 </div>
 
                 <!--About-->

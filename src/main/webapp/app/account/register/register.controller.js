@@ -6,9 +6,9 @@
         .controller('RegisterController', RegisterController);
 
 
-    RegisterController.$inject = ['$translate', '$timeout', 'Auth', 'LoginService', 'Faculty'];
+    RegisterController.$inject = ['$translate', '$timeout', 'Auth', 'LoginService', 'Faculty', 'Group'];
 
-    function RegisterController ($translate, $timeout, Auth, LoginService, Faculty) {
+    function RegisterController ($translate, $timeout, Auth, LoginService, Faculty, Group) {
         var vm = this;
 
         vm.doNotMatch = null;
@@ -19,11 +19,18 @@
         vm.registerAccount = {};
         vm.registerAccount.studentInfo = {};
         vm.success = null;
+        vm.allGroups = Group.getAll();
+
         vm.faculties = Faculty.query(onFacultySuccess);
         vm.departments = null;
-        vm.onSelectChange = onSelectChange;
+        vm.groups = null;
+
         vm.selectedFaculty = null;
         vm.selectedDepartment = null;
+        vm.selectedGroup = null;
+
+        vm.onFacultySelectChange = onFacultySelectChange;
+        vm.onDepartmentSelectChange = onDepartmentSelectChange;
 
         $timeout(function (){angular.element('#login').focus();});
 
@@ -34,6 +41,7 @@
                 vm.registerAccount.langKey = $translate.use();
                 vm.registerAccount.studentInfo.faculty = vm.selectedFaculty.name;
                 vm.registerAccount.studentInfo.department = vm.selectedDepartment.name;
+                vm.registerAccount.studentInfo.group = vm.selectedGroup.name;
                 vm.doNotMatch = null;
                 vm.error = null;
                 vm.errorUserExists = null;
@@ -52,16 +60,31 @@
             }
         }
 
-        function onSelectChange() {
+        function onFacultySuccess() {
+            vm.departments = vm.faculties[0].departments;
+        }
+
+        function onFacultySelectChange() {
             for(var i = 0; i < vm.faculties.length; i++) {
                 if(vm.faculties[i].name === vm.selectedFaculty.name) {
                     vm.departments = vm.faculties[i].departments;
                 }
             }
+
+            vm.groups = vm.allGroups.filter(filterByFaculties);
         }
 
-        function onFacultySuccess() {
-            vm.departments = vm.faculties[0].departments;
+        function onDepartmentSelectChange() {
+            vm.groups = vm.allGroups.filter(filterByFacultiesAndDepartments);
+        }
+
+        function filterByFaculties(group) {
+            return group.faculty === vm.selectedFaculty.name;
+        }
+
+        function filterByFacultiesAndDepartments(group) {
+            return group.faculty === vm.selectedFaculty.name
+                    && group.department === vm.selectedDepartment.name;
         }
     }
 })();

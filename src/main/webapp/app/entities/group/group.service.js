@@ -10,7 +10,10 @@
         var resourceUrl =  'api/groups/:id';
 
         return $resource(resourceUrl, {}, {
-            'query': { method: 'GET', isArray: true},
+            'query': {
+                method: 'GET',
+                isArray: true
+            },
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {
@@ -29,6 +32,11 @@
             'getByFacultyAndDepartment': {
                 method: 'GET',
                 url: 'api/groups/faculty/:faculty/department/:department',
+                isArray: true
+            },
+            'getAll': {
+                method: 'GET',
+                url: 'api/groups/all',
                 isArray: true
             }
         });

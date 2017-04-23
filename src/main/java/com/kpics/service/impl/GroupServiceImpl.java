@@ -33,8 +33,14 @@ public class GroupServiceImpl implements GroupService{
 
     @Override
     public Page<Group> findAll(Pageable pageable) {
-        log.debug("Request to get all Groups");
+        log.debug("Request to get page of Groups");
         return groupRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<Group> findAll() {
+        log.debug("Request to get all Groups");
+        return groupRepository.findAll();
     }
 
     @Override

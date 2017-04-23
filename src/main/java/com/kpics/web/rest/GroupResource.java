@@ -82,7 +82,7 @@ public class GroupResource {
     }
 
     /**
-     * GET  /groups : get all the groups.
+     * GET  /groups : get page of groups.
      *
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of groups in body
@@ -90,12 +90,24 @@ public class GroupResource {
      */
     @GetMapping("/groups")
     @Timed
-    public ResponseEntity<List<Group>> getAllGroups(@ApiParam Pageable pageable)
+    public ResponseEntity<List<Group>> getPageOfGroups(@ApiParam Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Groups");
         Page<Group> page = groupService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/groups");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /groups/all : get all groups.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of groups in body
+     */
+    @GetMapping("/groups/all")
+    @Timed
+    public ResponseEntity<List<Group>> getAllGroups() {
+        log.debug("REST request to get all Groups");
+        return ResponseEntity.ok(groupService.findAll());
     }
 
     /**
