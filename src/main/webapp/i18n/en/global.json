@@ -11,6 +11,9 @@
                 "teacherInfo": "Teacher",
                 "track": "Track",
                 "stream": "Stream",
+                "faculty": "Faculty",
+                "group": "Group",
+                "department": "Department",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -132,7 +135,8 @@
         "Size": "Field {{ fieldName }} does not meet min/max size requirements!",
         "userexists": "Login name already used!",
         "emailexists": "E-mail is already in use!",
-        "idexists": "A new {{ entityName }} cannot already have an ID"
+        "idexists": "A new {{ entityName }} cannot already have an ID",
+        "entityinuse": "{{ entityName }} cannot be deleted, perhaps it's used somewhere"
     },
     "footer": "This is your footer"
 }

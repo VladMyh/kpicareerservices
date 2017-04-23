@@ -68,4 +68,20 @@ public interface StreamService {
      * @return          True if teacher is deleted, false otherwise.
      */
     boolean deleteTeacher(String streamId, String trackId, String teacherId);
+
+    /**
+     * Add group to stream.
+     *
+     * @param streamId Stream id.
+     * @param groupId  Group id.
+     */
+    boolean addGroupToStream(String streamId, String groupId);
+
+    /**
+     * Remove group from stream.
+     *
+     * @param streamId Stream id.
+     * @param groupId  Group id.
+     */
+    void removeGroupFromStream(String streamId, String groupId);
 }
