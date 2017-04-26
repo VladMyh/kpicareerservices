@@ -48,11 +48,14 @@ public class Idea implements Serializable {
     @Field("company_website")
     private String companyWebsite;
 
-    @Field("project_manager")
-    private User projectManager;
+    @Field("project_manager_id")
+    private String projectManagerId;
 
     @Field("isIdeaHasPM")
     private boolean isIdeaHasPM;
+
+    public Idea() {
+    }
 
     public String getId() {
         return id;
@@ -140,17 +143,8 @@ public class Idea implements Serializable {
         this.companyWebsite = companyWebsite;
     }
 
-    public User getProjectManager() {
-        return projectManager;
-    }
-
-    public void setProjectManager(User projectManager) {
-        this.projectManager = projectManager;
-    }
-
     public boolean isIdeaHasPM() {
         return isIdeaHasPM;
-        //return projectManager != null;
     }
 
     public void setIdeaHasPM(boolean ideaHasPM) {
@@ -187,8 +181,16 @@ public class Idea implements Serializable {
             ", deadlineDate='" + deadlineDate + "'" +
             ", companyName='" + companyName + "'" +
             ", companyWebsite='" + companyWebsite + "'" +
-            ", projectManager='" + projectManager + "'" +
+            ", projectManager='" + projectManagerId + "'" +
             ", isIdeaHasPM='" + isIdeaHasPM + "'" +
             '}';
+    }
+
+    public void setProjectManagerId(String projectManagerId) {
+        this.projectManagerId = projectManagerId;
+    }
+
+    public String getProjectManagerId() {
+        return this.projectManagerId;
     }
 }

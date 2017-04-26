@@ -21,23 +21,37 @@
         function save () {
             vm.isSaving = false;
             if (vm.idea.id !== null) {
-                console.log(Account.get());
-                clear();
+                /*
+                Account.get(function (data) {
+                    vm.idea.projectManagerId = data.data.id;
+                    vm.idea.ideaHasPM = true;
+                    vm.idea.isIdeaHasPM = true;
+                    console.log(vm.idea);
+
+                    Idea.update(vm.idea, onSaveSuccess, onSaveError);
+                });
+                */
+
+                saveProjectManager(function (data) {
+                    Idea.update(vm.idea, onSaveSuccess, onSaveError);
+                });
             }
-            /*
-            vm.isSaving = true;
-            if (vm.idea.id !== null) {
-                Idea.update(vm.idea, onSaveSuccess, onSaveError);
-            } else {
-                Idea.save(vm.idea, onSaveSuccess, onSaveError);
-            }
-            */
+        }
+
+        function saveProjectManager(fn){
+            Account.get(function (data) {
+                vm.idea.projectManagerId = data.data.id;
+                vm.idea.ideaHasPM = true;
+                vm.idea.isIdeaHasPM = true;
+                console.log(vm.idea);
+
+                fn(null);
+            });
         }
 
         function onSaveSuccess (result) {
-            //$scope.$emit('kpicsApp:ideaUpdate', result);
-            //$uibModalInstance.close(result);
             vm.isSaving = false;
+            clear();
         }
 
         function onSaveError () {
