@@ -127,6 +127,7 @@
                                 description: null,
                                 name: null,
                                 createDate: null,
+                                startWorkDate: null,
                                 deadlineDate: null,
                                 companyName: null,
                                 companyWebsite: null,
@@ -190,7 +191,7 @@
                 });
             }]
         })
-            .state('idea.pmconfirm', {
+        .state('idea.pmconfirm', {
                 parent: 'idea',
                 url: '/{id}/pmconfirm',
                 data: {
