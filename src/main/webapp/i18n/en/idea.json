@@ -20,7 +20,8 @@
                 "question": "Are you sure you want to confirm participation in {{ name }}?"
             },
             "user": {
-                "question": "Are you sure you want to join in {{ name }}?"
+                "question": "Are you sure you want to join in {{ name }}?",
+                "error": "You have already joined to idea!"
             },
             "description": "Description",
             "name": "Name",

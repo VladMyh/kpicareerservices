@@ -5,9 +5,9 @@
         .module('kpicsApp')
         .controller('IdeaUserConfirmController', IdeaUserConfirmController);
 
-    IdeaUserConfirmController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Idea', 'Account'];
+    IdeaUserConfirmController.$inject = ['$timeout', '$scope', '$stateParams', '$filter', 'AlertService', '$uibModalInstance', 'entity', 'Idea', 'Account'];
 
-    function IdeaUserConfirmController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Idea, Account) {
+    function IdeaUserConfirmController ($timeout, $scope, $stateParams, $filter, AlertService, $uibModalInstance, entity, Idea, Account) {
         var vm = this;
 
         vm.idea = entity;
@@ -21,22 +21,23 @@
         function save () {
             vm.isSaving = false;
             if (vm.idea.id !== null) {
-                /*
-                saveProjectManager(function (data) {
+                saveJoinUserToIdea(function (data) {
                     Idea.update(vm.idea, onSaveSuccess, onSaveError);
                 });
-                */
             }
         }
 
-        function saveProjectManager(fn){
+        function saveJoinUserToIdea(fn){
             Account.get(function (data) {
-                vm.idea.projectManagerId = data.data.id;
-                vm.idea.ideaHasPM = true;
-                vm.idea.isIdeaHasPM = true;
-                console.log(vm.idea);
-
-                fn(null);
+                var user = vm.idea.userIds.indexOf(data.data.id);
+                if(user != 2) {
+                    vm.idea.userIds.push(data.data.id);
+                    fn(null);
+                } else {
+                    var $translate = $filter('translate');
+                    var errorMessage = $translate('kpicsApp.idea.user.error');
+                    AlertService.error(errorMessage);
+                }
             });
         }
 
