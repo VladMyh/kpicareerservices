@@ -12,6 +12,9 @@
                 "track": "Track",
                 "stream": "Stream",
                 "idea": "Idea",
+                "faculty": "Факультет",
+                "group": "Group",
+                "department": "Department",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -140,7 +143,8 @@
         "Size": "Поле {{fieldName}} не отвечает требованиям мин/макс.го размера!",
         "userexists": "Имя пользователя уже используется!",
         "emailexists": "Эл. почта уже используется!!",
-        "idexists": "Новый {{entityName}} не может иметь данный ID"
+        "idexists": "Новый {{entityName}} не может иметь данный ID",
+        "entityinuse": "{{ entityName }} не может быть удален(а)"
     },
     "footer": "Это ваш футтер"
 }

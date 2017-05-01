@@ -1,0 +1,74 @@
+
+<div>
+    <h2><span data-translate="kpicsApp.faculty.detail.title">Faculty</span> {{::vm.faculty.name}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="kpicsApp.faculty.name">Name</span></dt>
+        <dd>
+            <input type="text" class="form-control" name="name" id="field_name"
+                   ng-model="vm.faculty.name"
+                   required/>
+        </dd>
+
+        <dt></dt>
+        <dd>
+            <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+                <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+            </button>
+        </dd>
+
+        <dt>Departments</dt>
+        <dd>
+            <div class="pull-right">
+                <button class="btn btn-success btn-sm" ui-sref="faculty-detail.addDepartment({id: vm.faculty.id})">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    Add Department<!--TODO: add locale-->
+                </button>
+            </div>
+
+            <table class="jh-table table">
+                <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse">
+                    <!--TODO:add localization-->
+                    <th jh-sort-by="fname">Name<span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="department in vm.faculty.departments track by department.id">
+                    <td>{{department.name}}</td>
+                    <td class="text-right">
+                        <button ui-sref="faculty-detail.deleteDepartment({id: vm.faculty.id, departmentId: department.id})"
+                            class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                        <button ui-sref="faculty-detail.editDepartment({id: vm.faculty.id, departmentId: department.id})"
+                                class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                    </td>
+                </tr>
+                <tr ng-show="!vm.faculty.departments.length">
+                    <td>
+                        <p>No departments</p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </dd>
+    </dl>
+    </form>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="faculty-detail.edit({id:vm.faculty.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

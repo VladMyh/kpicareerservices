@@ -130,7 +130,7 @@
                                                 <td>{{teacher.department}}</td>
                                                 <td class="text-right">
                                                     <button class="btn btn-danger btn-sm"
-                                                            ng-show="vm.isTeacherUsed(trackInfo, teacher.id)"
+                                                            ng-show="!vm.isTeacherUsed(trackInfo, teacher.id)"
                                                             ui-sref="stream-detail.deleteTeacher({id: vm.stream.id, trackId: trackInfo.id, teacherId: teacher.id})">
                                                         <span class="glyphicon glyphicon-trash"></span>
                                                     </button>

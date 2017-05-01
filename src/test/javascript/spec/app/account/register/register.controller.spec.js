@@ -8,7 +8,7 @@ describe('Controller Tests', function() {
     describe('RegisterController', function() {
 
         var $scope, $q; // actual implementations
-        var MockTimeout, MockTranslate, MockAuth; // mocks
+        var MockTimeout, MockTranslate, MockAuth, MockFaculty, MockGroup; // mocks
         var createController; // local utility function
 
         beforeEach(inject(function($injector) {
@@ -16,10 +16,14 @@ describe('Controller Tests', function() {
             $scope = $injector.get('$rootScope').$new();
             MockTimeout = jasmine.createSpy('MockTimeout');
             MockAuth = jasmine.createSpyObj('MockAuth', ['createStudentAccount']);
+            MockFaculty = jasmine.createSpyObj('MockFaculty', ['query']);
+            MockGroup = jasmine.createSpyObj('MockGroup', ['getAll']);
             MockTranslate = jasmine.createSpyObj('MockTranslate', ['use']);
 
             var locals = {
                 'Auth': MockAuth,
+                'Faculty' : MockFaculty,
+                'Group' : MockGroup,
                 '$translate': MockTranslate,
                 '$timeout': MockTimeout,
                 '$scope': $scope
@@ -44,15 +48,26 @@ describe('Controller Tests', function() {
             // given
             MockTranslate.use.and.returnValue('ru');
             MockAuth.createStudentAccount.and.returnValue($q.resolve());
+            MockFaculty.query.and.returnValue([{'name': 'faculty'}]);
             createController();
             $scope.vm.registerAccount.password = $scope.vm.confirmPassword = 'password';
+            $scope.vm.selectedFaculty = {};
+            $scope.vm.selectedFaculty.name = 'faculty';
+            $scope.vm.selectedDepartment = {};
+            $scope.vm.selectedDepartment.name = 'department';
+            $scope.vm.selectedGroup = {};
+            $scope.vm.selectedGroup.name = 'group';
             // when
             $scope.$apply($scope.vm.register); // $q promises require an $apply
             // then
             expect(MockAuth.createStudentAccount).toHaveBeenCalledWith({
                 password: 'password',
                 langKey: 'ru',
-                studentInfo: {}
+                studentInfo: {
+                    faculty: 'faculty',
+                    department: 'department',
+                    group: 'group'
+                }
             });
             expect($scope.vm.success).toEqual('OK');
             expect($scope.vm.registerAccount.langKey).toEqual('ru');
@@ -70,6 +85,9 @@ describe('Controller Tests', function() {
             }));
             createController();
             $scope.vm.registerAccount.password = $scope.vm.confirmPassword = 'password';
+            $scope.vm.selectedFaculty = {};
+            $scope.vm.selectedDepartment = {};
+            $scope.vm.selectedGroup = {};
             // when
             $scope.$apply($scope.vm.register); // $q promises require an $apply
             // then
@@ -85,6 +103,9 @@ describe('Controller Tests', function() {
             }));
             createController();
             $scope.vm.registerAccount.password = $scope.vm.confirmPassword = 'password';
+            $scope.vm.selectedFaculty = {};
+            $scope.vm.selectedDepartment = {};
+            $scope.vm.selectedGroup = {};
             // when
             $scope.$apply($scope.vm.register); // $q promises require an $apply
             // then
