@@ -18,6 +18,7 @@
                         data = angular.fromJson(data);
                         data.createDate = DateUtils.convertLocalDateFromServer(data.createDate);
                         data.deadlineDate = DateUtils.convertLocalDateFromServer(data.deadlineDate);
+                        data.startWorkDate = DateUtils.convertLocalDateFromServer(data.startWorkDate);
                     }
                     return data;
                 }
@@ -28,6 +29,7 @@
                     var copy = angular.copy(data);
                     copy.createDate = DateUtils.convertLocalDateToServer(copy.createDate);
                     copy.deadlineDate = DateUtils.convertLocalDateToServer(copy.deadlineDate);
+                    copy.startWorkDate = DateUtils.convertLocalDateToServer(copy.startWorkDate);
                     return angular.toJson(copy);
                 }
             },
