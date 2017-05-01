@@ -12,6 +12,10 @@
         <dd>
             <span>{{vm.idea.description}}</span>
         </dd>
+        <dt><span data-translate="kpicsApp.idea.startWorkDate">Plane start work date</span></dt>
+        <dd>
+            <span>{{vm.idea.startWorkDate | date:'mediumDate'}}</span>
+        </dd>
         <dt><span data-translate="kpicsApp.idea.createDate">Create Date</span></dt>
         <dd>
             <span>{{vm.idea.createDate | date:'mediumDate'}}</span>
@@ -27,6 +31,10 @@
         <dt><span data-translate="kpicsApp.idea.companyWebsite">Company Website</span></dt>
         <dd>
             <span>{{vm.idea.companyWebsite}}</span>
+        </dd>
+        <dt><span data-translate="kpicsApp.idea.isIdeaHasPM">Has an idea a Project Manager?</span></dt>
+        <dd>
+            <span>{{vm.idea.ideaHasPM}}</span>
         </dd>
     </dl>
 

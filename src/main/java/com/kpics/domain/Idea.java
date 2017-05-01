@@ -40,8 +40,8 @@ public class Idea implements Serializable {
     private LocalDate deadlineDate;
 
     @NotNull
-    @Field("planestartwork_date")
-    private LocalDate planeStartWorkDate;
+    @Field("startwork_date")
+    private LocalDate startWorkDate;
 
     @NotNull
     @Size(max = 100)
@@ -187,7 +187,7 @@ public class Idea implements Serializable {
             ", companyWebsite='" + companyWebsite + "'" +
             ", projectManager='" + projectManagerId + "'" +
             ", isIdeaHasPM='" + isIdeaHasPM + "'" +
-            ", planeStartWorkDate='" + planeStartWorkDate + "'" +
+            ", startWorkDate='" + startWorkDate + "'" +
             '}';
     }
 
@@ -199,11 +199,11 @@ public class Idea implements Serializable {
         return this.projectManagerId;
     }
 
-    public LocalDate getPlaneStartWorkDate() {
-        return planeStartWorkDate;
+    public LocalDate getStartWorkDate() {
+        return startWorkDate;
     }
 
-    public void setPlaneStartWorkDate(LocalDate planeStartWorkDate) {
-        this.planeStartWorkDate = planeStartWorkDate;
+    public void setStartWorkDate(LocalDate startWorkDate) {
+        this.startWorkDate = startWorkDate;
     }
 }

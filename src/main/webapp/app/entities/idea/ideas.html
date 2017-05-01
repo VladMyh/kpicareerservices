@@ -19,7 +19,7 @@
             <thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                     <th jh-sort-by="name"><span data-translate="kpicsApp.idea.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="planeStartWorkDate"><span data-translate="kpicsApp.idea.planeStartWorkDate">Plane start work date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="startWorkDate"><span data-translate="kpicsApp.idea.startWorkDate">Plane start work date</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="createDate"><span data-translate="kpicsApp.idea.createDate">Create Date</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="deadlineDate"><span data-translate="kpicsApp.idea.deadlineDate">Deadline Date</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="companyName"><span data-translate="kpicsApp.idea.companyName">Company Name</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -29,8 +29,8 @@
             <tbody>
                 <tr ng-repeat="idea in vm.ideas track by idea.id">
                     <td>{{idea.name}}</td>
+                    <td>{{idea.startWorkDate | date:'mediumDate'}}</td>
                     <td>{{idea.createDate | date:'mediumDate'}}</td>
-                    <td>{{idea.planeStartWorkDate | date:'mediumDate'}}</td>
                     <td>{{idea.deadlineDate | date:'mediumDate'}}</td>
                     <td>{{idea.companyName}}</td>
                     <td class="text-right">

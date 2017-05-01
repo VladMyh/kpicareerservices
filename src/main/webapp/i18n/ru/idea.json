@@ -22,7 +22,8 @@
             "description": "Описание",
             "name": "Имя",
             "createDate": "Дата создание",
-            "planeStartWorkDate": "Дата начала работ",
+            "startWorkDate": "Дата начала работ",
+            "isIdeaHasPM": "Имеет ли идея менеджера проекта?",
             "deadlineDate": "Дедлайн",
             "companyName": "Название компании",
             "companyWebsite": "Сайт компании"

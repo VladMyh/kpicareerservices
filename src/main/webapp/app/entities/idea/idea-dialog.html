@@ -61,6 +61,34 @@
                 </p>
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="control-label" data-translate="kpicsApp.idea.startWorkDate"
+                   for="startWorkDate">Plane start work date</label>
+            <div class="input-group">
+                <input id="startWorkDate"
+                       type="text" class="form-control"
+                       name="startWorkDate"
+                       uib-datepicker-popup="{{dateformat}}"
+                       ng-model="vm.idea.startWorkDate"
+                       is-open="vm.datePickerOpenStatus.startWorkDate"
+                       required/>
+                <span class="input-group-btn">
+                        <button type="button"
+                                class="btn btn-default"
+                                ng-click="vm.openCalendar('startWorkDate')">
+                            <i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </div>
+            <div ng-show="editForm.startWorkDate.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.startWorkDate.$error.required"
+                   data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="control-label" data-translate="kpicsApp.idea.deadlineDate" for="field_deadlineDate">Deadline Date</label>
                 <div class="input-group">
