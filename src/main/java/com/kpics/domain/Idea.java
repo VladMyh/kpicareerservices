@@ -40,6 +40,10 @@ public class Idea implements Serializable {
     private LocalDate deadlineDate;
 
     @NotNull
+    @Field("planestartwork_date")
+    private LocalDate planeStartWorkDate;
+
+    @NotNull
     @Size(max = 100)
     @Field("company_name")
     private String companyName;
@@ -183,6 +187,7 @@ public class Idea implements Serializable {
             ", companyWebsite='" + companyWebsite + "'" +
             ", projectManager='" + projectManagerId + "'" +
             ", isIdeaHasPM='" + isIdeaHasPM + "'" +
+            ", planeStartWorkDate='" + planeStartWorkDate + "'" +
             '}';
     }
 
@@ -192,5 +197,13 @@ public class Idea implements Serializable {
 
     public String getProjectManagerId() {
         return this.projectManagerId;
+    }
+
+    public LocalDate getPlaneStartWorkDate() {
+        return planeStartWorkDate;
+    }
+
+    public void setPlaneStartWorkDate(LocalDate planeStartWorkDate) {
+        this.planeStartWorkDate = planeStartWorkDate;
     }
 }

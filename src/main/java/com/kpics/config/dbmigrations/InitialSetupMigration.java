@@ -14,6 +14,8 @@ import java.util.*;
 @ChangeLog(order = "001")
 public class InitialSetupMigration {
 
+    private Map<String, String>[] authoritiesProjectManager = new Map[] { new HashMap<>(), new HashMap<>() };
+
     private Map<String, String>[] authoritiesUser = new Map[] { new HashMap<>() };
 
     private Map<String, String>[] authoritiesTeacher = new Map[] { new HashMap<>(), new HashMap<>() };
@@ -33,6 +35,9 @@ public class InitialSetupMigration {
 
         authoritiesAdminAndUser[0].put("_id", "ROLE_USER");
         authoritiesAdminAndUser[1].put("_id", "ROLE_ADMIN");
+
+        authoritiesProjectManager[0].put("_id", "ROLE_USER");
+        authoritiesProjectManager[1].put("_id", "ROLE_PM");
     }
 
     @ChangeSet(order = "01", author = "initiator", id = "01-addAuthorities")
@@ -53,6 +58,10 @@ public class InitialSetupMigration {
         authorityCollection.insert(
             BasicDBObjectBuilder.start()
                 .add("_id", "ROLE_TEACHER")
+                .get());
+        authorityCollection.insert(
+            BasicDBObjectBuilder.start()
+                .add("_id", "ROLE_PM")
                 .get());
     }
 
@@ -117,6 +126,19 @@ public class InitialSetupMigration {
             .add("authorities", authoritiesUser)
             .get()
         );
-
+        usersCollection.insert(BasicDBObjectBuilder.start()
+            .add("_id", "user-6")
+            .add("login", "manager")
+            .add("password", "$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K")
+            .add("first_name", "ProjectManager")
+            .add("last_name", "ProjectManager")
+            .add("email", "pm@localhost")
+            .add("activated", "true")
+            .add("lang_key", "en")
+            .add("created_by", "system")
+            .add("created_date", new Date())
+            .add("authorities", authoritiesProjectManager)
+            .get()
+        );
     }
 }

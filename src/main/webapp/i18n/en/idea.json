@@ -22,6 +22,7 @@
             "description": "Description",
             "name": "Name",
             "createDate": "Create Date",
+            "planeStartWorkDate": "Date start working",
             "deadlineDate": "Deadline Date",
             "companyName": "Company Name",
             "companyWebsite": "Company Website"

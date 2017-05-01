@@ -22,6 +22,7 @@
             "description": "Описание",
             "name": "Имя",
             "createDate": "Дата создание",
+            "planeStartWorkDate": "Дата начала работ",
             "deadlineDate": "Дедлайн",
             "companyName": "Название компании",
             "companyWebsite": "Сайт компании"
