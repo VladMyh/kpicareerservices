@@ -214,7 +214,31 @@
                         $state.go('^');
                     });
                 }]
-            });
+            })
+        .state('idea.userjoin', {
+            parent: 'idea',
+            url: '/{id}/userjoin',
+            data: {
+                authorities: ['ROLE_USER']
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/entities/idea/idea-user-join-dialog.html',
+                    controller: 'IdeaUserConfirmController',
+                    controllerAs: 'vm',
+                    size: 'md',
+                    resolve: {
+                        entity: ['Idea', function(Idea) {
+                            return Idea.get({id : $stateParams.id}).$promise;
+                        }]
+                    }
+                }).result.then(function() {
+                    $state.go('idea', null, { reload: 'idea' });
+                }, function() {
+                    $state.go('^');
+                });
+            }]
+        });
     }
 
 })();

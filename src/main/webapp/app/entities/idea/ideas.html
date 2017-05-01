@@ -23,6 +23,7 @@
                     <th jh-sort-by="createDate"><span data-translate="kpicsApp.idea.createDate">Create Date</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="deadlineDate"><span data-translate="kpicsApp.idea.deadlineDate">Deadline Date</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="companyName"><span data-translate="kpicsApp.idea.companyName">Company Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="companyName"><span data-translate="kpicsApp.idea.userParticipate">Count of desire users participate</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -33,30 +34,44 @@
                     <td>{{idea.createDate | date:'mediumDate'}}</td>
                     <td>{{idea.deadlineDate | date:'mediumDate'}}</td>
                     <td>{{idea.companyName}}</td>
+                    <td>{{idea.countOfParticipateUsers}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"
                                     ng-hide="idea.ideaHasPM"
                                     ui-sref="idea.pmconfirm({id:idea.id})"
-                                    class="btn btn-success btn-sm">
+                                    class="btn btn-success btn-sm"
+                                    has-authority="ROLE_PM"
+                                    uib-tooltip="PM confirm to take part in idea">
                                 <span class="glyphicon glyphicon-thumbs-up"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.projectManager"></span>
                             </button>
                             <button type="submit"
+                                    ui-sref="idea.userjoin({id:idea.id})"
+                                    class="btn btn-warning btn-sm"
+                                    has-authority="ROLE_USER"
+                                    uib-tooltip="User desire to take part in idea">
+                                <span class="glyphicon glyphicon-heart"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.userJoinIdea"></span>
+                            </button>
+                            <button type="submit"
                                     ui-sref="idea-detail({id:idea.id})"
-                                    class="btn btn-info btn-sm">
+                                    class="btn btn-info btn-sm"
+                                    uib-tooltip="All information about idea">
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.view"></span>
                             </button>
                             <button type="submit"
                                     ui-sref="idea.edit({id:idea.id})"
-                                    class="btn btn-primary btn-sm">
+                                    class="btn btn-primary btn-sm"
+                                    uib-tooltip="Edit idea">
                                 <span class="glyphicon glyphicon-pencil"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
                             </button>
                             <button type="submit"
                                     ui-sref="idea.delete({id:idea.id})"
-                                    class="btn btn-danger btn-sm">
+                                    class="btn btn-danger btn-sm"
+                                    uib-tooltip="Delete idea">
                                 <span class="glyphicon glyphicon-remove-circle"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
                             </button>

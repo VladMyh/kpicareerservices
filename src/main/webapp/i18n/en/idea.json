@@ -19,10 +19,14 @@
             "projectmanager": {
                 "question": "Are you sure you want to confirm participation in {{ name }}?"
             },
+            "user": {
+                "question": "Are you sure you want to join in {{ name }}?"
+            },
             "description": "Description",
             "name": "Name",
             "createDate": "Create Date",
             "startWorkDate": "Date start working",
+            "userParticipate": "Count of desire users participate",
             "isIdeaHasPM": "Has an idea a Project Manager?",
             "deadlineDate": "Deadline Date",
             "companyName": "Company Name",

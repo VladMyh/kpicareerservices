@@ -105,7 +105,8 @@
             "open": "Open",
             "save": "Save",
             "view": "View",
-            "projectManager": "Confirm participation"
+            "projectManager": "Confirm participation",
+            "userJoinIdea": "I want to join!"
         },
         "detail": {
             "field": "Field",
@@ -116,6 +117,9 @@
         },
         "projectManager": {
             "title": "Confirm participation"
+        },
+        "userToJoin": {
+            "title": "Confirm application for participation"
         },
         "validation": {
             "required": "This field is required.",

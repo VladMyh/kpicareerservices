@@ -1,16 +1,19 @@
 package com.kpics.domain;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
- * A Idea.
+ * An Idea.
  */
 
 @Document(collection = "idea")
@@ -57,6 +60,13 @@ public class Idea implements Serializable {
 
     @Field("isIdeaHasPM")
     private boolean isIdeaHasPM;
+
+    @NotNull
+    @Field("user_ids")
+    private Set<String> userIds = new HashSet<>();
+
+    @Transient
+    private Integer countOfParticipateUsers;
 
     public Idea() {
     }
@@ -155,6 +165,34 @@ public class Idea implements Serializable {
         isIdeaHasPM = ideaHasPM;
     }
 
+    public void setProjectManagerId(String projectManagerId) {
+        this.projectManagerId = projectManagerId;
+    }
+
+    public String getProjectManagerId() {
+        return this.projectManagerId;
+    }
+
+    public LocalDate getStartWorkDate() {
+        return startWorkDate;
+    }
+
+    public void setStartWorkDate(LocalDate startWorkDate) {
+        this.startWorkDate = startWorkDate;
+    }
+
+    public Set<String> getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(Set<String> userIds) {
+        this.userIds = userIds;
+    }
+
+    public Integer getCountOfParticipateUsers() {
+        return this.userIds.size();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -188,22 +226,7 @@ public class Idea implements Serializable {
             ", projectManager='" + projectManagerId + "'" +
             ", isIdeaHasPM='" + isIdeaHasPM + "'" +
             ", startWorkDate='" + startWorkDate + "'" +
+            ", userIds='" + userIds + "'" +
             '}';
-    }
-
-    public void setProjectManagerId(String projectManagerId) {
-        this.projectManagerId = projectManagerId;
-    }
-
-    public String getProjectManagerId() {
-        return this.projectManagerId;
-    }
-
-    public LocalDate getStartWorkDate() {
-        return startWorkDate;
-    }
-
-    public void setStartWorkDate(LocalDate startWorkDate) {
-        this.startWorkDate = startWorkDate;
     }
 }
