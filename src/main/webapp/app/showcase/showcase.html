@@ -1,0 +1,56 @@
+<div>
+    <h2 class="text-center" data-translate="kpicsApp.showcase.home.title">Welcome to Showcase</h2>
+    <br/>
+
+    <div>
+        <h5 data-translate="kpicsApp.showcase.home.count.students" translate-values="{count: '{{vm.students.length}}'}"></h5>
+        <h5 data-translate="kpicsApp.showcase.home.count.teachers" translate-values="{count: '{{vm.teachers.length}}'}"></h5>
+        <h5 data-translate="kpicsApp.showcase.home.count.trackDefinitions" translate-values="{count: '{{vm.trackDefinitions.length}}'}"></h5>
+    </div>
+
+
+
+    <br/>
+    <br/>
+
+
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+            <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                <th jh-sort-by="name"><span data-translate="kpicsApp.showcase.home.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="academic_year"><span data-translate="kpicsApp.showcase.home.academicYear">Academic Year</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th><span data-translate="kpicsApp.showcase.home.studentsPassed">Students Passed</span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="trackShowcase in vm.trackShowcases">
+                <td>{{trackShowcase.name}}</td>
+                <td>{{trackShowcase.academicYear}}</td>
+                <td>{{trackShowcase.studentsPassedCount}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                ui-sref="showcase.tracks.faculty({name:trackShowcase.name, academicYear:trackShowcase.academicYear})"
+                                class="btn btn-info btn-sm">
+                            <span class="glyphicon glyphicon-eye-open"></span>
+                            <span class="hidden-sm-down" data-translate="kpicsApp.showcase.home.actions.showFacultiesLabel"></span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="showcase.tracks.students({trackName:trackShowcase.name, academicYear:trackShowcase.academicYear})"
+                                class="btn btn-warning btn-sm">
+                            <span class="glyphicon glyphicon-education"></span>
+                            <span class="hidden-sm-down" data-translate="kpicsApp.showcase.home.actions.showStudentsLabel"></span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
+    </div>
+</div>
